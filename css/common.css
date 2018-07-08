@@ -1,0 +1,118 @@
+body {
+    margin: 0px;
+    min-width:960px;
+    font-family: "고딕", arial;
+    font-size: 20px;
+}
+
+.container {
+    margin: auto;
+    height: 806px;
+    text-align: center;
+    padding-top: 55px;
+    padding-bottom: 55px;
+    width: 1202px;
+}
+
+a, a:visited {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.gnb {
+    background-image: url("../img/common/gnb-background.jpg");
+    width: 100%;
+    position: relative;
+}
+
+.gnb li {
+    display: table-cell;
+    vertical-align: middle;
+    font-weight: bold;
+    color: #FFFEFC;
+}
+
+.gnb .gnb-inner {
+    margin: 0 auto;
+    max-width: 1220px;
+    height: 99px;
+}
+
+.gnb .gnb-logo {
+    float: left;
+    height: 99px;
+}
+
+.gnb .gnb-logo img {
+    width: 108px;
+    height: 61px;
+    padding-top: 15px;
+}
+
+.gnb .gnb-menu {
+    position: absolute;
+    display: inline-block;
+    margin: 0 auto;
+    max-width: 700px;
+    height: 99px;
+    padding: 0px 0px 0px 190px;
+    font-size: 20px;
+}
+
+.gnb .gnb-menu ul {
+    padding-top: 14px;
+}
+
+.gnb .gnb-menu li {
+    padding-left: 10px;
+}
+
+.gnb .gnb-menu li:after {
+    padding-left: 10px;
+    content: "\00B7";
+}
+
+.gnb .gnb-menu li:last-child:after {
+    content: "";
+}
+
+.gnb .gnb-login {
+    float: right;
+    font-size: 16px;
+    font-weight: normal;
+    height: 99px;
+}
+
+.gnb .gnb-login ul {
+    display: table;
+    float: left;
+    padding-top: 12px;
+}
+
+.gnb .gnb-login .middle-bar {
+    font-size: 12px;
+    padding-left: 11px;
+    padding-right: 11px;
+}
+
+.gnb .gnb-login .btn-munch {
+    z-index: 99;
+    border-radius: 50px;
+    background-color: #533190;
+    padding: 15px;
+}
+
+
+
+div.contents h2.title {text-align:center; position:relative; margin-top:70px;}
+div.contents div.fix {width:40px; display:inline-block; border:1px solid #222222;}
+div.contents div.btn_groups input[type=button].on {background:#452b78; color:white;}
+.footer{background:#151515; color:#cccccc; display:inline-block; width:100%; position:relative; text-align:center;  padding-top:30px;}
+.footer div.munch_info {background:#212121; display:block; width:394px; height:136px;float:left; margin-right:5px; padding-bottom:15px; text-align:center;}
+.footer div.munch_info div{padding-top: 29px;}
+.footer div.munch_info p.email {color:#ffc000; font-size:22px;}
+.footer div.munch_info p {line-height:7px;}
+.footer div.munch_info p.time {line-height:4px;}
+.footer .sub_footer div{display:inline-block; line-height:7px; font-size:13px;}
+.footer .sub_footer {margin-top:57px;     position: relative;     display: inline-block;     text-align: left;    width: 1197px;}
+.footer .sub_footer .logo{position:relative; top:-44px;}

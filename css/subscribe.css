@@ -1,0 +1,125 @@
+.container {
+    padding-top: 55px;
+    padding-bottom: 55px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.tab-menu {
+    display: inline-block;
+    text-align: center;
+}
+
+.tab-menu .selected {
+    background-color: #462B78;
+    color: #ffffff;
+}
+
+hr {
+    width: 20px;
+    height: 0px;
+    border-top: 1px solid black;
+}
+
+.tab-menu ul {
+    text-align: center;
+    display: inline-flex;
+    padding: 0px;
+}
+
+.tab-menu li {
+    display: grid;
+    width: 395px;
+    border-radius: 4px;
+    border: 1px solid;
+    height: 52px;
+    align-items: center;
+    margin: 3px;
+    cursor: Pointer;
+}
+.tab-contents{
+    width:1202px;
+}
+.box,.box-selected {
+    width: 283px;
+    height: 256px;
+    margin: 5px;
+    display: inline-block;
+    border-radius: 11px;
+    padding-top: 2px;
+}
+
+.box {
+    height: 255px;
+    width: 285px;
+    border: 2px solid black;
+    cursor: pointer;
+}
+.box-img{
+    height: 203px;
+    width: 283px;
+}
+.box-selected {
+    border: 2px solid #EA4241;
+}
+.box .box-name {
+    color: #ffffff;
+    height: 53px;
+    vertical-align: middle;
+    align-items: center;
+    display: grid;
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+    background-color: #333333;
+    border: 2px solid #333333;
+}
+.box-selected .box-name {
+    color: #ffffff;
+    height: 53px;
+    vertical-align: middle;
+    align-items: center;
+    display: grid;
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+    background-color: #EA4241;
+    border: 2px solid #EA4241;
+}
+.box, .box-selected img {
+    border-radius: 11px;
+
+}
+
+.what-munch {
+    border: 3px double #555555;
+    width: 100%;
+    height: 87px;
+    margin-top: 50px;
+}
+
+.what-munch li {
+    text-align: left;
+    font-size: 13px;
+}
+
+.btn-prev {
+    width: 50%;
+    text-align: left;
+    padding-top: 30px;
+}
+.btn-next {
+    width: 50%;
+    text-align: right;
+    padding-top: 30px;
+}
+
+.btn-next input,.btn-prev input {
+    border-radius: 5px;
+    background-color: #F84F0E;
+    color: #ffffff;
+    border: 0px;
+    width: 119px;
+    height: 40px;
+}

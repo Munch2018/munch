@@ -1,0 +1,302 @@
+.main-do-munch {
+    max-width: 1440px;
+    margin: 0 auto;
+    background-image: url('../img/middle-img.png');
+    max-width: 1920px;
+    margin: 0 auto;
+    inline-height: 617px;
+}
+
+.main-do-munch .sub-do-munch {
+    height: 617px;
+    max-width: 1220px;
+    margin: 0 auto;
+}
+
+.main-do-munch .sub-do-munch .txt-area {
+    width: 100%;
+    float: right;
+    text-align: right;
+    color: #ffffff;
+    height: 430px;
+    padding-top: 16px;
+}
+
+.main-do-munch .sub-do-munch .txt-area p:first-child {
+    font-size: 50pt;
+    font-weight: 500;
+    margin-bottom: -21px;
+}
+
+.main-do-munch .sub-do-munch .txt-area p:nth-child(2) {
+    font-size: 25pt;
+    font-weight: 500;
+}
+
+.main-do-munch .sub-do-munch .txt-area p:nth-child(2) .point {
+    color: #FF6900;
+}
+
+.main-do-munch .sub-do-munch .txt-area p:nth-child(3) {
+    font-size: 13pt;
+    margin-top: 88px;
+}
+
+.main-do-munch .sub-do-munch .btn-munch-area {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    vertical-align: bottom;
+    height: 171px;
+    margin-top: 17px;
+}
+
+.main-do-munch .sub-do-munch .btn-munch-area strong {
+    border: 3px solid #513589;
+    border-radius: 50px;
+    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #513589;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 20px;
+}
+
+.main-guide {
+    height: 1035px;
+    background-color: #FFF8EE;
+    width: 100%;
+}
+
+.main-guide .sub-guide {
+    text-align: center;
+    max-width: 1220px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.main-guide .sub-guide .contents {
+    display: inline-block;
+    margin-left: 173px;
+    float: left;
+    width: 860px;
+}
+
+.main-guide .sub-guide .contents p:first-child {
+    padding-top: 50px;
+}
+
+.main-guide .sub-guide .contents .big-title {
+    font-size: 52px;
+}
+
+.main-guide .sub-guide .contents .small-title {
+    font-weight: 500;
+    font-size: 25px;
+}
+
+.main-guide .sub-guide .contents p:nth-child(2) {
+    margin-top: 35px;
+}
+
+.main-guide .live-chat-area {
+    height: 100%;
+    width: 180px;
+    float: left;
+}
+
+.main-explanation {
+    height: 1055px;
+    background-color: #BE9310;
+}
+
+.main-explanation .sub-explanation {
+    max-width: 1220px;
+    margin: 0 auto;
+}
+
+.main-explanation .sub-explanation .big-title {
+    font-size: 52px;
+    text-align: center;
+    padding: 77px 0px 47px 0px;
+}
+
+.main-explanation .sub-explanation .square-box {
+    height: 637px;
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    width: 80%;
+    margin: auto;
+    padding-top: 86px;
+}
+
+.main-explanation .sub-explanation .square-box #line-horizon {
+    position: relative;
+    width: 830px;
+    border: 1px solid white;
+    top: 163px;
+    left: -34px;
+}
+
+.main-explanation .sub-explanation .square-box #line-vertical {
+    position: absolute;
+    height: 356px;
+    left: 590px;
+    text-align: center;
+}
+
+.main-explanation .sub-explanation .square-box .desc {
+    display: inline-block;
+    width: 380px;
+    height: 200px;
+    text-align: left;
+    color: #ffffff;
+    font-size: 14px;
+    padding-left: 20px;
+}
+
+.main-explanation .sub-explanation .square-box .desc p {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 9px 0px 9px 0px;
+}
+
+.main-explanation .sub-explanation .square-box .desc-icon, .desc-txt {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.main-product-introduction {
+    height: 1828px;
+    background-color: #FFF8EE;
+}
+
+.main-product-introduction .sub-product-introduction {
+    max-width: 1220px;
+    margin: 0 auto;
+    text-align: center;
+    height: 1474px;
+}
+
+.main-product-introduction .sub-product-introduction .big-title {
+    font-size: 52px;
+    padding: 40px 0px 20px 0px;
+}
+
+.main-product-introduction .sub-product-introduction .select-pet-area {
+    margin: auto;
+    padding-bottom: 50px;
+}
+
+.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet {
+    display: inline-block;
+    border: 2px solid #462B78;
+    width: 270px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet:first-child {
+    border-radius: 50px 0px 0px 50px;
+}
+
+.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet:nth-child(2) {
+    border-radius: 0px 50px 50px 0px;
+}
+
+.main-product-introduction .sub-product-introduction .select-pet-area img {
+    width: 55px;
+    height: 55px;
+}
+
+.main-product-introduction .sub-product-introduction #munch-set-dog, #munch-set-cat {
+    border: 1px solid #CFCBC8;
+    border-radius: 3px;
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    height: 640px;
+}
+
+.main-product-introduction .sub-product-introduction .goods-desc {
+    height: 300px;
+    width: 950px;
+    margin: auto auto 66px auto;
+}
+
+.main-product-introduction .sub-product-introduction .goods-desc #point {
+    color: #E12A22;
+    font-size: 13px;
+    float: left;
+    padding-left: 79px;
+    font-weight: bold;
+}
+
+.main-product-introduction .sub-product-introduction .goods-desc ul {
+    height: 248px;
+    padding-top: 20px;
+    width: 925px;
+    margin-bottom: 0px;
+}
+
+.main-product-introduction .sub-product-introduction .goods-desc ul li {
+    font-size: 13px;
+    float: left;
+    display: inline-block;
+    padding: 11px 0px 10px 40px;
+    width: 422px;
+    text-align: left;
+}
+
+.main-product-introduction .sub-product-introduction .goods-desc ul span {
+    border-radius: 70px;
+    background-color: black;
+    color: #ffffff;
+    padding: 5px;
+    font-size: 17px;
+}
+
+.main-product-introduction .sub-production-interrogation {
+    width: 1200px;
+    border-top: dotted 2px #9F9890;
+    text-align: center;
+    margin: auto;
+    padding-top: 60px;
+}
+
+.main-product-introduction .sub-production-interrogation div {
+    display: inline-grid;
+}
+.main-product-introduction .sub-production-interrogation div p{
+    text-align: left;
+    margin:0px;
+    padding-bottom:10px;
+}
+.main-product-introduction .sub-production-interrogation div .big-txt {
+    margin: 0px;
+    text-align: left;
+    font-weight: bold;
+    font-size:22px;
+}
+.main-product-introduction .sub-production-interrogation div .small-txt {
+    margin: 0px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: bold;
+}
+.main-product-introduction .sub-production-interrogation img {
+    border-radius: 21px;
+}
+/**
+공통
+
+ */
+
+.btn-purple-round {
+    background-color: #462B78;
+    color: #ffffff;
+    border-radius: 50px;
+    padding: 20px 27px 20px 27px;
+    font-weight: bold;
+}
