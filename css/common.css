@@ -5,15 +5,6 @@ body {
     font-size: 20px;
 }
 
-.container {
-    margin: auto;
-    height: 806px;
-    text-align: center;
-    padding-top: 55px;
-    padding-bottom: 55px;
-    width: 1202px;
-}
-
 a, a:visited {
     text-decoration: none;
     color: #ffffff;
@@ -34,7 +25,7 @@ a, a:visited {
 
 .gnb .gnb-inner {
     margin: 0 auto;
-    max-width: 1220px;
+    max-width: 1210px;
     height: 99px;
 }
 
@@ -56,25 +47,30 @@ a, a:visited {
     max-width: 700px;
     height: 99px;
     padding: 0px 0px 0px 190px;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .gnb .gnb-menu ul {
     padding-top: 14px;
+    display: inline-flex;
 }
 
 .gnb .gnb-menu li {
+    display: grid;
     padding-left: 10px;
+    align-items: center;
 }
 
-.gnb .gnb-menu li:after {
-    padding-left: 10px;
-    content: "\00B7";
-}
+/*.gnb .gnb-menu li:after {*/
+    /*padding-left: 10px;*/
+    /*content: "\00B7";*/
+    /*width:3px;*/
+/*}*/
 
-.gnb .gnb-menu li:last-child:after {
-    content: "";
-}
+/*.gnb .gnb-menu li:last-child:after {*/
+    /*content: "";*/
+    /*width:3px;*/
+/*}*/
 
 .gnb .gnb-login {
     float: right;
@@ -100,8 +96,16 @@ a, a:visited {
     border-radius: 50px;
     background-color: #533190;
     padding: 15px;
+    cursor: pointer;
 }
 
+
+.container {
+    margin: auto;
+    height: 4531px;
+    text-align: center;
+    width: 100%;
+}
 
 
 div.contents h2.title {text-align:center; position:relative; margin-top:70px;}

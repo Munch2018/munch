@@ -10,6 +10,8 @@ class Main extends CI_Controller
 
     public function index()
     {
+        $this->load->view('common/header');
         $this->load->view('Main/index');
+        $this->load->view('common/footer');
     }
 }
