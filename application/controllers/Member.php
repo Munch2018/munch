@@ -87,18 +87,45 @@ class Member extends CI_Controller
     public function login()
     {
         //아이디 체크
-        $this->load->model('Member_model');
+        $this->load->model('Member_model', 'member');
         /***
          * 사용할 email, password
          */
-        if (trim($this->input->post('email')) != "") {
+
+        if (trim($this->input->post('email')) == "") {
             alert("아이디를 넣어주세요.");
         }
 
-        if (trim($this->input->post('password')) != "" ) {
+        if (trim($this->input->post('password')) == "" ) {
             alert("비밀번호를 넣어주세요.");
         }
 
+        $member_info = $this->member->getMember(array('where' => array('email' => $this->input->post('email'))));
+        
+        if (empty($member_info)) {
+            alert("존재하지 않는 아이디입니다.");
+        }
+        
+        //아이디랑 비밀번호 같은지 체크해보기
 
+        if ($member_info['password'] !== md5(trim($this->input->post('password')))) {
+            alert("비밀번호가 맞지 않습니다.");
+        }
+        
+        // session 으로 저장 하자
+        // 원래 session 쓸때 load->libraries('session') 해줘야 하는데
+        // autoload.php 에서 세션은 항상 사용한다고 처리함
+        // 세션에서 일단 사용할 값은 member_idx , email 로 저장하고 나중에 추가로
+        //설정할지말지 선택한다.
+
+        $session_data = array(
+            'member_idx'    => $member_info['member_idx'],
+            'email'         => $member_info ['email']
+        );
+
+        $this->session->set_userdata($session_data);
+
+//        redirect(SITE_DOMAIN);
+        redirect('/');
     }
 }

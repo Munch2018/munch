@@ -6,9 +6,53 @@
  * Time: 오후 11:35
  */
 
-public class Member_model extends CI_Model{
+class Member_model extends CI_Model{
 
     public function __construct(){
         parent::__construct();
+    }
+
+    private function setWhere($where = array())
+    {
+
+        if (isset($where['where']) && !empty($where['where'])) {
+            foreach ($where['where'] as $key => $value) {
+                $this->db->where($key, $value);
+            }
+        }
+
+    }
+
+    /*
+     * 아이디 기준으로 회원이 있는지 체크
+     * */
+    public function getMember($where = array())
+    {
+        if (!empty($where)) {
+            $this->setWhere($where);
+        }
+
+        return $this->db->get('member')->row_array();
+
+
+    }
+
+
+    /**
+     * 회원 가입
+     */
+    public function doRegister($data = array())
+    {
+        $data['reg_dt'] = date("Y-m-d H:i:s");
+        $this->db->trans_begin();
+        $this->db->insert('member', $data);
+
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+        } else {
+            $this->db->trans_complete();
+        }
+
+        return;
     }
 }
