@@ -4,6 +4,8 @@ jQuery(document).ready(function () {
     var tabMenu = $('.tab-menu li');
     var petImgBox = $('.select-pet .box');
     var periodBox = $('.set-period .box');
+    var prevBtn = $('.btn-prev input[type="button"]');
+    var nextBtn = $('.btn-next input[type="button"]');
 
     var tabReset = function () {
         tabMenu.removeClass('selected');
@@ -14,8 +16,17 @@ jQuery(document).ready(function () {
         elements.removeClass('box-selected').addClass('box');
     }
 
-    var showStepBtn = function (elt) {
-        console.log(elt);
+    var showOrHideStepBtn = function (elt) {
+        if (elt.data('contents') === 'select-pet') {
+            prevBtn.hide();
+        } else {
+            prevBtn.show();
+        }
+        if (elt.data('contents') === 'pay-info') {
+            nextBtn.hide();
+        } else {
+            nextBtn.show();
+        }
     }
 
     var onClickBox = function (elt, elements) {
@@ -27,7 +38,7 @@ jQuery(document).ready(function () {
         elt.removeClass('box').addClass('box-selected');
     }
 
-    tabMenu.on('click',function () {
+    tabMenu.on('click', function () {
         var elt = $(this);
 
         if (elt.hasClass('selected')) {
@@ -39,7 +50,7 @@ jQuery(document).ready(function () {
         elt.addClass('selected');
         $('.' + elt.data('contents')).show();
 
-        showStepBtn(elt);
+        showOrHideStepBtn(elt);
     });
 
     periodBox.on('click', function () {
@@ -47,5 +58,18 @@ jQuery(document).ready(function () {
     });
     petImgBox.on('click', function () {
         onClickBox($(this), petImgBox);
+    });
+
+    /**
+     * 이전탭 이동
+     */
+    prevBtn.on('click', function () {
+        $('.tab-menu').find('li.selected').prev('li').click();
+    });
+    /**
+     * 다음탭 이동
+     */
+    nextBtn.on('click', function () {
+        $('.tab-menu').find('li.selected').next('li').click();
     });
 })

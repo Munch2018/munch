@@ -1,6 +1,9 @@
 .container {
     padding-top: 55px;
     padding-bottom: 55px;
+    width:1204px;
+    min-width: 1204px;
+    height:806px;
 }
 
 .title {
@@ -42,54 +45,6 @@ hr {
 }
 .tab-contents{
     width:1202px;
-}
-.box,.box-selected {
-    width: 283px;
-    height: 256px;
-    margin: 5px;
-    display: inline-block;
-    border-radius: 11px;
-    padding-top: 2px;
-}
-
-.box {
-    height: 255px;
-    width: 285px;
-    border: 2px solid black;
-    cursor: pointer;
-}
-.box-img{
-    height: 203px;
-    width: 283px;
-}
-.box-selected {
-    border: 2px solid #EA4241;
-}
-.box .box-name {
-    color: #ffffff;
-    height: 53px;
-    vertical-align: middle;
-    align-items: center;
-    display: grid;
-    border-bottom-left-radius: 11px;
-    border-bottom-right-radius: 11px;
-    background-color: #333333;
-    border: 2px solid #333333;
-}
-.box-selected .box-name {
-    color: #ffffff;
-    height: 53px;
-    vertical-align: middle;
-    align-items: center;
-    display: grid;
-    border-bottom-left-radius: 11px;
-    border-bottom-right-radius: 11px;
-    background-color: #EA4241;
-    border: 2px solid #EA4241;
-}
-.box, .box-selected img {
-    border-radius: 11px;
-
 }
 
 .what-munch {

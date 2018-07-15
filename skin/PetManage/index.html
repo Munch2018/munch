@@ -1,0 +1,124 @@
+<link rel="stylesheet" href="/css/pet-manage.css">
+<style>
+
+</style>
+<div class="container">
+    <div class="title">우리아이 정보등록</div>
+    <hr>
+    <form name="registration-form" method="post" action="/petManage/register">
+        <div class="desc">
+            <div style="float:left">
+                <button type="submit" class="btn btn-default submit">등록하기</button>
+                <button type="submit" class="btn btn-default add">추가하기</button>
+            </div>
+            <div style="float:right;margin-top: 19px;">
+                <b>최대 5개까지 등록가능</b>
+            </div>
+        </div>
+        <div class="registration-form">
+            <div class="basic-info">
+                <div class="box">
+                    <div style="height: 181px;"><img src="/img/subscribe/box1.png" class="img-rounded"></div>
+                    <div class="box-name">이름</div>
+                </div>
+                <div class="basic-input">
+                    <div class="input-set">
+                        <label for="pet_name">이름</label>
+                        <input type="text" class="form-control" style="width:417px;" maxlength="50" name="pet_name"
+                               id="pet_name" placeholder="이름을 입력하세요.">
+                    </div>
+                    <div class="input-set">
+                        <label for="birth_year">생일</label>
+                        <input type="text" class="form-control" name="birth_year" maxlength="4" id="birth_year"
+                               placeholder="YYYY"><span>년</span>
+                        <input type="text" class="form-control" name="birth_month" maxlength="2" id="birth_month"
+                               placeholder="MM"><span>월</span>
+                        <input type="text" class="form-control" name="birth_day" maxlength="2" id="birth_day"
+                               placeholder="DD"><span>일</span>
+                    </div>
+                    <div class="input-set">
+                        <label>성별</label>
+                        <input class="btn btn-default" name="gender" type="button" value="남">
+                        <input class="btn btn-default" name="gender" type="button" value="여">
+                    </div>
+                    <div class="input-set">
+                        <label>종류</label>
+                        <input class="btn btn-default" name="pet_type[]" type="button" value="강아지">
+                        <input class="btn btn-default" name="pet_type[]" type="button" value="고양이">
+                    </div>
+                </div>
+            </div>
+            <div class="detail_info dog">
+                <div class="detail_title">
+                    <span class="txt">·품종</span>
+                </div>
+                <?php
+            foreach($dog_breeds as $key => $code){?>
+                <input type="button" value="<?php echo $code['name']?>">
+                <?php }?>
+                <div class="more_breeds">
+                    <button>더 많은 품종보기 ></button>
+                </div>
+            </div>
+            <div class="detail_info cat" style="display: none;">
+                <div class="detail_title">
+                    <span class="txt">·품종</span>
+                </div>
+                <?php
+            foreach($dog_breeds as $key => $code){?>
+                <input type="button" value="<?php echo $code['name']?>">
+                <?php }?>
+                <div class="more_breeds">
+                    <button>더 많은 품종보기 ></button>
+                </div>
+            </div>
+            <div class="detail_info">
+                <div class="detail_title">
+                    <span class="txt">·특징</span>
+                    <span class="small_txt">(최대 3개 선택 가능)</span>
+                </div>
+                <?php
+            foreach($character as $key => $code){?>
+                <input type="button" value="<?php echo $code['name']?>">
+                <?php }?>
+            </div>
+            <div class="detail_info">
+                <div class="detail_title">
+                    <span class="txt">·기타 특이사항</span>
+                    <span class="small_txt">(최대 3개 입력 가능)</span>
+                </div>
+                <input type="text" class="special" name='special[]' placeholder="아이의 특징을 적어주세요.">
+                <input type="text" class="special" name='special[]' placeholder="아이의 특징을 적어주세요.">
+                <input type="text" class="special" name='special[]' placeholder="아이의 특징을 적어주세요.">
+            </div>
+        </div>
+        <div class="desc">
+            <div style="float:right">
+                <button type="submit" class="btn btn-default submit">저장하기</button>
+                <input type="reset" text="삭제하기" class="btn btn-default delete">
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var form = $('registration-form');
+
+        var basicBtn = $('.basic-info').find('input[type="button"]');
+
+        var dogBtn = $('.detail_info.dog').find('input[type="button"]');
+        var catBtn = $('.detail_info.cat').find('input[type="button"]');
+
+        basicBtn.click(function () {
+
+        })
+
+        dogBtn.click(function () {
+            console.log($(this));
+        })
+
+    });
+
+</script>
