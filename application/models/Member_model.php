@@ -55,4 +55,20 @@ class Member_model extends CI_Model{
 
         return;
     }
+
+    public function doUpdate($where = array(), $params = array())
+    {
+        $this->db->trans_begin();
+        if (!empty($where)) {
+            $this->setWhere($where);
+        }
+
+        $this->db->update('member', $params);
+
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+        } else {
+            $this->db->trans_complete();
+        }
+    }
 }

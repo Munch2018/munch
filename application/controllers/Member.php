@@ -11,12 +11,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Member extends CI_Controller
 {
 
-    public function __construct(){
-
+    public function __construct()
+    {
         parent::__construct();
+        $this->session->set_userdata('some_name', 'some_value');
+        $this->load->model('Member_model', 'member');
     }
 
-    public function index(){
+    public function index()
+    {
         $this->login_form();
     }
 
@@ -24,13 +27,15 @@ class Member extends CI_Controller
     /**
      * 회원가입 폼
      */
-    public function join_form(){
+    public function join_form()
+    {
         $this->load->view('common/header');
         $this->load->view('member/join_form');
         $this->load->view('common/footer');
     }
 
-    public function login_form(){
+    public function login_form()
+    {
         $this->load->view('common/header');
         $this->load->view('member/login_form');
         $this->load->view('common/footer');
@@ -40,7 +45,8 @@ class Member extends CI_Controller
      * 회원가입
      * password => md5 암호화한다.
      */
-    public function join(){
+    public function join()
+    {
         $this->load->model('Member_model', 'member');
 //        // email && password 체크
 //        if (trim($this->input->get_post('email', true)) != "") {
@@ -54,7 +60,7 @@ class Member extends CI_Controller
             'email', 'password', 'name'
         );
 
-        foreach ($validation_data as  $value) {
+        foreach ($validation_data as $value) {
             $this->form_validation->set_rules($value, $value, 'required');
         }
 
@@ -69,9 +75,10 @@ class Member extends CI_Controller
 
                 $join_data = array(
                     'email' => $this->input->get_post('email', true),
-                    'name'  => $this->input->get_post('name', true),
-                    'telphone'  => $this->input->get_post('telphone', true),
-                    'password'  => md5(trim($this->input->get_post('password'))),
+                    'name' => $this->input->get_post('name', true),
+                    'telphone' => $this->input->get_post('telphone', true),
+                    'password' => md5(trim($this->input->get_post('password'))),
+                    'use_fl'    => 'Y'
                 );
 
                 $this->member->doRegister($join_data);
@@ -87,7 +94,7 @@ class Member extends CI_Controller
     public function login()
     {
         //아이디 체크
-        $this->load->model('Member_model', 'member');
+
         /***
          * 사용할 email, password
          */
@@ -96,22 +103,22 @@ class Member extends CI_Controller
             alert("아이디를 넣어주세요.");
         }
 
-        if (trim($this->input->post('password')) == "" ) {
+        if (trim($this->input->post('password')) == "") {
             alert("비밀번호를 넣어주세요.");
         }
 
-        $member_info = $this->member->getMember(array('where' => array('email' => $this->input->post('email'))));
-        
+        $member_info = $this->member->getMember(array('where' => array('email' => $this->input->post('email'), 'use_fl' => 'Y')));
+
         if (empty($member_info)) {
             alert("존재하지 않는 아이디입니다.");
         }
-        
+
         //아이디랑 비밀번호 같은지 체크해보기
 
         if ($member_info['password'] !== md5(trim($this->input->post('password')))) {
             alert("비밀번호가 맞지 않습니다.");
         }
-        
+
         // session 으로 저장 하자
         // 원래 session 쓸때 load->libraries('session') 해줘야 하는데
         // autoload.php 에서 세션은 항상 사용한다고 처리함
@@ -119,8 +126,8 @@ class Member extends CI_Controller
         //설정할지말지 선택한다.
 
         $session_data = array(
-            'member_idx'    => $member_info['member_idx'],
-            'email'         => $member_info ['email']
+            'member_idx' => $member_info['member_idx'],
+            'email' => $member_info ['email']
         );
 
         $this->session->set_userdata($session_data);
@@ -128,4 +135,25 @@ class Member extends CI_Controller
 //        redirect(SITE_DOMAIN);
         redirect('/');
     }
+
+
+    /**
+     *
+     * 회원 탈퇴 기능 이지만 user_flg = 'N' 으로 처리한다.
+     * use_fl = 'N'
+     * 나중에 batch 로 del_dt 3개월 && 1년 삭제 처리되는거 개발 해야함
+     */
+    public function signout()
+    {
+
+        if ($this->session->userdata('email') != "" && $this->session->userdata('member_idx') != "") {
+            $this->member->doUpdate(array('where' => array('member_idx' => $this->session->userdata('member_idx'), 'email' => $this->session->userdata('email'))), array('use_fl' => 'N', 'del_dt' => date("Y-m-d H:i:s")));
+
+            alert("회원 탈퇴 완료하였습니다.", '/');
+        } else {
+
+            alert("잘못된 접근입니다.", "/");
+        }
+    }
+
 }
