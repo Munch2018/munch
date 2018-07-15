@@ -136,6 +136,17 @@ class Member extends CI_Controller
         redirect('/');
     }
 
+    /**
+     * 로그아웃
+     */
+    public function logout()
+    {
+        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('member_idx');
+
+        alert("로그아웃 하였습니다.");
+    }
+
 
     /**
      *
@@ -150,6 +161,8 @@ class Member extends CI_Controller
             $this->member->doUpdate(array('where' => array('member_idx' => $this->session->userdata('member_idx'), 'email' => $this->session->userdata('email'))), array('use_fl' => 'N', 'del_dt' => date("Y-m-d H:i:s")));
 
             alert("회원 탈퇴 완료하였습니다.", '/');
+            $this->session->unset_userdata('email');
+            $this->session->unset_userdata('member_idx');
         } else {
 
             alert("잘못된 접근입니다.", "/");
