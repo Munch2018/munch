@@ -17,6 +17,7 @@
 </head>
 <body>
 <div class="wrap">
+
     <div class="gnb">
         <div class="gnb-inner">
             <div class="gnb-logo">
@@ -32,7 +33,15 @@
             </div>
             <div class="gnb-login">
                 <ul>
-                    <li class="btn-login"><a href="">로그인</a></li>
+                    <li class="btn-login">
+                        <?php //if (isset($this->session->userdata('member_idx'))) : ?>
+                        <?php if ($this->session->userdata('member_idx') != "") : ?>
+                        <a href="/member/logout/">로그아웃</a>
+
+                        <?php else : ?>
+                        <a href="/member/login_form/">로그인</a>
+                        <?php endif; ?>
+                    </li>
                     <li class="middle-bar">|</li>
                     <li><a class="btn-munch" href="/subscribe">지금 먼치하기</a></li>
                 </ul>
