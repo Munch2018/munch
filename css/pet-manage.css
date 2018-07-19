@@ -40,7 +40,10 @@ hr {
     height: 1216px;
     width: 100%;
     border: solid 1px #CBCBCB;
-    /*padding: 50px 80px 80px 80px;*/
+}
+
+.registration-form input, button {
+    border: solid 1px #CDCDCD;
 }
 
 .form-control {
@@ -95,17 +98,18 @@ hr {
 
 }
 
-.registration-form .input-set input[type=button] {
+.registration-form .input-set button.selected {
+    background-color: #EA4241;
+    color: #ffffff;
+    border: none;
+}
+
+.registration-form .input-set button {
     width: 206px;
     height: 43px;
     margin-right: 6px;
     background-color: #ffffff;
     color: #828282;
-}
-
-.registration-form .input-set input[type=button] .selected {
-    background-color: #EA4241;
-    color: #ffffff;
 }
 
 .box {
@@ -122,6 +126,14 @@ hr {
     padding: 50px 0 50px 0;
     font-weight: bold;
     text-align: left;
+}
+
+.detail_info.cat button:nth-child(n+23){
+    display: none;
+}
+
+.detail_info.dog button:nth-child(n+23){
+    display: none;
 }
 
 .detail_info:last-child {
@@ -147,7 +159,29 @@ hr {
     font-size: 16px;
 }
 
-.detail_info input[type=button] {
+.detail_info .more_kind {
+    width: 100%;
+    text-align: center;
+}
+
+.detail_info .more_kind button {
+    width: 160px;
+    height: 40px;
+    border-radius: 21px;
+    font-size: 15px;
+    font-weight: 700;
+    background-color: #ffffff;
+    border: 1px solid #5A5A5A;
+    margin-top: 18px;
+    text-align: center;
+}
+.detail_info button.selected {
+    background-color: #EA4241;
+    color: #ffffff;
+    border: none;
+}
+
+.detail_info button {
     width: 142px;
     height: 43px;
     border-radius: 4px;
@@ -158,26 +192,6 @@ hr {
     font-weight: bold;
 }
 
-.detail_info input[type=button] .selected {
-    background-color: #EA4241;
-    color: #ffffff;
-}
-
-.detail_info .more_breeds {
-    width: 100%;
-    text-align: center;
-}
-
-.detail_info .more_breeds button {
-    width: 160px;
-    height: 40px;
-    border-radius: 21px;
-    font-size: 15px;
-    font-weight: 700;
-    background-color: #ffffff;
-    border: 1px solid #5A5A5A;
-    margin-top: 18px;
-}
 
 .detail_info .special {
     width: 100%;
@@ -189,5 +203,4 @@ hr {
     -moz-appearance: none;
     appearance: none;
     margin: 1px;
-
 }
