@@ -199,7 +199,43 @@ a, a:visited {
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
-.btn
+
+/* 공통 - 게시판 */
+.sub_main .title_board{padding:30px 0;font-size:24px;}
+.sub_main .reply table{width:100%;margin-bottom:30px;border-top:2px solid #000}
+.sub_main .reply table tr th{color:#302541}
+.sub_main .reply table tr th,.sub_main .reply table tr td{padding:20px 0;text-align:center;border-bottom:1px solid #e9eaed}
+.sub_main .reply table tr td{background:#fff;color:#666}
+.sub_main .reply table tr td.tit{color:#000;text-align:left}
+.sub_main .reply table tr td.tit > a{padding-right:10px;}
+.sub_main .reply table tr.best td{background:#fafafa}
+.sub_main .reply table tr.best td:first-child{color:#58b0b4;font-weight:bold}
+.sub_main .reply table tr td i{display:inline-block;width:36px;height:13px;padding-left:5px}
+.sub_main .reply table tr td i.best{background:url('/img/common/icon/ico_board_best.gif') 0 0 no-repeat}
+.sub_main .reply table tr td i.new{background:url('/img/common/icon/ico_board_new.gif') 0 0 no-repeat}
+.sub_main .reply table tr td i.file{width:12px;height:14px;padding-right:10px;background:url('/img/common/icon/ico_board_file.png') 0 0 no-repeat}
+.sub_main .reply table tr td i.sns{display:inline-block;width:20px;height:20px;padding-left:0}
+.sub_main .reply table tr td i.sns.pr{background:url('/img/common/icon/ico_board_sns_pr.png') 0 0 no-repeat}
+.sub_main .reply table tr td i.sns.fb{background:url('/img/common/icon/ico_board_sns_fb.png') 0 0 no-repeat}
+.sub_main .reply table tr td i.sns.yt{background:url('/img/common/icon/ico_board_sns_yt.png') 0 0 no-repeat}
+.sub_main .reply table tr td i.sns.ks{background:url('/img/common/icon/ico_board_sns_ks.png') 0 0 no-repeat}
+.sub_main .reply table tr td i.sns.nb{background:url('/img/common/icon/ico_board_sns_nb.png') 0 0 no-repeat}
+.sub_main .reply table tr:hover td{background:#fafafa;font-weight:bold;letter-spacing:-0.11em}
+.sub_main .reply table tr.answer{display:none}
+.sub_main .reply table tr.answer td{padding:60px 0 20px;text-align:left}
+.sub_main .reply table tr.answer:hover td{background:#fff;font-weight:normal;letter-spacing:-0.1em}
+.sub_main .reply table tr.answer td img{max-width:950px}
+.sub_main .reply table tr.answer span.file_bx{display:block;margin:-40px 0 20px}
+.sub_main .pager{margin-left:340px}
+.sub_main .pager a{display:inline-block;margin:0 10px;font-size:14px;color:#999;vertical-align:middle}
+.sub_main .pager a.on{color:#58b0b4;font-weight:bold}
+.sub_main .pager a.btns{margin:0 5px 0 0}
+.sub_main .pager a.btns.next{margin:0 5px}
+.sub_main .search{position:relative;float:right;font-size:14px; margin-top:35px;}
+.sub_main .search select{display:inline-block;width:108px;height:32px;padding:0 5px;margin-right:5px;border:1px solid #dadada;border-radius:3px}
+.sub_main .search input{display:inline-block;width:292px;height:32px;padding:0 5px;border:1px solid #dadada;border-radius:3px}
+.sub_main .search a.btn_search{position:absolute;top:1px;right:1px;display:inline-block;width:58px;height:30px;background:#95c4c6;line-height:32px;text-align:center;color:#fff;border:1px solid #dadada;border-radius:3px}
+
 div.contents h2.title {text-align:center; position:relative; margin-top:70px;}
 div.contents div.fix {width:40px; display:inline-block; border:1px solid #222222;}
 div.contents div.btn_groups input[type=button].on {background:#452b78; color:white;}
