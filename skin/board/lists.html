@@ -15,8 +15,10 @@
     .reply table tr td img {margin-bottom:-10px; margin-right:7px;}
     .reply table tr:first-child td {border-top:none;}
     .reply table tr.answer {background:#fdfaf6;}
-    .info {border-style: double; position:relative; top:157px; border-color:#555555; width:1180px; height:62px; display:block; margin:auto; line-height:67px; font-size:17px; color:#8e8e8e; font-weight:bold; margin-bottom:70px; padding-left:16px;}
+    .reply table tr.no_question {background:#fdfaf6; font-size:16px; text-align:center;}
+    .question_info {border-style: double; position:relative; top:157px; border-color:#555555; width:1180px; height:62px; display:block; margin:auto; line-height:67px; font-size:17px; color:#8e8e8e; font-weight:bold; margin-bottom:70px; padding-left:16px;}
     .contents{margin-bottom: 210px;}
+    .reply table tr td div {position:relative; display:inline-block; float:right;}
 </style>
 
 <div class="contents">
@@ -24,10 +26,14 @@
     <div class="fix"></div>
     <div class="search">
         <span>궁금하신 내용을 검색해보세요!</span>
-        <div>
-            <input type="text" name="search_value" value="">
-            <input type="image" class="search_btn" src="/img/board/qna/search_button.png">
-        </div>
+        <form name="search_form" action="<?=base_url('/board/lists/')?>" method="get">
+            <div>
+                <input type="hidden" name="board_type" value="<?=$type?>">
+                <input type="text" name="search_value" value="">
+                <!--<input type="image" class="search_btn" src="/img/board/qna/search_button.png">-->
+                <img src="/img/board/qna/search_button.png" alt="검색버튼"/>
+            </div>
+        </form>
     </div>
     <div class="btn_groups">
         <input type="button" class="btn<?=$type == 'product'? ' active':''?>" value="제품 문의" onclick="window.location.href='/board/lists/product/'">
@@ -55,15 +61,18 @@
                                 <img src="/img/board/board_a.png" alt="answer">
                                 <span><?=trim($value['contents'])?></span>
                                 <?php if ($this->session->userdata('member_idx') == $value['reg_idx']) : ?>
-                                    <div class="btn_groups">
-                                        <!--<input type="button" class="btn btn-primary update" value="수정" onclick="window.location.href='/board/modify/{<?=$value['board_idx']?>}'">-->
+                                    <div>
                                         <input type="button" class="btn btn-primary update" value="수정" onclick='window.location.href="/board/modify_form/<?=$value['board_idx']?>"'>
-                                        <input type="button" class="btn btn-primary delete" value="삭제" onclick="window.location.href='/board/delete/'<?=$value['board_idx']?>">
+                                        <input type="button" class="btn btn-primary delete" value="삭제" onclick='window.location.href="/board/delete/<?=$value['board_idx']?>/<?=$type?>"'>
                                     </div>
                                 <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
+                <?php else : ?>
+                    <tr class="no_question">
+                        <td>해당 게시물이 없습니다.</td>
+                    </tr>
                 <?php endif; ?>
             </tbody>
         </table>
@@ -73,9 +82,9 @@
         </div>
     </div>
 
-    <!--<div class="info">-->
-        <!--<span>궁금증이 해결되지 않으셨나요? 실시간 상담을 통해 문의해주세요!</span>-->
-    <!--</div>-->
+    <div class="question_info">
+        <span>궁금증이 해결되지 않으셨나요? 실시간 상담을 통해 문의해주세요!</span>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -98,6 +107,11 @@
                 $(this).next('td').addClass('open');
             }
             return false;
+        });
+
+        //검색 버튼
+        $(".search_btn").click(function(e){
+            $("form[name=search_form]").submit();
         });
     });
 </script>
