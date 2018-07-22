@@ -1,6 +1,7 @@
 body {
     margin: 0px;
-    min-width:960px;
+    /*min-width:960px;*/
+    min-width:1216px;
     font-family: "고딕", arial;
     font-size: 20px;
 }
