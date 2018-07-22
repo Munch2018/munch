@@ -15,7 +15,6 @@ class Pet_manage extends CI_Model
         parent::__construct();
     }
 
-
     function getPets($member_idx)
     {
         $this->db->select('pet_idx, name, birth, img_src, pet_type, pet_kind, character_type,detail1,detail2,detail3');

@@ -122,7 +122,7 @@
 }
 
 .main-explanation .sub-explanation .square-box {
-    height: 637px;
+    min-height: 637px;
     background-color: #000000;
     background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
@@ -210,13 +210,14 @@
     height: 55px;
 }
 
-.main-product-introduction .sub-product-introduction #munch-set-dog, #munch-set-cat {
-    border: 1px solid #CFCBC8;
-    border-radius: 3px;
-    width: 1200px;
+.main-product-introduction .sub-product-introduction .munch-set-img {
     margin: 0 auto;
     text-align: center;
-    height: 640px;
+}
+
+.main-product-introduction .sub-product-introduction .munch-set-img img {
+    border: 1px solid #CFCBC8;
+    border-radius: 3px;
 }
 
 .main-product-introduction .sub-product-introduction .goods-desc {
@@ -255,6 +256,7 @@
     color: #ffffff;
     padding: 5px;
     font-size: 17px;
+    margin-right: 2px;
 }
 
 .main-product-introduction .sub-production-interrogation {
@@ -268,30 +270,30 @@
 .main-product-introduction .sub-production-interrogation div {
     display: inline-grid;
 }
-.main-product-introduction .sub-production-interrogation div p{
+
+.main-product-introduction .sub-production-interrogation div p {
     text-align: left;
-    margin:0px;
-    padding-bottom:10px;
+    margin: 0px;
+    padding-bottom: 10px;
 }
+
 .main-product-introduction .sub-production-interrogation div .big-txt {
     margin: 0px;
     text-align: left;
     font-weight: bold;
-    font-size:22px;
+    font-size: 22px;
 }
+
 .main-product-introduction .sub-production-interrogation div .small-txt {
     margin: 0px;
     text-align: left;
     font-size: 13px;
     font-weight: bold;
 }
+
 .main-product-introduction .sub-production-interrogation img {
     border-radius: 21px;
 }
-/**
-공통
-
- */
 
 .btn-purple-round {
     background-color: #462B78;
@@ -299,4 +301,22 @@
     border-radius: 50px;
     padding: 20px 27px 20px 27px;
     font-weight: bold;
+}
+
+/* goods detail frame */
+#goods-detail-frame {
+    position: absolute;
+    display: none;
+    z-index: 99;
+    width: 1100px;
+    height: 622px;
+}
+
+.arrow-btn {
+    width: 80%;
+}
+
+#left-arrow ,#right-arrow{
+    height: 100%;
+    width: 120px;
 }

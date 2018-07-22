@@ -99,6 +99,17 @@ a, a:visited {
     cursor: pointer;
 }
 
+#dimmed {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 95;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.8;
+}
 
 .container {
     margin: auto;
@@ -108,8 +119,9 @@ a, a:visited {
 }
 
 .container .title:first-child {
+
     font-weight: bold;
-    font-size: 32px;
+    font-size: 31px;
 }
 
 .container hr:first-child {

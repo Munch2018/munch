@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/index.css">
+<div id="dimmed"></div>
 <div class="container">
     <section class="main-do-munch">
         <div class="sub-do-munch">
@@ -81,28 +82,29 @@
         <div class="sub-product-introduction">
             <div class="big-title">이 달의 <strong>"먼치세트"</strong></div>
             <div class="select-pet-area">
-                <div class="btn-select-pet"><img src="/img/main/dog-icon.png">강아지</div>
-                <div class="btn-select-pet"><img src="/img/main/cat-icon.png">고양이</div>
+                <div class="btn-select-pet dog"><img src="/img/main/dog-icon.png">강아지</div>
+                <div class="btn-select-pet cat"><img src="/img/main/cat-icon.png">고양이</div>
             </div>
 
-            <div id="munch-set-dog"><img src="/img/main/munch-set.jpg"></div>
-            <div id="munch-set-cat" style="display:none;"><img src="/img/main/munch-set.jpg"></div>
-            <div class="goods-desc">
-                <ul>
-                    <li><span>B1</span>프리싸이스 CAT 닭고기 그레인프리 100G</li>
-                    <li><span>B2</span>나우 CAT 칠면조 어덜트 그레인프리 100G</li>
-                    <li><span>B3</span>고 CAT 오리 LID 100G</li>
-                    <li><span>B4</span>게더 CAT 프리에이커 닭고기 100G</li>
-                    <li><span>B5</span>프라이멀 CAT 동결건조 돼지고기 10G (너겟1개)</li>
-                    <li><span>B6</span>스케지어 CAT 과일습식캔 닭고기 75G (닭고기 졷류중 랜덤)</li>
-                    <li><span>B7</span>스케지어 CAT 과일습식캔 참치 75G (참치 종류중 랜덤)</li>
-                    <li><span>B8</span>스케지어 CAT 습식파우치 70G (파우치 종류중 랜덤)</li>
-                    <li><span>B9</span>로우즈 CAT 습식캔96% 156G (연어, 닭, 칠면조 중 랜덤)</li>
-                    <li><span>B10</span>로투스 CAT 저스트 쥬시 150G (돼지, 닭, 칠면조 중 랜덤)</li>
-                    <li><span>B11</span>캔빗 CAT 기능성한입간식 100G (요로, 피모, 헤어볼 중 랜덤)</li>
-                </ul>
-                <p id="point">※ 반려동물의 특성에 따라 구성품이 조금 다를 수 있습니다.</p>
+            <?php if(!empty($parentGoods)) { ?>
+            <?php foreach($parentGoods as $pkey => $p_goods) { ?>
+            <div id="munch-set-<?=$p_goods['pet_type']?>">
+                <div class="munch-set-img"><img src="<?=$p_goods['img_src']?>"></div>
+                <div class="goods-desc">
+                    <ul>
+                        <?php if(!empty($childGoods)) { ?>
+                        <?php foreach($childGoods as $key => $goods) { ?>
+                        <?php if($p_goods['pet_type']==$goods['pet_type']){?>
+                        <li data-goods_idx="<?=$goods['goods_idx']?>"><span>B<?=$key+1?></span><?=$goods['title']?></li>
+                        <?php } ?>
+                        <?php } ?>
+                        <?php } ?>
+                    </ul>
+                    <p id="point">※ 반려동물의 특성에 따라 구성품이 조금 다를 수 있습니다.</p>
+                </div>
             </div>
+            <?php } ?>
+            <?php } ?>
             <div>
                 <p><a href="/subscribe" class="btn-purple-round">먼치 시작하기</a></p>
             </div>
@@ -122,4 +124,67 @@
             </div>
         </div>
     </section>
+    <iframe src="" id="goods-detail-frame" frameborder="0" scrolling="no"></iframe>
 </div>
+
+
+<script type="text/javascript">
+    var dimmed = $('#dimmed');
+    var frame = $('#goods-detail-frame');
+    var goods_src = 'main/goodsDetail?goods_idx=';
+    var goods_li = $('.goods-desc').find('li');
+
+    $(document).ready(function () {
+        $('.btn-select-pet.dog').on('click', function () {
+            $('#munch-set-cat').hide();
+            $('#munch-set-dog').show();
+        })
+        $('.btn-select-pet.cat').on('click', function () {
+            $('#munch-set-dog').hide();
+            $('#munch-set-cat').show();
+        })
+
+        dimmed.on('click', function () {
+            dimmed.hide();
+            frame.attr('src', '');
+            frame.hide();
+            $('html').css('overflow-y', '');
+        })
+
+        goods_li.on('click', function () {
+            var goods_idx = $(this).data('goods_idx');
+            var top = $(document).scrollTop();
+            var height = $(window).height();
+            var left = $(document).width();
+
+            goods_li.removeClass('selected');
+            $(this).addClass('selected');
+
+            dimmed.show();
+            frame.show();
+
+            frame.css('top', top + ((height - frame.height()) / 2) + 'px');
+            frame.css('left', (left - frame.width()) / 2 + 'px');
+            frame.attr('src', goods_src + goods_idx);
+
+            $('html').css('overflow-y', 'hidden');
+        })
+
+    });
+
+    function changeGoodsEvent(type) {
+        var elt = $('.goods-desc').find('li.selected');
+
+        if (type === 'next') {
+            var chgElt = (elt.next().length > 0) ? elt.next() : goods_li.first();
+        } else {
+            var chgElt = (elt.prev().length > 0) ? elt.prev() : goods_li.last();
+        }
+
+        elt.removeClass('selected');
+        chgElt.addClass('selected');
+
+        var goods_idx = chgElt.data('goods_idx') || 0;
+        frame.attr('src', goods_src + goods_idx);
+    }
+</script>

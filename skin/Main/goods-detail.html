@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+    <style>
+        .detail-area {
+            width: 1120px;
+            height: 621px;
+            display: flex;
+        }
+
+        .detail-area .contents-area {
+            /*position: absolute;*/
+            width: 80%;
+            height: 100%;
+            /*margin: auto;*/
+            background-color: #ffffff;
+            overflow-y: scroll;
+        }
+
+        .detail-area .contents-area .img-area, .contents {
+            margin: 17px;
+        }
+
+        .detail-area .contents-area .img-area {
+            border-bottom: 1px solid #E0E0E0;
+            display: flex;
+            padding-bottom: 15px;
+        }
+
+        .detail-area .contents-area .img-views {
+            overflow: hidden;
+            width: 93%;
+        }
+
+        .img-views .thumb.selected {
+            border: solid 2px #726e6e;
+        }
+
+        .img-views .thumb {
+            width: 80px;
+            height: 80px;
+            border: solid 1px #B4B4B4;
+        }
+
+        .img-views .thumb:nth-child(8) {
+            display: none;
+        }
+
+        .control-btn {
+            display: grid;
+        }
+
+        .control-btn img {
+            border: 1px solid #CBCBCB;
+        }
+
+        .contents {
+            display: flex;
+        }
+
+        .contents #select-img img {
+            width: 460px;
+            height: 460px;
+            border: 1px solid #CBCBCB;
+        }
+
+        .contents .desc span {
+            display: grid;
+            vertical-align: middle;
+        }
+
+        .contents .desc {
+            border-top: 1px solid #D6D6D6;
+            width: 100%;
+            margin-left: 20px;
+        }
+
+        .contents .desc .pad {
+            padding: 10px 12px;
+        }
+
+        .desc .goods-name {
+
+            height: 47px;
+            font-weight: bold;
+            font-size: 19px;
+        }
+
+        .desc .goods-desc {
+            border-top: 1px solid #EDEDED;
+            border-bottom: 1px solid #D6D6D6;
+            font-size: 14px;
+            color: #6F6F6F;
+        }
+
+        .desc .goods-price {
+
+        }
+
+        .desc .goods-price #big-txt {
+            color: #563DF1;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .desc .goods-price #sml-txt {
+            font-size: 16px;
+            color: #717171;
+            margin-left: 3px;
+        }
+
+        .desc .goods-info {
+            border: 1px solid #D5D5D5;
+            height: 258px;
+            overflow: hidden;
+        }
+
+        .desc .goods-info .title {
+            font-weight: bold;
+            font-size: 17px;
+            margin: 0px;
+            vertical-align: middle;
+            height: 46px;
+            width: 100%;
+            background-color: #FAFAFA;
+            border-bottom: solid 1px #EDEDED;
+            padding: 5px;
+        }
+
+        .desc .goods-info .scl {
+            height: 208px;
+            overflow-y: scroll;
+        }
+
+        .desc .goods-info .txt {
+            padding: 5px;
+        }
+
+        .desc .goods-info p {
+            margin-top: 0px;
+        }
+
+        .desc .bottom-area {
+            padding-top: 17px;
+        }
+
+        .desc .bottom-area div:first-child {
+            background-color: black;
+            float: left;
+        }
+
+        .desc .bottom-area div:nth-child(2) {
+            float: right;
+        }
+
+        .desc .bottom-area button {
+            border-radius: 20px;
+            background-color: #5542F2;
+            color: #ffffff;
+            border: none;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+        #left-arrow, #right-arrow {
+            cursor: pointer;
+        }
+
+        #left, #right {
+            width: 120px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="detail-area">
+    <div id="left"><img src="/img/main/left-arrow.png"></div>
+    <div class="contents-area">
+
+        <div class="img-area">
+            <div class="img-views">
+                <?php if(!empty($goods['img_src'])){?>
+                <?php $imgs = explode('|', $goods['img_src']); ?>
+                <?php foreach ($imgs as $idx => $img_src) { ?>
+                <?php if(empty($img_src)){continue;} ?>
+                <img class="thumb <?php echo ($idx==0) ? 'selected' : ''?>" src="<?php echo $img_src?>">
+                <?php } ?>
+                <?php } ?>
+            </div>
+            <div class="control-btn">
+                <span id="left-arrow"><img src="/img/common/left-arrow.jpg"></span>
+                <span id="right-arrow"><img src="/img/common/right-arrow.jpg"></span>
+            </div>
+        </div>
+
+        <div class="contents">
+            <div id="select-img"><img class="thumb" src="<?php echo $imgs[0]?>"></div>
+            <div class="desc">
+                <span class="goods-name pad"><?=$goods['title'] ?></span>
+                <span class="goods-desc pad"><?=$goods['subtitle'] ?></span>
+                <span class="goods-price pad">
+                    <div id="big-txt">월 <?=number_format($goods['price']) ?>원<small id="sml-txt">12개월 구독 시</small></div>
+                </span>
+                <span class="goods-info">
+                    <div class="title">상품상세정보</div>
+                    <div class="scl">
+                        <span class="txt">
+                        <b>상품 소개:</b>
+                        <p><?=$goods['detail'] ?></p>
+                        <b>원재료:</b>
+                        <p><?=$goods['material'] ?></p>
+                        <b>등록성분:</b>
+                        <p><?=$goods['ingredients'] ?></p>
+                            </span>
+                    </div>
+                </span>
+                <div class="bottom-area">
+                    <div>
+                        <img src="/img/common/sns_facebook.png">
+                        <img src="/img/common/sns_instagram.png">
+                        <img src="/img/common/sns_b.png">
+                    </div>
+                    <div>
+                        <button type="button">먼치세트 받기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="right"><img src="/img/main/right-arrow.png"></div>
+</div>
+</body>
+
+<script type="text/javascript">
+    var left = $('#left-arrow');
+    var right = $('#right-arrow');
+    var select_img = $('#select-img').find('img');
+    var img_views = $('.img-views');
+
+    $(document).ready(function () {
+        left.click(function () {
+
+            var prev = img_views.find('.thumb.selected').prev();
+            if (prev.length === 0) {
+                img_views.find('.thumb').last().click();
+            } else {
+                prev.click();
+            }
+        })
+        right.click(function () {
+            var next = img_views.find('.thumb.selected').next();
+            if (next.length === 0) {
+                img_views.find('.thumb').first().click();
+            } else {
+                next.click();
+            }
+        })
+
+        img_views.find('img').on('click', function () {
+            var elt = $(this);
+            var img_src = elt.attr('src');
+            img_views.find('img').removeClass('selected');
+            elt.addClass('selected');
+
+            select_img.attr('src', img_src);
+        });
+
+
+        $('#left img').on('click', function () {
+            parent.changeGoodsEvent('prev');
+        });
+        $('#right img').on('click', function () {
+            parent.changeGoodsEvent('next');
+        });
+    })
+
+</script>
+</html>
