@@ -28,4 +28,32 @@ class Common_code extends CI_Model
         return $this->db->query($sql, array($code_common_group_idx))->result_array();
     }
 
+    /**
+     * LIST 나 getData 같은거 가지고올때 where절 공통으로 사용하기위해 
+     * 공통으로뺌
+    */
+    private function setWhere($where = array())
+    {
+        if (isset($where['where']) && !empty($where['where'])) {
+            foreach ($where['where'] as $key => $value) {
+                $this->db->where($key, $value);
+            }
+        }
+    }
+
+    /**
+     * @param array $where
+     * code_common 테이블에서 상세하게 하나씩만 데이터 가지고올때
+     * row_array 하는것은 값 한개만 가지고올때 쓰는 active record
+     */
+    public function getCode($where = array())
+    {
+        if (!empty($where)) {
+            $this->setWhere($where);
+        }
+
+        return $this->db->get('code_common')->row_array();
+    }
+
+
 }

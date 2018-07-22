@@ -10,8 +10,9 @@
     .login_form div span:nth-child(2){float:right;font-weight:bold; color:#452b78;}
     .login_form .sns_group {position:relative; left:6px; top:10px;}
     .login_form .sns_group img{margin-right:7px;}
+    .sns_group img {cursor:pointer;}
 </style>
-<div class="login_form">
+<div class="login_form contents">
     <h2>로그인</h2>
     <div class="fix"></div>
     <div>
@@ -29,7 +30,12 @@
 
         <div class="sns_group">
             <img src="/img/member/kakao_login.png">
-            <img src="/img/member/facebook_login.png">
+            <?php /*
+                <img src="/img/member/facebook_login.png">
+            */ ?>
+            <div class="fb-login-button" data-width="160" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false"></div>
+            <div id="fb-root"></div>
+
             <img src="/img/member/naver_login.png">
         </div>
     </div>
@@ -51,3 +57,10 @@
        });
     });
 </script>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v3.0&appId=204168230298318&autoLogAppEvents=1';
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>

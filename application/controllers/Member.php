@@ -14,7 +14,6 @@ class Member extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->session->set_userdata('some_name', 'some_value');
         $this->load->model('Member_model', 'member');
     }
 
