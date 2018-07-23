@@ -1,0 +1,155 @@
+.container {
+    width: 1200px;
+    min-width: 960px;
+    margin: auto;
+    text-align: center;
+}
+
+.container hr:first-child {
+    width: 20px;
+    height: 0px;
+    border-top: 1px solid black;
+}
+
+.container .contents-wrap {
+    display: flex;
+}
+
+.container .account-lnb {
+    float: left;
+    width: 230px;
+    margin: 0px 38px 0px 0px;
+}
+
+.container .account-lnb .lnb-title {
+    background-color: #452A77;
+    color: #ffffff;
+    height: 110px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.container .account-lnb ul {
+    width: 100%;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.container .account-lnb li {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    color: #2E2E2E;
+    font-size: 15px;
+    font-weight: bold;
+    border: solid 1px #CACACA;
+}
+
+.container .account-lnb li .selected {
+    background-color: #DAD6E5;
+    color: #42297A;
+    font-weight: bold;
+}
+
+.container .account-contents {
+    width: 100%;
+    height: 100%;
+}
+
+.container .account-contents .name {
+    text-align: left;
+    color: #3D3D3D;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.container .account-contents .tbls {
+
+}
+
+.container .account-contents .account-tbl {
+    display: inline-flex;
+    margin-top: 20px;
+    background-color: #F2F2F2;
+    border-radius: 4px;
+    width: 43%;
+    padding: 26px;
+    border: 1px solid #CBCBCB;
+}
+
+.container .account-contents .account-tbl:nth-child(odd) {
+    margin-right: 20px;
+}
+
+.container .account-contents .account-tbl-dt {
+    display: block;
+    width: 100%;
+}
+
+.account-tbl .account-tbl-title {
+    display: flow-root;
+    color: #43277B;
+    width: 100%;
+}
+
+.account-tbl .account-tbl-title button {
+    background-color: #43277B;
+    color: #ffffff;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+    width: 100px;
+    height: 36px;
+    border: none;
+}
+
+.account-tbl table {
+    font-size: 15px;
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid #656565;
+    border-bottom: 2px solid #656565;
+}
+
+.account-tbl table th {
+    color: #2E2E2E;
+    height: 50px;
+    border-bottom: 1px solid #666666;
+}
+
+.account-tbl table tr {
+    height: 50px;
+    color: #909090;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.account-tbl-dt .card-info {
+    background-color: #ffffff;
+    border-radius: 4px;
+    margin: auto;
+    border: 1px solid #D6D6D6;
+    width: 363px;
+    height: 91px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.account-tbl-dt .card-info .card-num {
+    font-weight: normal;
+    color: #949494;
+    margin: 0px;
+}
+
+.profile {
+    list-style: none;
+    font-size: 15px;
+    text-align: left;
+    padding: 0px;
+    font-weight: bold;
+}
+.profile  span{
+    font-weight: normal;
+    color:#949494
+}
+
