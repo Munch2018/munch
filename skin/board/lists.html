@@ -29,7 +29,7 @@
         <form name="search_form" action="<?=base_url('/board/lists/')?>" method="get">
             <div>
                 <input type="hidden" name="board_type" value="<?=$type?>">
-                <input type="text" name="search_value" value="">
+                <input type="text" name="search_value" value="<?=$this->input->get('search_value')?>">
                 <!--<input type="image" class="search_btn" src="/img/board/qna/search_button.png">-->
                 <img src="/img/board/qna/search_button.png" alt="검색버튼"/>
             </div>
@@ -42,7 +42,6 @@
         <input type="button" class="btn<?=$type == 'member' ?' active':''?>" value="회원정보 문의" onclick="window.location.href='/board/lists/member/'">
         <input type="button" class="btn<?=$type == 'refund/change' ?' active':''?>" value="환불 및 교환 문의" onclick="window.location.href='/board/lists/refund/'">
     </div>
-
     <div class="reply">
         <span>총 <?=isset($total_count) ? $total_count : 0?>건</span>
         <table>
@@ -56,11 +55,10 @@
                             </td>
                         </tr>
                         <!--<tr class="answer">-->
-                        <tr>
+                        <tr style="display:none;">
                             <td>
-                                <img src="/img/board/board_a.png" alt="answer">
                                 <span><?=trim($value['contents'])?></span>
-                                <?php if ($this->session->userdata('member_idx') == $value['reg_idx']) : ?>
+                                <?php if (($this->session->userdata('member_idx') && $this->session->userdata('member_idx')) === $value['reg_idx']) : ?>
                                     <div>
                                         <input type="button" class="btn btn-primary update" value="수정" onclick='window.location.href="/board/modify_form/<?=$value['board_idx']?>"'>
                                         <input type="button" class="btn btn-primary delete" value="삭제" onclick='window.location.href="/board/delete/<?=$value['board_idx']?>/<?=$type?>"'>

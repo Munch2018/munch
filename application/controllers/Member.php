@@ -129,6 +129,11 @@ class Member extends CI_Controller
             'email' => $member_info ['email']
         );
 
+        if ($member_info['is_admin'] === 1) {
+            $session_data['is_admin'] = true;
+            $this->load->vars(array('IS_ADMIN', true));
+        }
+
         $this->session->set_userdata($session_data);
 
 //        redirect(SITE_DOMAIN);

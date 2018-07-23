@@ -12,9 +12,16 @@ class Board_model extends CI_Model{
     }
 
     private function setWhere($where = array()){
+
         if (isset($where['where']) && !empty($where['where'])) {
             foreach ($where['where'] as $key => $value) {
                 $this->db->where($key, $value);
+            }
+        }
+
+        if (isset($where['where_like']) && !empty($where['where_like'])) {
+            foreach ($where['where_like'] as $key => $value) {
+                $this->db->like($key, $value);
             }
         }
 
@@ -55,7 +62,6 @@ class Board_model extends CI_Model{
         $this->db->select('board_idx, board.title, board.contents, board_type, reg_idx');
 
         return $this->db->get('board')->result_array();
-
     }
 
     public function getCount($where = array()){
@@ -64,11 +70,6 @@ class Board_model extends CI_Model{
         }
 
         return $this->db->count_all_results('board');
-//        $return = $this->db->count_all_results('board');
-//        echo '<pre>';
-//        print_r($this->db->last_query());
-//        echo '</pre>';
-//        return $return;
     }
 
     public function getBoard($where = array()){
@@ -77,7 +78,6 @@ class Board_model extends CI_Model{
         }
 
         return $this->db->get('board')->row_array();
-
     }
 
     public function doReplace($data = array()){

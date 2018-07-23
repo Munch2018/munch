@@ -22,6 +22,7 @@ class Board extends CI_Controller
     public function lists($type = "")
     {
         $data = array();
+        $type = $type != "" ? $type : $this->input->get('board_type');
 
         if ($type == "refund" || $type == "order") {
             $type_check = array(
@@ -37,8 +38,18 @@ class Board extends CI_Controller
             }
         }
 
-        $data['list'] = $this->board->getLists(array('where' => array('use_fl' => 'y'), 'where_list' => array('board_type' => $data['type'], 'code_common_group_idx' => 4)));
-        $data['total_count'] = $this->board->getCount(array('where' => array('use_fl' => 'y'), 'where_list' => array('board_type' => $data['type'], 'code_common_group_idx' => 4)));
+        // 조건문
+        $where = array();
+        $where['where']['use_fl'] = 'y';
+
+        if ($this->input->get('search_value') != "") {
+            $where['where_like']['title'] = $this->input->get('search_value');
+        }
+
+        $where['where_list'] = array('board_type' => $data['type'], 'code_common_group_idx' => 4);
+
+        $data['list'] = $this->board->getLists($where);
+        $data['total_count'] = $this->board->getCount($where);
 
         $this->load->view('common/header');
         $this->load->view('board/lists', $data);
