@@ -18,8 +18,26 @@ class Review extends CI_Controller
     {
         // 회원에 해당되는 pet 정보 가져오기
         // order 기준으로 리뷰 써야되서 order 에대한 정보 가져오기
+        $this->load->model('order_model');
+        $data = array();
+
+        $order_list = $this->order_model->getOrders(array('where' => array('order.member_idx' => $this->session->userdata('member_idx')), 'group_by' => 'goods_idx'));
+
+        if (!empty($order_list)) {
+            $data['goods_list'] = array();
+
+            foreach ($order_list as $value) {
+                //goods_name && goods_idx && goods_img 가지고와서 뿌려주기
+                echo "<pre>";
+                print_r($value);
+                echo "</pre>"; exit;
+            }
+
+            echo 111;
+        }
+
         $this->load->view('common/header');
-        $this->load->view('review/index');
+        $this->load->view('review/index', $data);
         $this->load->view('common/footer');
     }
 
