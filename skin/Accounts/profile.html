@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="/css/accounts.css">
+<div class="container">
+    <div class="title">계정 및 주문관리</div>
+    <hr class="title-line">
+    <div class="contents-wrap">
+        <?php $this->load->view('common/left-menu'); ?>
+
+        <div class="account-contents">
+            <div class="name">안녕하세요. <?php echo $this->session->userdata('email')?>님,</div>
+            <form name="modify-profile" id="modify-profile" method="post" action="/accounts/modify-profile">
+                <div class="profile-tbl">
+                    <div class="tbls">
+                        <div class="input-set">
+                            <label><span class="require-start">*</span> 이름</label><br>
+                            <input tyle="text" class="input-text" name="name" placeholder="이름을 입력해주세요." required value="<?php echo $this->session->userdata('name')?>">
+                        </div>
+                        <div class="input-set-half">
+                            <div>
+                                <label><span class="require-start">*</span> 이메일</label><br>
+                                <input type="email" class="input-text" name="email" placeholder="이메일을 입력해주세요." required  value="<?php echo $this->session->userdata('email')?>">
+                            </div>
+                            <div>
+                                <label><span class="require-start">*</span> 전화번호</label><br>
+                                <input type="phone" class="input-text" name="phone" placeholder="전화번호를 입력해주세요."  value="<?php echo $this->session->userdata('name')?>"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="input-set">
+                            <label>현재 비밀번호(변경하지 않으려면 비워두세요.)</label><br>
+                            <input type="password" class="input-text" name="current-pwd" placeholder="현재 비밀번호를 입력해주세요.">
+                        </div>
+                        <div class="input-set-half">
+                            <div>
+                                <label>새 비밀번호(변경하지 않으려면 비워두세요.)</label><br>
+                                <input type="password" class="input-text" name="new-pwd" placeholder="새 비밀번호를 입력해주세요.">
+                            </div>
+                            <div>
+                                <label>새 비밀번호 확인</label><br>
+                                <input type="password" class="input-text" name="confirm-new-pwd"
+                                       placeholder="새 비밀번호를 입력해주세요.">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="save-profile">
+                    <button type="submit" class="btn">저장하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -126,7 +126,9 @@ class Member extends CI_Controller
 
         $session_data = array(
             'member_idx' => $member_info['member_idx'],
-            'email' => $member_info ['email']
+            'email' => $member_info ['email'],
+            'name' => $member_info['name'],
+            'telphone' => $member_info['telphone']
         );
 
         if ($member_info['is_admin'] === 1) {

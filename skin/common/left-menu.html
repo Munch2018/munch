@@ -1,10 +1,10 @@
 <div class="account-lnb">
     <ul>
         <li class="lnb-title">계정 및<br>주문관리</li>
-        <li class="selected">대쉬보드</li>
-        <li>주문내역</li>
-        <li>구독상태</li>
-        <li>카드정보</li>
-        <li>프로필</li>
+        <li class="<?php echo ($action=='dashboard') ? 'selected' : ''?>"><a href="/accounts/dashboard">대쉬보드</a></li>
+        <li class="<?php echo ($action=='orders') ? 'selected' : ''?>"><a href="/accounts/orders">주문내역</a></li>
+        <li class="<?php echo ($action=='subscribe') ? 'selected' : ''?>"><a href="/accounts/subscribe">구독상태</a></li>
+        <li class="<?php echo ($action=='card') ? 'selected' : ''?>"><a href="/accounts/card">카드정보</a></li>
+        <li class="<?php echo ($action=='profile') ? 'selected' : ''?>"><a href="/accounts/profile">프로필</a></li>
     </ul>
 </div>
