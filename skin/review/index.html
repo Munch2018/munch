@@ -21,5 +21,13 @@
     <div class="" style="margin-top:67px; border:1px solid red">
         <div style="width:220px; height:185px;"></div>
         <!-- 간식들 폼 -->
+        <?php if (isset($goods_list) && sizeof($goods_list) > 0) : ?>
+            <ul>
+                <?php foreach ($goods_list as $value) : ?>
+                <?php endforeach; ?>
+            </ul>
+        <?php else : ?>
+            <p>구매 작성할 상품이 없습니다.</p>
+        <?php endif; ?>
     </div>
 </div>

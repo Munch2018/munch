@@ -21,19 +21,19 @@ class Review extends CI_Controller
         $this->load->model('order_model');
         $data = array();
 
-        $order_list = $this->order_model->getOrders(array('where' => array('order.member_idx' => $this->session->userdata('member_idx')), 'group_by' => 'goods_idx'));
+        $order_list = $this->order_model->getOrders(array('where' => array('order.member_idx' => $this->session->userdata('member_idx'), 'goods.use_fl' => 'y'), 'group_by' => 'order_detail.goods_idx'));
 
         if (!empty($order_list)) {
             $data['goods_list'] = array();
 
-            foreach ($order_list as $value) {
+            foreach ($order_list as $key => $value) {
                 //goods_name && goods_idx && goods_img 가지고와서 뿌려주기
-                echo "<pre>";
-                print_r($value);
-                echo "</pre>"; exit;
+                $data['goods_list'][$value['pet_type']][$key]['goods_idx'] = $value['goods_idx'];
+                $data['goods_list'][$value['pet_type']][$key]['goods_name'] = $value['goods_name'];
+                $data['goods_list'][$value['pet_type']][$key]['goods_title'] = $value['title'];
+                $data['goods_list'][$value['pet_type']][$key]['sell_price'] = $value['sell_price'];
             }
 
-            echo 111;
         }
 
         $this->load->view('common/header');
@@ -46,7 +46,16 @@ class Review extends CI_Controller
      */
     public function register()
     {
+        /**
+         * member_idx / goods_idx / score / like / dislike
+         */
 
+        if ($this->session->userdata('member_idx') != "") {
+            $this->member_idx = 4;
+
+        } else {
+            alert("로그인을 이용해야 사용할 수 있습니다.");
+        }
     }
 
     /**

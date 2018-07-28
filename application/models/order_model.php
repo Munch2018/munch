@@ -33,14 +33,18 @@ class Order_model extends CI_Model{
         if (!empty($where)) {
             $this->setWhere($where);
         }
-
+        /*
+        goods_name,
+        title, sell_price, pet_type,
+        */
         $this->db->join('order_detail', 'order.order_idx = order_detail.order_idx', 'left');
-//        return $this->db->get('order')->result_array();
-        $return = $this->db->get('order')->result_array();
-        echo "<pre>";
-        print_r($this->db->last_query());
-        echo "</pre>";
-        return $return;
+        $this->db->join('goods', 'goods.goods_idx = order_detail.goods_idx', 'left');
+        return $this->db->get('order')->result_array();
+//        $return = $this->db->get('order')->result_array();
+//        echo "<pre>";
+//        print_r($this->db->last_query());
+//        echo "</pre>";
+//        return $return;
 
     }
 
