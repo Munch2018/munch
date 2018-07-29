@@ -39,6 +39,7 @@ class Order_model extends CI_Model{
         */
         $this->db->join('order_detail', 'order.order_idx = order_detail.order_idx', 'left');
         $this->db->join('goods', 'goods.goods_idx = order_detail.goods_idx', 'left');
+        $this->db->join('goods_img', 'goods.goods_idx = goods_img.goods_idx');
         return $this->db->get('order')->result_array();
 //        $return = $this->db->get('order')->result_array();
 //        echo "<pre>";

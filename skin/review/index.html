@@ -2,7 +2,22 @@
     .fix {display:block !important; margin:auto !important;}
     .pets_info {position:relative; margin-top:50px; text-align:center; display: inline-block;}
     .pets_info div {float:left; width:220px; height:185px; border:2px solid #e2e2e2; border-radius:8px; margin-right:20px;}
+    div.goods_list ul li {list-style:none; width:227px; height:293px; border:2px solid #e2e2e2; border-radius:10px;}
+    div.goods_list ul li span {height:45px;}
+
+    div.goods_list ul li img.goods_img{height:175px; width:224px; cursor:pointer;}
+    div.goods_list ul li span {height: 45px; display: block; text-align: center; border-bottom: 1px solid #ccc;}
+    div.goods_list ul li div .star img {height:17px;}
+    div.goods_list ul li div .like {display:inline-block; margin-left:12px; margin-right:20px;}
+    div.goods_list ul li div .comment {display:inline-block}
+    .modal.fade .modal-content .modal-header {background:#452b78;color: white; font-weight: bold;}
+    .modal.fade .modal-content .modal-header button.close{color:white;}
+    .modal.fade .modal-content .modal-footer button {background:#452b78; color:white; border:none;}
 </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <div class="contents">
     <h2 class="title">간식 평가하기</h2>
     <div class="fix"></div>
@@ -18,16 +33,73 @@
         <img src="/img/review/add_btn.png" alt="펫 추가">
     </div>
     <div class="fixable" style="margin-top:70px border:1px solid black; width:150px;"></div>
-    <div class="" style="margin-top:67px; border:1px solid red">
-        <div style="width:220px; height:185px;"></div>
+    <div class="goods_list" style="margin-top:67px;">
+        <div style="margin-top:70px; margin-bottom:30px; text-align:center; color:#452b78; font-size:26px;">
+            <?=$type?>가 여태까지 먹은 간식들
+        </div>
         <!-- 간식들 폼 -->
-        <?php if (isset($goods_list) && sizeof($goods_list) > 0) : ?>
+        <?php if (isset($goods_list[$type]) && sizeof($goods_list[$type]) > 0) : ?>
             <ul>
-                <?php foreach ($goods_list as $value) : ?>
+                <?php foreach ($goods_list[$type] as $value) : ?>
+                    <li>
+                        <img class="goods_img" src="<?=$value['goods_img']?>"  data-toggle="modal" data-target="#exampleModalLong">
+                        <span style="height:45px;"><?=$value['goods_name']?></span>
+                        <div style="height:74px !important;">
+                            <div class="star">
+                                <img src="/img/common/bg_star.png" alt="별점" />
+                            </div>
+                            <div class="like">
+                                <img src="/img/review/like.png" alt="또 받고싶어요!">
+                            </div>
+                            <div class="comment">
+                                <img src="/img/review/comment.png" alt="코멘트쓰기">
+                            </div>
+                        </div>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         <?php else : ?>
             <p>구매 작성할 상품이 없습니다.</p>
         <?php endif; ?>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">코멘트 쓰기</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="review_form">
+                        <div>
+                            <img src="" alt="이미지" style="width:135px; height:125px; margin-right:15px;">
+                            <div style="width:220px;">
+                                <p>
+                                    <img src="/img/common/bg_star.png" alt="별점" style="height:17px;"/>
+                                </p>
+                                <span>알록달록 간식에 대한 생각을 자유롭게 표현해 주세요.</span>
+                                <textarea class="form-control">
+
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".goods_list ul li img").click(function(){
+
+        });
+    });
+</script>
