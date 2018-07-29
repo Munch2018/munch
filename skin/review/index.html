@@ -10,9 +10,42 @@
     div.goods_list ul li div .star img {height:17px;}
     div.goods_list ul li div .like {display:inline-block; margin-left:12px; margin-right:20px;}
     div.goods_list ul li div .comment {display:inline-block}
+
     .modal.fade .modal-content .modal-header {background:#452b78;color: white; font-weight: bold;}
     .modal.fade .modal-content .modal-header button.close{color:white;}
     .modal.fade .modal-content .modal-footer button {background:#452b78; color:white; border:none;}
+    .modal div.goods_list .goods_img { width: 135px !important; height: 125px !important; margin-right: 15px !important; float: left !important; margin-top: 11px !important; }
+    .modal div.goods_list .review_form .review_explain {width: 220px !important; float: left !important; margin-left: 17px !important;}
+    .modal div.goods_list .review_form .review_explain span.explain{ display: block !important; font-size: 14px !important; }
+    .star_rating {display:block;}
+    .rating {
+        overflow: hidden;
+        display: inline-block;
+    }
+
+    .rating-input {
+        float: right;
+        width: 16px;
+        height: 16px;
+        padding: 0;
+        margin: 0 0 0 -16px;
+        opacity: 0;
+    }
+    .rating:hover .rating-star:hover,
+    .rating:hover .rating-star:hover ~ .rating-star,
+    .rating-input:checked ~ .rating-star {
+        background-position: 0 0;
+    }
+
+    .rating-star,
+    .rating:hover .rating-star {
+        position: relative;
+        float: right;
+        display: block;
+        width: 16px;
+        height: 16px;
+        background: url('/img/common/star.png') 0 -16px;
+    }
 </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
@@ -42,7 +75,7 @@
             <ul>
                 <?php foreach ($goods_list[$type] as $value) : ?>
                     <li>
-                        <img class="goods_img" src="<?=$value['goods_img']?>"  data-toggle="modal" data-target="#exampleModalLong">
+                        <img class="goods_img" src="<?=$value['goods_img']?>" >
                         <span style="height:45px;"><?=$value['goods_name']?></span>
                         <div style="height:74px !important;">
                             <div class="star">
@@ -52,7 +85,7 @@
                                 <img src="/img/review/like.png" alt="또 받고싶어요!">
                             </div>
                             <div class="comment">
-                                <img src="/img/review/comment.png" alt="코멘트쓰기">
+                                <img src="/img/review/comment.png" alt="코멘트쓰기" data-toggle="modal" data-target="#exampleModalLong" data-goods_idx="<?=$value['goods_idx']?>">
                             </div>
                         </div>
                     </li>
@@ -64,42 +97,64 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">코멘트 쓰기</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="review_form">
-                        <div>
-                            <img src="" alt="이미지" style="width:135px; height:125px; margin-right:15px;">
-                            <div style="width:220px;">
-                                <p>
-                                    <img src="/img/common/bg_star.png" alt="별점" style="height:17px;"/>
-                                </p>
-                                <span>알록달록 간식에 대한 생각을 자유롭게 표현해 주세요.</span>
-                                <textarea class="form-control">
-
-                                </textarea>
+    <form action="/review/register/" method="post" name="review_form">
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <input type="hidden" name="goods_idx" value="">
+            <input type="hidden" name="order_idx" value="">
+            <input type="hidden" name="score_level" value="">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">코멘트 쓰기</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="review_form">
+                            <div>
+                                <img src="" class="goods_img" alt="이미지" style="width:135px; height:125px; margin-right:15px;">
+                                <div class="review_explain">
+                                    <span class="star_rating">
+                                        <span class="rating">
+                                            <input type="radio" class="rating-input"
+                                                   id="rating-input-1-5" name="rating-input-1">
+                                            <label for="rating-input-1-5" class="rating-star" value="5"></label>
+                                            <input type="radio" class="rating-input"
+                                                   id="rating-input-1-4" name="rating-input-1" value="4">
+                                            <label for="rating-input-1-4" class="rating-star"></label>
+                                            <input type="radio" class="rating-input"
+                                                   id="rating-input-1-3" name="rating-input-1" value="3">
+                                            <label for="rating-input-1-3" class="rating-star"></label>
+                                            <input type="radio" class="rating-input"
+                                                   id="rating-input-1-2" name="rating-input-1" value="2">
+                                            <label for="rating-input-1-2" class="rating-star"></label>
+                                            <input type="radio" class="rating-input"
+                                                   id="rating-input-1-1" name="rating-input-1" value="1">
+                                            <label for="rating-input-1-1" class="rating-star"></label>
+                                        </span>
+                                    </span>
+                                    <span class="explain">알록달록 간식에 대한 생각을 자유롭게 표현해 주세요.</span>
+                                    <textarea class="form-control" name="comment"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">확인</button>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">확인</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 <script type="text/javascript">
     $(document).ready(function(){
-        $(".goods_list ul li img").click(function(){
-
+        $(".goods_list ul li .comment img").click(function(){
+//            var src = $(this).find("img").attr("src");
+            var src = $(this).parents().find("img.goods_img").attr("src");
+            $(".modal-content .review_form img.goods_img").attr("src", src);
+            $("form[name=review_form] input[name=goods_idx]").val($(this).data("goods_idx"));
         });
     });
 </script>

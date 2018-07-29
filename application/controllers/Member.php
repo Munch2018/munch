@@ -48,13 +48,7 @@ class Member extends CI_Controller
     {
         $this->load->model('Member_model', 'member');
 //        // email && password 체크
-//        if (trim($this->input->get_post('email', true)) != "") {
-//            $join_data['email'] = $this->input->get_post('email', true);
-//        }
-//
-//        if (trim($this->input->get_post('password')) != "") {
-//            $join_data['password'] = md5(trim($this->input->get_post('password', true)));
-//        }
+
         $validation_data = array(
             'email', 'password', 'name'
         );
@@ -173,6 +167,16 @@ class Member extends CI_Controller
 
             alert("잘못된 접근입니다.", "/");
         }
+    }
+
+    public function sns_login()
+    {
+        // appId : 438891256593073
+        // secret code : ef6b8a68f92cdc32ba00ca3b0f8dd7c8
+
+        echo "<pre>";
+        print_r($_REQUEST);
+        echo "</pre>";
     }
 
 }
