@@ -6,12 +6,15 @@
  * Time: 오전 12:23
  */
 
-class Order_model extends CI_Model{
-    public function __construct(){
+class Order_model extends CI_Model
+{
+    public function __construct()
+    {
         parent::__construct();
     }
 
-    private function setWhere($where = array()){
+    private function setWhere($where = array())
+    {
         if (isset($where['where']) && !empty($where['where'])) {
             foreach ($where['where'] as $key => $value) {
                 $this->db->where($key, $value);
@@ -29,7 +32,8 @@ class Order_model extends CI_Model{
      * 단품 주문건에 대해서 가져오기
      * join order_detail
      */
-    public function getOrders($where = array()){
+    public function getOrders($where = array())
+    {
         if (!empty($where)) {
             $this->setWhere($where);
         }
@@ -50,6 +54,26 @@ class Order_model extends CI_Model{
     }
 
 
+    public function orders_count($member_idx)
+    {
+        $this->setWhere(['where'=>['member_idx' => $member_idx]]);
+        return $this->db->count_all("order");
+    }
 
+    public function fetch_orders($member_idx, $limit, $start)
+    {
+        $this->db->limit($limit, $start);
+        $this->setWhere(['where'=>['member_idx' => $member_idx]]);
+        $query = $this->db->get('order');
+
+        if ($query->num_rows() > 0) {
+            $data = [];
+            foreach ($query->result() as $row) {
+                $data[] = $row;
+            }
+            return $data;
+        }
+        return false;
+    }
 
 }

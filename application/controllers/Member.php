@@ -144,7 +144,7 @@ class Member extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('member_idx');
 
-        alert("로그아웃 하였습니다.");
+        alert("로그아웃 하였습니다.",'/');
     }
 
 
@@ -177,6 +177,60 @@ class Member extends CI_Controller
         echo "<pre>";
         print_r($_REQUEST);
         echo "</pre>";
+    }
+
+    public function modifyProfile()
+    {
+        $pwd = $this->input->post('new-pwd');
+        $name = $this->input->post('name');
+        $telphone = $this->input->post('telphone');
+
+        $member_info = $this->member->getMember([
+            'where' =>
+                ['email' => $this->session->userdata('email'), 'use_fl' => 'Y']
+        ]);
+
+        $modifyData = [];
+        $modifySessionData = [];
+
+        if (!empty($pwd) && $member_info['password'] !== md5(trim($pwd))) {
+            $modifyData['password'] = md5(trim($pwd));
+        }
+        if (!empty($name) && $member_info['name'] !== $name) {
+            $modifyData['name'] = $name;
+            $modifySessionData['name'] = $name;
+        }
+        if (!empty($telphone) && $member_info['telphone'] !== $telphone) {
+            $modifyData['telphone'] = str_replace('-', '', trim($telphone));
+            $modifySessionData['telphone'] = $modifyData['telphone'];
+        }
+
+        if (!empty($modifyData)) {
+            $modifyData['edit_dt'] = date("Y-m-d H:i:s");
+            $modifyData['edit_idx'] = $this->session->userdata('mem_idx');
+
+            $changed = $this->member->doUpdate([
+                'where' => [
+                    'member_idx' => $this->session->userdata('member_idx'),
+                    'email' => $this->session->userdata('email')
+                ]
+            ], $modifyData);
+
+            if (!empty($changed)) {
+                if (!empty($modifySessionData)) {
+                    $this->session->set_userdata($modifySessionData);
+                }
+
+                alert('프로필이 정상적으로 저장되었습니다.');
+            } else {
+                alert('프로필 변경에 실패하였습니다. 잠시 후 재시도해주세요.');
+            }
+
+        } else {
+            alert('변경된 내용이 없습니다.');
+        }
+
+        redirect('/accounts/profile');
     }
 
 }

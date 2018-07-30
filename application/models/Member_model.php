@@ -67,8 +67,11 @@ class Member_model extends CI_Model{
 
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
+            return false;
         } else {
             $this->db->trans_complete();
         }
+
+        return true;
     }
 }

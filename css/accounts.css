@@ -14,6 +14,7 @@
 
 .container .contents-wrap {
     display: flex;
+    padding-top: 30px;
 }
 
 .container .account-lnb {
@@ -94,7 +95,7 @@
     width: 100%;
 }
 
-.account-tbl .account-tbl-title {
+.account-tbl .account-tbl-title, .card-tbl .account-tbl-title {
     display: flow-root;
     color: #43277B;
     width: 100%;
@@ -111,7 +112,7 @@
     border: none;
 }
 
-.account-tbl table {
+.account-tbl table, .orders-tbl table {
     font-size: 15px;
     width: 100%;
     border-collapse: collapse;
@@ -119,13 +120,13 @@
     border-bottom: 2px solid #656565;
 }
 
-.account-tbl table th {
+.account-tbl table th, .orders-tbl table th {
     color: #2E2E2E;
     height: 50px;
     border-bottom: 1px solid #666666;
 }
 
-.account-tbl table tr {
+.account-tbl table tr .orders-tbl table tr {
     height: 50px;
     color: #909090;
     border-bottom: 1px solid #CCCCCC;
@@ -161,7 +162,7 @@
     color: #949494
 }
 
-.profile-tbl label {
+.profile-tbl label, .card-tbl label {
     font-size: 15px;
     font-weight: bold;
 }
@@ -179,45 +180,98 @@
     color: #F50504;
 }
 
-.profile-tbl .input-set, .profile-tbl .input-set-half {
+.input-set, .input-set-half {
     padding-bottom: 40px;
     text-align: left;
     width: 100%;
 }
 
-.profile-tbl .input-set {
+.input-set {
 
 }
 
-.profile-tbl .input-set-half {
+.check-text {
+    color: #656565;
+    font-size: 12px;
+}
+
+.input-set-half {
+    text-align: left;
     display: flow-root;
 }
 
-.profile-tbl .input-set-half div {
+.input-set-half div {
     width: 50%;
 }
 
-.profile-tbl .input-set-half div:first-child {
+.input-set-half div:first-child {
     width: 49%;
     float: left;
 }
 
-.profile-tbl .input-set-half div:nth-child(2) {
+.input-set-half div:nth-child(2) {
     width: 49%;
     float: right;
 }
 
-.profile-tbl .input-set-half .input-text {
+.input-set-half .input-text.mid-short {
+    width: 250px;
+}
+
+.input-set-half .input-text.short {
+    width: 110px;
+}
+
+.input-set-half .input-text {
     width: 100%;
 }
 
-.save-profile {
+.save-profile, .save-card {
     float: right;
     margin-top: 20px;
 }
 
-.save-profile button {
+.save-profile button, .save-card button {
     color: #ffffff;
     background-color: #462B78;
     font-size: 14px;
+}
+
+.card-tbl {
+    width: 100%;
+    height: 600px;
+    background-color: #F2F2F2;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    padding: 40px 40px 0 40px;
+    box-sizing: border-box;
+}
+.order-tbl{
+    width: 100%;
+    height: 600px;
+    background-color: #F2F2F2;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    padding: 40px 40px 0 40px;
+    box-sizing: border-box;
+}
+.register-desc {
+    text-align: left;
+    font-size: 12px;
+    border-bottom: 1px solid;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.using-card {
+    background-color: #ffffff;
+    border-radius: 3px;
+    border: 1px solid #D8D8D8;
+    width: 100%;
+    height: 90px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
 }

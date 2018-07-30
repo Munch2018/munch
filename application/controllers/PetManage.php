@@ -10,6 +10,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class PetManage extends CI_Controller
 {
+    const REGISTER_MAX_CNT = 5;
+
     public function __construct()
     {
         parent::__construct();
@@ -21,9 +23,9 @@ class PetManage extends CI_Controller
 
     public function checkLogin()
     {
-//        if (empty($this->session->member_idx)) {
-//            redirect('/member');
-//        }
+        if (empty($this->session->userdata('member_idx'))) {
+            alert('로그인이 필요한 서비스입니다.', '/member');
+        }
 
         return true;
     }
@@ -40,28 +42,59 @@ class PetManage extends CI_Controller
         $this->load->view('common/footer');
     }
 
+    /**
+     * 파일 유무
+     * @param $file
+     * @return bool
+     */
+    private function isFile($file)
+    {
+        if ($file['pet-img']['error'] == 4) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function canPetRegister()
+    {
+        $this->load->model('Pet_manage', 'petmanage');
+        $member_idx = $this->session->userdata('member_idx');
+
+        $pets = $this->petmanage->getPets($member_idx);
+
+        return (count($pets) < self::REGISTER_MAX_CNT);
+    }
+
     public function register()
     {
+        if (!$this->canPetRegister()) {
+            alert('우리아이 정보등록은 최대 5개까지 등록이 가능합니다.', '/petManage');
+        }
+
         $params = $this->input->post();
 
         try {
-            list($code, $img_src) = $this->upload($_FILES);
+            $params['img_src'] = '';
+            $code = true;
 
-            if (!empty($code)  && !empty($img_src)) {
-                $this->load->model('Pet_manage', 'petManage');
-
-                $params['img_src'] = $img_src;
-                if ($this->petManage->insert($params)) {
-                    alert('우리아이 등록이 완료되었습니다.');
-                    redirect('/petManage');
-                } else {
-                    alert('우리아이 등록이 실패되었습니다.');
-                    redirect('/petManage');
-                }
+            if ($this->isFile($_FILES)) {
+                $result = $this->upload($_FILES);
+                $code = $result['code'];
+                $params['img_src'] = $result['img_src'];
             }
 
-        } catch (Exception $e) {
+            if (!empty($code)) {
+                $this->load->model('Pet_manage', 'petManage');
 
+                if ($this->petManage->insert($this->validate($params))) {
+                    alert('우리아이 등록이 완료되었습니다.', '/petManage');
+                } else {
+                    alert('우리아이 등록이 실패되었습니다.', '/petManage');
+                }
+            }
+        } catch (Exception $e) {
+            alert('우리아이 등록이 실패되었습니다.', '/petManage');
         }
     }
 
@@ -78,10 +111,9 @@ class PetManage extends CI_Controller
         $uploads_dir = 'C:\workspace\munch\img\pet-img';
         $allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
         $error = $file['pet-img']['error'];
-        $extArr = explode('/', $_FILES['pet-img']['type']);
+        $extArr = explode('.', $_FILES['pet-img']['name']);
         $ext = $extArr[count($extArr) - 1];
-        $name = date('YmdHis') . $this->session->member_idx . '.' . $ext;
-
+        $name = date('YmdHis') . '_' . $this->session->userdata('member_idx') . '.' . $ext;
 
         if ($error != UPLOAD_ERR_OK) {
             switch ($error) {
@@ -96,22 +128,26 @@ class PetManage extends CI_Controller
                     alert("파일이 제대로 업로드되지 않았습니다. ($error)");
                     break;
             }
-            return ['code' => false];
+            return ['code' => false, 'img_src' => ''];
         }
 
         // 확장자 확인
         if (!in_array($ext, $allowed_ext)) {
             alert("허용되지 않는 확장자입니다.");
-            return ['code' => false];
+            return ['code' => false, 'img_src' => ''];
         }
 
         // 파일 이동
-        if (move_uploaded_file($_FILES['pet-img']['tmp_name'], "$uploads_dir/$name")) {
+        if (!move_uploaded_file($_FILES['pet-img']['tmp_name'], "$uploads_dir/$name")) {
             return [
-                'code' => true,
-                'img_src' => $uploads_dir . '/' . $name
+                'code' => false,
+                'img_src' => ''
             ];
         }
+        return [
+            'code' => true,
+            'img_src' => $uploads_dir . '/' . $name
+        ];
     }
 
     private function validate($params)
@@ -126,18 +162,16 @@ class PetManage extends CI_Controller
         $insertData = [
             'birth' => implode('-', [$params['birth_year'], $params['birth_month'], $params['birth_day']]),
             'use_fl' => 'y',
-            'member_idx' => $this->session->member_idx,
-            'reg_idx' => $this->session->member_idx,
             'name' => $params['pet_name'],
             'pet_type' => $params['pet_type'],
             'pet_kind' => $params['kind'],
             'character_type' => $params['character'],
             'detail1' => !empty($params['special'][0]) ? $params['special'][0] : '',
             'detail2' => !empty($params['special'][1]) ? $params['special'][1] : '',
-            'detail3' => !empty($params['special'][2]) ? $params['special'][2] : ''
+            'detail3' => !empty($params['special'][2]) ? $params['special'][2] : '',
+            'img_src' => $params['img_src']
         ];
 
         return $insertData;
     }
-
 }

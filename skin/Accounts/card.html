@@ -1,100 +1,86 @@
 <link rel="stylesheet" href="/css/accounts.css">
 <div class="container">
-    <div class="title">우리아이 정보등록</div>
-    <hr>
+    <div class="title">계정 및 주문관리</div>
+    <hr class="title-line">
     <div class="contents-wrap">
         <?php $this->load->view('common/left-menu'); ?>
 
         <div class="account-contents">
-            <div class="name">안녕하세요. <?php echo $this->session->userdata('email')?>님,</div>
-            <div class="tbls">
-                <!--주문내역 start-->
-                <div class="account-tbl">
-                    <div class="account-tbl-dt">
-                        <div class="account-tbl-title">
-                            <span style="float: left;"><b>·주문 내역</b></span>
-                            <button type="button" style="float: right;">자세히 보기</button>
-                        </div>
-                        <br>
-                        <table>
-                            <th>주문</th>
-                            <th>날짜</th>
-                            <th>상태</th>
-                            <tr>
-                                <td>dkffhrekf</td>
-                                <td>2018/45/01</td>
-                                <td>결제완료</td>
-                            </tr>
-                            <tr>
-                                <td>dkffhrekf</td>
-                                <td>2018/45/01</td>
-                                <td>결제완료</td>
-                            </tr>
-                        </table>
+            <div class="card-tbl">
+                <div class="account-tbl-title">
+                    <span style="float: left;"><b>·결제 카드 관리</b></span>
+                </div>
+                <div class="register-desc">
+                    <ul>
+                        <li>카드 등록은 1개만 가능합니다.</li>
+                        <li>고객님께서 직접 변경하신 카드 정보는 안전하게 관리되며,<br>
+                            결제 실패로 변경하신 경우에는 일정 시간 후에, 돌아오는 갱신일 전에 변경하신 경우에는 갱신 예정일에
+                            고객님이 입력한 카드로 결제가 진행됩니다.
+                        </li>
+                    </ul>
+                </div>
+                <?php if(empty($this->cardInfo)){ ?>
+                <div class="input-set">
+                    <label>카드종류</label><br>
+                    <input type="checkbox" value="person" name="ownership_type" checked><span
+                        class="check-text">개인카드</span>
+                    <input type="checkbox" value="company" name="ownership_type"><span class="check-text">기업카드</span>
+                </div>
+                <div class="input-set-half">
+                    <div style="width: 60%;">
+                        <label>카드번호</label><br>
+                        <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
+                        <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
+                        <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
+                        <input type="text" class="input-text short" name="card_num[]" maxlength="4">
+                    </div>
+                    <div style="width: 40%;">
+                        <label>유효기간</label><br>
+                        <select class="select" name="validity_month">
+                            <?php for($month=1;$month<=12;$month++){echo '<option>'.$month.'</option>';} ?>
+                        </select>
+                        /
+                        <select class="select" name="validity_year">
+                            <?php $year = date('Y');
+                         for($y = $year;$y<=$year+5;$y++){echo '<option>'.$y.'</option>';}?>
+                        </select>
                     </div>
                 </div>
-                <!--주문내역 end-->
 
-                <!--구독상태 start-->
-                <div class="account-tbl">
-                    <div class="account-tbl-dt">
-                        <div class="account-tbl-title">
-                            <span style="float: left;"><b>·구독 상태</b></span>
-                            <button type="button" style="float: right;">자세히 보기</button>
-                        </div>
-                        <br>
-                        <table>
-                            <th>주문</th>
-                            <th>날짜</th>
-                            <th>상태</th>
-                            <tr>
-                                <td>dkffhrekf</td>
-                                <td>2018/45/01</td>
-                                <td>결제완료</td>
-                            </tr>
-                            <tr>
-                                <td>dkffhrekf</td>
-                                <td>2018/45/01</td>
-                                <td>결제완료</td>
-                            </tr>
-                        </table>
+                <div class="input-set-half">
+                    <div style="width:30%;">
+                        <label>카드소유자명</label><br>
+                        <input type="text" value="" maxlength="50" class="input-text mid-short" name="owner_name">
+                    </div>
+                    <div style="width:70%;">
+                        <label>법정 생년월일 (주민번호 앞 6자리)</label><br>
+                        <input type="text" value="" maxlength="6" class="input-text mid-short" name="birthday">
                     </div>
                 </div>
-                <!--구독상태 end-->
-
-                <!--카드 정보 start-->
-                <div class="account-tbl">
-                    <div class="account-tbl-dt">
-                        <div class="account-tbl-title">
-                            <span style="float: left;"><b>·카드 정보</b></span>
-                            <button type="button" style="float: right;">자세히 보기</button>
-                        </div>
-                        <br>
-                        <div class="card-info">
-                            사용중인 카드 정보
-                            <p class="card-num">신한카드 (5101-****-****-0056)</p>
-                        </div>
-                    </div>
+                <?php } else {?>
+                <div class="using-card">
+                    <b>사용중인 카드 정보</b>
+                    <br>
+                    신한카드 (5107-****-****-0056)
                 </div>
-                <!--카드 정보 end-->
-
-                <!--프로필 start-->
-                <div class="account-tbl">
-                    <div class="account-tbl-dt">
-                        <div class="account-tbl-title">
-                            <span style="float: left;"><b>·프로필</b></span>
-                            <button type="button" style="float: right;">자세히 보기</button>
-                        </div>
-                        <br>
-                        <ul class="profile">
-                            <li>이 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 름 : <span><?php echo $this->session->userdata('name')?></span></li>
-                            <li>이 &nbsp;메 &nbsp;일 : <span><?php echo $this->session->userdata('email')?></span></li>
-                            <li>전화번호 : <span><?php echo $this->session->userdata('phone')?></span></li>
-                        </ul>
-                    </div>
-                </div>
-                <!--프로필 end-->
+                <?php } ?>
+            </div>
+            <div class="save-card">
+                <?php if(empty($this->cardInfo)){ ?>
+                <button type="submit" id="submit_btn" class="btn">등록하기</button>
+                <?php } else { ?>
+                <button type="submit" id="chg_btn" class="btn">카드변경</button>
+                <button type="submit" id="del_btn" class="btn">카드삭제</button>
+                <?php }?>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+    });
+</script>

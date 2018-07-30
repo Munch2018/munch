@@ -80,23 +80,25 @@ hr {
     width: 475px;
     height: 220px;
     margin: 15px 100px 10px 10px;
+    text-align: left;
 }
 
 .registration-form .input-set {
     display: inline-flex;
-    width: 500px;
+    width: 100%;
     margin: 3px;
 }
 
 .registration-form .input-set label {
     font-weight: bold;
     margin: 10px;
+    width: 50px;
 }
 
 .registration-form .input-set span {
     margin: 5px;
-
 }
+
 
 .registration-form .input-set button.selected {
     background-color: #EA4241;
@@ -112,6 +114,9 @@ hr {
     color: #828282;
 }
 
+.registration-form .birth {
+    width: 30%;
+}
 .box {
     margin: 0px 95px 0px 95px;
     float: left;
@@ -203,4 +208,15 @@ hr {
     -moz-appearance: none;
     appearance: none;
     margin: 1px;
+}
+
+#pet-img {
+    opacity: 0;
+    display: block;
+    z-index: 1000;
+    position: absolute;
+    height: 60px;
+}
+.upload-button{
+
 }

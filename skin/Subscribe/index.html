@@ -4,57 +4,64 @@
     <hr>
     <div class="tab-menu">
         <ul>
-            <li data-contents="select-pet">아이 선택</li>
-            <li class="selected" data-contents="set-period">기간 설정</li>
+            <li data-contents="select-pet" class="selected">아이 선택</li>
+            <li data-contents="set-period">기간 설정</li>
             <li data-contents="pay-info">결제 정보</li>
         </ul>
     </div>
-    <div class="tab-contents select-pet" style="display: none;">
+    <div class="tab-contents select-pet" style="display: block;">
+        <?php if(!empty($pets)){?>
+        <?php foreach($pets as $idx => $pet){?>
         <div class="box">
-            <div class="box-img"><img src="/img/pet-img/pet-picture1.jpg"></div>
-            <div class="box-name">뚜리</div>
+            <div class="box-img">
+                <?php if($pet['img_src']){ ?>
+                <img src="<?php echo $pet['img_src']?>">
+                <?php } elseif($pet['pet_type']=='cat') {?>
+                <img src="/img/pet-img/pet-picture1.jpg">
+                <?php } else {?>
+                <img src="/img/pet-img/pet-picture2.jpg">
+                <?php }?>
+                <div class="box-name"><?php echo $pet['name']?></div>
+            </div>
         </div>
-        <div class="box">
-            <div class="box-img"><img src="/img/pet-img/pet-picture2.jpg"></div>
-            <div class="box-name">예티</div>
+        <?php }?>
+        <?php }?>
+
+        <div class="tab-contents set-period" style="display: none;">
+            <div class="box">
+                <div class="box-img"><img class="default" src="/img/subscribe/box1.png"></div>
+                <div class="box-name">1개월 구독 : 24,900원</div>
+            </div>
+            <div class="box">
+                <div class="box-img"><img class="default" src="/img/subscribe/box2.png"></div>
+                <div class="box-name">3개월 구독 : 22,500원</div>
+            </div>
+            <div class="box">
+                <div class="box-img"><img class="default" src="/img/subscribe/box3.png"></div>
+                <div class="box-name">6개월 구독 : 20,000원</div>
+            </div>
+            <div class="box">
+                <div class="box-img"><img class="default" src="/img/subscribe/box4.png"></div>
+                <div class="box-name">12개월 구독 : 15,000원</div>
+            </div>
+        </div>
+        <div class="tab-contents pay-info" style="display: none;">
+
+        </div>
+        <div class="what-munch">
+            <ul>
+                <li>먼치세트가 뭔가요?
+                <li>굳이 매달 구독을 해야하나요?</li>
+            </ul>
+        </div>
+        <div style="display: flex;">
+            <div class="btn-prev">
+                <input type="button" value="이전 단계로">
+            </div>
+            <div class="btn-next">
+                <input type="button" value="다음 단계로">
+            </div>
         </div>
     </div>
 
-    <div class="tab-contents set-period" style="display: block;">
-        <div class="box">
-            <div class="box-img"><img class="default" src="/img/subscribe/box1.png"></div>
-            <div class="box-name">1개월 구독 : 24,900원</div>
-        </div>
-        <div class="box">
-            <div class="box-img"><img class="default" src="/img/subscribe/box2.png"></div>
-            <div class="box-name">3개월 구독 : 22,500원</div>
-        </div>
-        <div class="box">
-            <div class="box-img"><img class="default" src="/img/subscribe/box3.png"></div>
-            <div class="box-name">6개월 구독 : 20,000원</div>
-        </div>
-        <div class="box">
-            <div class="box-img"><img class="default" src="/img/subscribe/box4.png"></div>
-            <div class="box-name">12개월 구독 : 15,000원</div>
-        </div>
-    </div>
-    <div class="tab-contents pay-info" style="display: none;">
-
-    </div>
-    <div class="what-munch">
-        <ul>
-            <li>먼치세트가 뭔가요?
-            <li>굳이 매달 구독을 해야하나요?</li>
-        </ul>
-    </div>
-    <div style="display: flex;">
-        <div class="btn-prev">
-            <input type="button" value="이전 단계로">
-        </div>
-        <div class="btn-next">
-            <input type="button" value="다음 단계로">
-        </div>
-    </div>
-</div>
-
-<script src="/js/subscribe.js"></script>
+    <script src="/js/subscribe.js"></script>

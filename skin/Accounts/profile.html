@@ -4,24 +4,29 @@
     <hr class="title-line">
     <div class="contents-wrap">
         <?php $this->load->view('common/left-menu'); ?>
-
         <div class="account-contents">
             <div class="name">안녕하세요. <?php echo $this->session->userdata('email')?>님,</div>
-            <form name="modify-profile" id="modify-profile" method="post" action="/accounts/modify-profile">
+            <form name="modify-profile" id="modify-profile" method="post" action="/member/modifyProfile">
                 <div class="profile-tbl">
                     <div class="tbls">
                         <div class="input-set">
-                            <label><span class="require-start">*</span> 이름</label><br>
-                            <input tyle="text" class="input-text" name="name" placeholder="이름을 입력해주세요." required value="<?php echo $this->session->userdata('name')?>">
+                            <label for="name" title="이름"><span class="require-start">*</span> 이름</label><br>
+                            <input type="text" class="input-text" id="name" name="name" placeholder="이름을 입력해주세요."
+                                   required
+                                   value="<?php echo $this->session->userdata('name')?>">
                         </div>
                         <div class="input-set-half">
                             <div>
-                                <label><span class="require-start">*</span> 이메일</label><br>
-                                <input type="email" class="input-text" name="email" placeholder="이메일을 입력해주세요." required  value="<?php echo $this->session->userdata('email')?>">
+                                <label for="email" title="이메일"><span class="require-start">*</span> 이메일</label><br>
+                                <input type="email" class="input-text" id="email" name="email"
+                                       placeholder="이메일을 입력해주세요." required
+                                       value="<?php echo $this->session->userdata('email')?>" disabled>
                             </div>
                             <div>
-                                <label><span class="require-start">*</span> 전화번호</label><br>
-                                <input type="phone" class="input-text" name="phone" placeholder="전화번호를 입력해주세요."  value="<?php echo $this->session->userdata('name')?>"
+                                <label for="telphone" title="전화번호"><span class="require-start">*</span> 전화번호(숫자만 입력해주세요.)</label><br>
+                                <input type="telphone" class="input-text" id="telphone" name="telphone"
+                                       placeholder="전화번호를 입력해주세요."
+                                       value="<?php echo $this->session->userdata('telphone')?>"
                                        required>
                             </div>
                         </div>
@@ -43,9 +48,145 @@
                     </div>
                 </div>
                 <div class="save-profile">
-                    <button type="submit" class="btn">저장하기</button>
+                    <button type="submit" id="submit_btn" class="btn">저장하기</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var checkEmail = function () {
+            var email = $('input[name="email"]');
+            var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            if (email.val().length > 0 && !re.test(email.val())) {
+                alert('이메일이 유효하지 않습니다.');
+                email.focus();
+                return false;
+            }
+            return true;
+        };
+        var checkPhone = function () {
+            var telphone = $('input[name="telphone"]');
+            var trans_num = $.trim(telphone.val());
+
+            if (trans_num.length === 0) {
+                //빈값체크는 required 따로 함
+                return true;
+            }
+
+            if (trans_num.length !== 11 && trans_num.length !== 10) {
+                alert("유효하지 않은 전화번호 입니다.");
+                telphone.val("");
+                telphone.focus();
+                return false;
+            }
+
+            // 유효성 체크
+            var regExp_ctn = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})([0-9]{3,4})([0-9]{4})$/;
+            if (!regExp_ctn.test(trans_num)) {
+                alert("유효하지 않은 전화번호 입니다.");
+                telphone.val("");
+                telphone.focus();
+                return false;
+            }
+            return true;
+        }
+
+        var current_pwd = $('input[name="current-pwd"]');
+        var checkPassword = function () {
+            var new_pwd = $('input[name="new-pwd"]');
+            var confirm_new_pwd = $('input[name="confirm-new-pwd"]');
+
+            if (current_pwd.val().length == 0 && new_pwd.val().length == 0 && confirm_new_pwd.val().length == 0) {
+                return true;
+            }
+
+            if (current_pwd.val().length === 0) {
+                alert('비밀번호를 변경하시려면 현재비밀번호를 입력해주세요.');
+                current_pwd.focus();
+                return false;
+            }
+            if (new_pwd.val().length === 0) {
+                alert('비밀번호를 변경하시려면 새 비밀번호를 입력해주세요.');
+                new_pwd.focus();
+                return false;
+            }
+            if (confirm_new_pwd.val().length === 0) {
+                alert('비밀번호를 변경하시려면 새 비밀번호를 입력해주세요.');
+                confirm_new_pwd.focus();
+                return false;
+            }
+
+
+            if (current_pwd.val().length > 0 &&
+                new_pwd.val().length > 0 && new_pwd.val() === confirm_new_pwd.val()) {
+                confirmCurrentPassword();
+
+                return false;
+            }
+
+            if (new_pwd.val() !== confirm_new_pwd.val()) {
+                alert('비밀번호가 일치하지 않습니다.');
+                new_pwd.focus();
+                return false;
+            }
+
+
+            return true;
+        }
+
+        var confirmCurrentPassword = function () {
+
+            $.ajax({
+                url: '/Accounts/confirmPassword',
+                type: "POST",
+                data: {pwd: current_pwd.val()},
+                dataType: 'json',
+                complete: function (result) {
+                    console.log(result);
+                    if (result.code !== 'success') {
+                        alert('현재 비밀번호가 일치하지 않습니다.');
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
+            return;
+        }
+$('#modify-profile').on('submit', function () {
+    if (!checkEmail()) {
+        return false;
+    }
+
+    if(!checkPhone()){
+        return false;
+    }
+    if(!checkPassword()){
+        return false;
+    }
+})
+//
+//         $('#submit_btn').on('click', function () {
+//             $("input").each(function (i) {
+//                 var $t = $(this);
+//                 if ($t.prop("required")) {
+//                     if (!jQuery.trim($t.val())) {
+//                         var label = $("label[for='" + $t.attr("id") + "']").attr('title');
+//                         $t.focus();
+//                         alert(label + "은(는) 필수 입력입니다.");
+//                         return false;
+//                     }
+//                 }
+//             });
+//
+// exit;
+//             console.log('Rmx');
+//         })
+
+    })
+</script>
