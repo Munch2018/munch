@@ -37,6 +37,38 @@ class Member_model extends CI_Model{
 
     }
 
+    /**
+     * 회원 리스트 가져오기
+     */
+    public function getMembers($where = array())
+    {
+
+        if (!empty($where)) {
+            $this->setWhere($where);
+        }
+
+        $this->db->select('email, name, telphone, reg_dt, edit_dt, use_fl, (select count(*) as cnt from pet where member_idx = member.member_idx) as pet_is_regist');
+
+        return $this->db->get('member')->result_array();
+    }
+
+    /**
+     * 회원 total_count 가져오기
+     */
+    public function getCount($where = [])
+    {
+        if (!empty($where)) {
+            $this->setWhere($where);
+        }
+
+//        return $this->db->get('member')->count_all_results();
+        $return = $this->db->count_all('member');
+//        echo '<pre>';
+//        print_r($this->db->last_query());
+//        echo '</pre>';
+        return $return;
+    }
+
 
     /**
      * 회원 가입

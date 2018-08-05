@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th>아이디</th>
+            <th>이름</th>
+            <th>사용유무</th>
+            <th>전화번호</th>
+            <th>펫 등록여부</th>
+            <th>등록날짜 / 수정날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (isset($list) && sizeof($list) > 0) : ?>
+            <?php foreach ($list as $key => $value) : ?>
+                <tr>
+                    <td><?=$total_count - $key?></td>
+                    <td><?=$value['email']?></td>
+                    <td><?=$value['name']?></td>
+                    <td><?=$value['use_fl']?></td>
+                    <td><?=$value['telphone']?></td>
+                    <td><?=$value['pet_is_regist']?></td>
+                    <td>
+                        <?=$value['reg_dt']?> / <?=$value['edit_dt']?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else : ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</div>
