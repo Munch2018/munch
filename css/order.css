@@ -1,0 +1,215 @@
+.container {
+    width: 1200px;
+    min-width: 960px;
+    margin: auto;
+    text-align: center;
+    padding: 50px 0px 50px 0px;
+    height: auto;
+}
+
+.contents, form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.contents div.brd {
+    border: 1px solid #CCCCCC;
+    border-radius: 7px;
+    padding: 27px;
+    margin-bottom: 10px;
+}
+
+.last {
+    border: none;
+}
+
+.ord-rht .wrap-inp {
+    padding: 10px 0px 20px 0px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.wrap-inp .tot-price {
+    font-weight: bold;
+    font-size: 16px;
+    color: black;
+}
+
+.ord-rht .wrap-inp span {
+    color: #828282;
+}
+
+.wrap-inp {
+    padding: 10px 0px 30px 0px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.wrap-inp textarea {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.ord-left, .ord-rht {
+    margin-top: 50px;
+}
+
+.ord-rht .ord-rht-child {
+
+}
+
+.ord-left {
+    width: 55%;
+    margin-right: 10px;
+    display: inline-table;
+}
+
+.ord-rht {
+    width: 45%;
+    margin-left: 10px;
+    display: inline-table;
+}
+
+.tbl-title {
+    display: flow-root;
+    color: #43277B;
+    width: 100%;
+}
+
+.input-set {
+    display: table;
+    width: 100%;
+    margin: 3px;
+}
+
+.input-set label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+    width: 15%;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.input-set input {
+    text-align: left;
+    width: 90%;
+    margin-left: 10px;
+}
+
+.input-set .addr-search {
+    height: 43px;
+    width: 18%;
+    border-radius: 7px;
+    border: none;
+    background-color: #333333;
+    color: #ffffff;
+    margin-left: 7px;
+}
+
+.input-set input.post-addr {
+    width: 60%;
+}
+
+.input-set input.addr {
+    width: 68%;
+    margin-right: -2px;
+}
+
+.input-set input.detail-addr {
+    width: 20%;
+}
+
+#ord-info-same {
+    margin: 10px 0;
+}
+
+.wrap-inp.gray label {
+    float: left;
+}
+
+.wrap-inp.gray span {
+    float: right;
+}
+
+.brd .gray {
+    color: #828282;
+}
+
+.ord-rht .brd:nth-child(odd) {
+    background-color: #F2F2F2;
+}
+
+.ord-rht .brd:nth-child(odd) .mid-bar {
+    margin: 0px 0px 10px 0px;
+}
+
+.ord-rht .mid-bar {
+    width: 100%;
+    height: 1px;
+    border: none;
+    margin: 0px 0px 20px 0px;
+    background-color: black;
+}
+
+.ord-left .mid-bar {
+    width: 100%;
+    height: 1px;
+    border: none;
+    margin: 0px 0px 30px 0px;
+    background-color: black;
+}
+
+.mid-bar-gray {
+    width: 100%;
+    height: 1px;
+    background-color: #BFBFBF;
+    border: none;
+}
+
+.card-info .ipt-wrap {
+    margin-bottom: 15px;
+}
+
+.card-info .ipt-wrap label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.card-info .ipt-wrap select {
+    width: 47%;
+    max-width: 100%;
+}
+
+.card-info .ipt-wrap .short {
+    width: 22%;
+}
+
+#doPay {
+    background-color: #F84F0E;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    height: 55px;
+    font-weight: bold;
+}
+
+.using-card {
+    background-color: #ffffff;
+    border-radius: 3px;
+    border: 1px solid #D8D8D8;
+    width: 100%;
+    height: 90px;
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}

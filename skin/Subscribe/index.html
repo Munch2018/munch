@@ -9,7 +9,7 @@
             <li data-contents="pay-info">결제 정보</li>
         </ul>
     </div>
-    <div class="tab-contents select-pet" style="display: block;">
+    <div class="tab-contents select-pet">
         <?php if(!empty($pets)){?>
         <?php foreach($pets as $idx => $pet){?>
         <div class="box">
@@ -26,42 +26,42 @@
         </div>
         <?php }?>
         <?php }?>
-
-        <div class="tab-contents set-period" style="display: none;">
-            <div class="box">
-                <div class="box-img"><img class="default" src="/img/subscribe/box1.png"></div>
-                <div class="box-name">1개월 구독 : 24,900원</div>
-            </div>
-            <div class="box">
-                <div class="box-img"><img class="default" src="/img/subscribe/box2.png"></div>
-                <div class="box-name">3개월 구독 : 22,500원</div>
-            </div>
-            <div class="box">
-                <div class="box-img"><img class="default" src="/img/subscribe/box3.png"></div>
-                <div class="box-name">6개월 구독 : 20,000원</div>
-            </div>
-            <div class="box">
-                <div class="box-img"><img class="default" src="/img/subscribe/box4.png"></div>
-                <div class="box-name">12개월 구독 : 15,000원</div>
-            </div>
+    </div>
+    <div class="tab-contents set-period">
+        <div class="box">
+            <div class="box-img"><img class="default" src="/img/subscribe/box1.png"></div>
+            <div class="box-name">1개월 구독 : 24,900원</div>
         </div>
-        <div class="tab-contents pay-info" style="display: none;">
-
+        <div class="box">
+            <div class="box-img"><img class="default" src="/img/subscribe/box2.png"></div>
+            <div class="box-name">3개월 구독 : 22,500원</div>
         </div>
-        <div class="what-munch">
-            <ul>
-                <li>먼치세트가 뭔가요?
-                <li>굳이 매달 구독을 해야하나요?</li>
-            </ul>
+        <div class="box">
+            <div class="box-img"><img class="default" src="/img/subscribe/box3.png"></div>
+            <div class="box-name">6개월 구독 : 20,000원</div>
         </div>
-        <div style="display: flex;">
-            <div class="btn-prev">
-                <input type="button" value="이전 단계로">
-            </div>
-            <div class="btn-next">
-                <input type="button" value="다음 단계로">
-            </div>
+        <div class="box">
+            <div class="box-img"><img class="default" src="/img/subscribe/box4.png"></div>
+            <div class="box-name">12개월 구독 : 15,000원</div>
         </div>
     </div>
+    <div class="tab-contents pay-info" style="display: none;">
 
-    <script src="/js/subscribe.js"></script>
+    </div>
+    <div class="what-munch">
+        <ul>
+            <li>먼치세트가 뭔가요?
+            <li>굳이 매달 구독을 해야하나요?</li>
+        </ul>
+    </div>
+    <div style="display: flex;">
+        <div class="btn-prev">
+            <input type="button" value="이전 단계로">
+        </div>
+        <div class="btn-next">
+            <input type="button" value="다음 단계로">
+        </div>
+    </div>
+</div>
+
+<script src="/js/subscribe.js"></script>

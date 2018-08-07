@@ -22,9 +22,9 @@
                 <?php if(empty($this->cardInfo)){ ?>
                 <div class="input-set">
                     <label>카드종류</label><br>
-                    <input type="checkbox" value="person" name="ownership_type" checked><span
-                        class="check-text">개인카드</span>
-                    <input type="checkbox" value="company" name="ownership_type"><span class="check-text">기업카드</span>
+                    <input type="radio" value="person" id="ownership_type_person" name="ownership_type" checked><label
+                        class="check-text" for="ownership_type_person">개인카드</label>
+                    <input type="radio" value="company" id="ownership_type_company" name="ownership_type"><label class="check-text" for="ownership_type_company">기업카드</label>
                 </div>
                 <div class="input-set-half">
                     <div style="width: 60%;">
@@ -37,7 +37,7 @@
                     <div style="width: 40%;">
                         <label>유효기간</label><br>
                         <select class="select" name="validity_month">
-                            <?php for($month=1;$month<=12;$month++){echo '<option>'.$month.'</option>';} ?>
+                            <?php for($month=1;$month<=12;$month++){echo '<option>'.sprintf("%02d", $month) .'</option>';} ?>
                         </select>
                         /
                         <select class="select" name="validity_year">

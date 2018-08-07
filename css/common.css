@@ -2,7 +2,7 @@ body {
     margin: 0px;
     /*min-width:960px;*/
     min-width:1216px;
-    font-family: "맑은 고딕", arial;
+    font-family: Malgun Gothic, "맑은 고딕",dotum,'돋움', sans-serif;
     font-size: 20px;
 }
 
@@ -172,6 +172,7 @@ a:visited, a:active, a:hover {
     border-bottom-right-radius: 11px;
     background-color: #333333;
     border: 2px solid #333333;
+    width: 100%;
 }
 .box-selected .box-name {
     color: #ffffff;
@@ -241,6 +242,17 @@ a:visited, a:active, a:hover {
     color: #444;
     vertical-align: middle;
     width: 110px;
+}
+
+.btn-purple-square{
+    background-color: #43277B;
+    color: #ffffff;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+    width: 100px;
+    height: 36px;
+    border: none;
 }
 /* 공통 - 게시판 */
 .sub_main .title_board{padding:30px 0;font-size:24px;}

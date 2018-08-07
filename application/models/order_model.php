@@ -13,6 +13,16 @@ class Order_model extends CI_Model
         parent::__construct();
     }
 
+    public function insert($data)
+    {
+        $data['reg_dt'] = date('Y-m-d H:i:s');
+        $data['member_idx'] = $this->session->userdata('member_idx');
+        $data['reg_idx'] = $data['member_idx'];
+
+        $query = $this->db->insert_string('order', $data);
+        return $this->db->query($query);
+    }
+
     private function setWhere($where = array())
     {
         if (isset($where['where']) && !empty($where['where'])) {
@@ -28,9 +38,9 @@ class Order_model extends CI_Model
     }
 
     /**
-     * @param array $where
      * 단품 주문건에 대해서 가져오기
-     * join order_detail
+     * @param array $where
+     * @return mixed
      */
     public function getOrders($where = array())
     {
@@ -50,20 +60,19 @@ class Order_model extends CI_Model
 //        print_r($this->db->last_query());
 //        echo "</pre>";
 //        return $return;
-
     }
 
 
     public function orders_count($member_idx)
     {
-        $this->setWhere(['where'=>['member_idx' => $member_idx]]);
+        $this->setWhere(['where' => ['member_idx' => $member_idx]]);
         return $this->db->count_all("order");
     }
 
     public function fetch_orders($member_idx, $limit, $start)
     {
         $this->db->limit($limit, $start);
-        $this->setWhere(['where'=>['member_idx' => $member_idx]]);
+        $this->setWhere(['where' => ['member_idx' => $member_idx]]);
         $query = $this->db->get('order');
 
         if ($query->num_rows() > 0) {

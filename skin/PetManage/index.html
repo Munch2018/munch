@@ -1,11 +1,9 @@
 <link rel="stylesheet" href="/css/pet-manage.css">
-<style>
-
-</style>
 <div class="container">
     <div class="title">우리아이 정보등록</div>
     <hr class="title-line">
-    <form name="registration-form" id="registration-form" method="post" action="/petManage/register" enctype='multipart/form-data'>
+    <form name="registration-form" id="registration-form" method="post" action="/petManage/register"
+          enctype='multipart/form-data'>
         <input type="hidden" name="gender" value="" required>
         <input type="hidden" name="pet_type" value="" required>
         <input type="hidden" name="kind" value="" required>
@@ -32,27 +30,36 @@
                 <div class="basic-input">
                     <div class="input-set">
                         <label for="pet_name">이름</label>
-                        <input type="text" class="input-text" maxlength="50" name="pet_name" id="pet_name"
-                               placeholder="이름을 입력하세요." required>
+                        <div class="inp-wrap">
+                            <input type="text" class="input-text" maxlength="50" name="pet_name" id="pet_name"
+                                   placeholder="이름을 입력하세요." required>
+                        </div>
                     </div>
                     <div class="input-set">
                         <label for="birth_year">생일</label>
-                        <input type="text" class="input-text birth" name="birth_year" maxlength="4" id="birth_year"
-                               placeholder="YYYY" required><span>년</span>
-                        <input type="text" class="input-text birth" name="birth_month" maxlength="2" id="birth_month"
-                               placeholder="MM" min="1" max="12" required><span>월</span>
-                        <input type="text" class="input-text birth" name="birth_day" maxlength="2" id="birth_day"
-                               placeholder="DD" min="1" max="32" required><span>일</span>
+                        <div class="inp-wrap">
+                            <input type="text" class="input-text birth" name="birth_year" maxlength="4" id="birth_year"
+                                   placeholder="YYYY" required><span>년</span>
+                            <input type="text" class="input-text birth" name="birth_month" maxlength="2"
+                                   id="birth_month"
+                                   placeholder="MM" min="1" max="12" required><span>월</span>
+                            <input type="text" class="input-text birth" name="birth_day" maxlength="2" id="birth_day"
+                                   placeholder="DD" min="1" max="32" required><span>일</span>
+                        </div>
                     </div>
                     <div class="input-set gender">
                         <label>성별</label>
-                        <button type="button" class="btn-default" value="male">남</button>
-                        <button type="button" class="btn-default" value="female">여</button>
+                        <div class="inp-wrap">
+                            <button type="button" class="btn-default" value="male">남</button>
+                            <button type="button" class="btn-default" value="female">여</button>
+                        </div>
                     </div>
                     <div class="input-set pet_type">
                         <label>종류</label>
-                        <button type="button" class="btn-default" value="dog">강아지</button>
-                        <button type="button" class="btn-default" value="cat">고양이</button>
+                        <div class="inp-wrap">
+                            <button type="button" class="btn-default" value="dog">강아지</button>
+                            <button type="button" class="btn-default" value="cat">고양이</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,41 +67,49 @@
                 <div class="detail_title">
                     <span class="txt">·품종</span>
                 </div>
-                <?php foreach($dog_kind as $key => $code){?>
-                <button type="button" value="<?php echo $code['code']?>"><?php echo $code['name']?></button>
-                <?php }?>
-                <div class="more_kind">
-                    <button>더 많은 품종보기 ></button>
+                <div class="detail-content">
+                    <?php foreach($dog_kind as $key => $code){?>
+                    <button type="button" value="<?php echo $code['code']?>"><?php echo $code['name']?></button>
+                    <?php }?>
+                    <div class="more_kind">
+                        <input type="button" value="더 많은 품종보기 >">
+                    </div>
                 </div>
             </div>
             <div class="detail_info cat" style="display: none;">
                 <div class="detail_title">
                     <span class="txt">·품종</span>
                 </div>
-                <?php foreach($cat_kind as $key => $code){?>
-                <button type="button" value="<?php echo $code['code']?>"><?php echo $code['name']?></button>
-                <?php }?>
-                <div class="more_kind">
-                    <button>더 많은 품종보기 ></button>
-                </div>
+                <div class="detail-content">
+                    <?php foreach($cat_kind as $key => $code){?>
+                    <button type="button" value="<?php echo $code['code']?>"><?php echo $code['name']?></button>
+                    <?php }?>
+                    <div class="more_kind">
+                        <input type="button" value="더 많은 품종보기 >">
+                    </div>
+                 </div>
             </div>
             <div class="detail_info character">
                 <div class="detail_title">
                     <span class="txt">·특징</span>
                     <span class="small_txt">(최대 3개 선택 가능)</span>
                 </div>
-                <?php foreach($character as $key => $code){?>
-                <button type="button" value="<?php echo $code['code']?>"><?php echo $code['name']?></button>
-                <?php }?>
+                <div class="detail-content">
+                    <?php foreach($character as $key => $code){?>
+                    <button type="button" value="<?php echo $code['code']?>"><?php echo $code['name']?></button>
+                    <?php }?>
+                </div>
             </div>
             <div class="detail_info">
                 <div class="detail_title">
                     <span class="txt">·기타 특이사항</span>
                     <span class="small_txt">(최대 3개 입력 가능)</span>
                 </div>
-                <input type="text" maxlength="100" class="input-text" name='special[]' placeholder="아이의 특징을 적어주세요.">
-                <input type="text" maxlength="100" class="input-text" name='special[]' placeholder="아이의 특징을 적어주세요.">
-                <input type="text" maxlength="100" class="input-text" name='special[]' placeholder="아이의 특징을 적어주세요.">
+                <div class="detail-content special">
+                    <input type="text" maxlength="100" class="input-text" name='special[]' placeholder="아이의 특징을 적어주세요.">
+                    <input type="text" maxlength="100" class="input-text" name='special[]' placeholder="아이의 특징을 적어주세요.">
+                    <input type="text" maxlength="100" class="input-text" name='special[]' placeholder="아이의 특징을 적어주세요.">
+                </div>
             </div>
         </div>
         <div class="desc">
@@ -146,6 +161,7 @@
         genderBtn.find('button').on('click', function () {
             btnClickEvent($(this), genderBtn, 'gender', 1);
         });
+
         petTypeBtn.find('button').on('click', function () {
             if ($(this).val() === 'dog') {
                 dogArea.show();
@@ -167,16 +183,15 @@
             btnClickEvent($(this), characterArea, 'character', 3);
         });
 
-        $('.more_kind button').on('click', function () {
-            var elt = $(this);
-            if (elt.hasClass('on')) {
-                $('.detail_info.cat button:gt(21)').show();
-                $('.detail_info.dog button:gt(21)').show();
-                elt.removeClass('on').val('가리기 >');
+        $('.more_kind input[type=button]').on('click', function () {
+            if ($(this).hasClass('on')) {
+                $('.detail_info.cat button:gt(22)').hide();
+                $('.detail_info.dog button:gt(22)').hide();
+                $('.more_kind').find('input[type="button"]').removeClass('on').val('더 많은 품종보기 >');
             } else {
-                $('.detail_info.cat button:gt(21)').hide();
-                $('.detail_info.dog button:gt(21)').hide();
-                elt.addClass('on').val('더 많은 품종보기 >');
+                $('.detail_info.cat button:gt(22)').show();
+                $('.detail_info.dog button:gt(22)').show();
+                $('.more_kind').find('input[type="button"]').addClass('on').val('가리기 >');
             }
         });
 
@@ -184,7 +199,7 @@
         var month = $('#birth_month');
         var day = $('#birth_day');
 
-        $('#registration-form').on('submit',function () {
+        $('#registration-form').on('submit', function () {
             if (!/^(19|20)\d{2}$/.test(year.val())) {
                 alert('생년월일을 정상적으로 입력해주세요');
                 year.focus();

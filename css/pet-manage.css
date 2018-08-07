@@ -99,7 +99,6 @@ hr {
     margin: 5px;
 }
 
-
 .registration-form .input-set button.selected {
     background-color: #EA4241;
     color: #ffffff;
@@ -107,16 +106,18 @@ hr {
 }
 
 .registration-form .input-set button {
-    width: 206px;
+    width: 49%;
     height: 43px;
-    margin-right: 6px;
+    margin-right: 0px;
     background-color: #ffffff;
     color: #828282;
+    border-radius: 4px;
 }
 
 .registration-form .birth {
-    width: 30%;
+    width: 26%;
 }
+
 .box {
     margin: 0px 95px 0px 95px;
     float: left;
@@ -133,11 +134,7 @@ hr {
     text-align: left;
 }
 
-.detail_info.cat button:nth-child(n+23){
-    display: none;
-}
-
-.detail_info.dog button:nth-child(n+23){
+.detail_info.cat button:nth-child(n+22), .detail_info.dog button:nth-child(n+22) {
     display: none;
 }
 
@@ -150,12 +147,19 @@ hr {
     width: 100%;
     margin: 0px 0px 10px 0px;
     text-align: left;
+    text-indent: 20px;
 }
 
 .detail_info .detail_title .txt {
     font-weight: bold;
     color: #3D276F;
     font-size: 27px;
+}
+.detail_info .detail-content{
+    display: inline-table;
+}
+.detail_info .detail-content .special input{
+    width:100%;
 }
 
 .detail_info .detail_info .small_txt {
@@ -169,7 +173,7 @@ hr {
     text-align: center;
 }
 
-.detail_info .more_kind button {
+.detail_info .more_kind input[type=button] {
     width: 160px;
     height: 40px;
     border-radius: 21px;
@@ -180,6 +184,7 @@ hr {
     margin-top: 18px;
     text-align: center;
 }
+
 .detail_info button.selected {
     background-color: #EA4241;
     color: #ffffff;
@@ -188,15 +193,15 @@ hr {
 
 .detail_info button {
     width: 142px;
-    height: 43px;
+    height: 41px;
     border-radius: 4px;
     border: 1px solid #676767;
     background-color: #ffffff;
     color: #3F3F3F;
-    margin: 1px;
+    margin: 3px;
+    padding: 0px;
     font-weight: bold;
 }
-
 
 .detail_info .special {
     width: 100%;
@@ -217,6 +222,6 @@ hr {
     position: absolute;
     height: 60px;
 }
-.upload-button{
-
+.inp-wrap{
+    width:100%;
 }
