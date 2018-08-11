@@ -1,0 +1,52 @@
+<table>
+    <tr>
+        <th>상품명</th>
+        <td><input type="text" name="title" value="" maxlength="100" required placeholder="상품명을 입력하세요"></td>
+    </tr>
+    <tr>
+        <th>서브상품명</th>
+        <td><input type="text" name="subtitle" value="" maxlength="200" placeholder="서브상품명을 입력하세요"></td>
+    </tr>
+    <tr>
+        <th>원가</th>
+        <td><input type="text" name="price" maxlength="7" required></td>
+    </tr>
+    <tr>
+        <th>할인가</th>
+        <td><input type="text" name="sell_price" maxlength="7" required></td>
+    </tr>
+    <tr>
+        <th>애완타입</th>
+        <td><input type="radio" name="pet_type" id="pet_type_cat" value="cat" required><label for="pet_type_cat"></label>
+            <input type="radio" name="pet_type" id="pet_type_dog" value="dog" required><label for="pet_type_dog"></label>
+        </td>
+    </tr>
+    <tr>
+        <th>설명</th>
+        <td><textarea name="detail" maxlength="200"></textarea></td>
+    </tr>
+    <tr>
+        <th>원재료</th>
+        <td><textarea name="material" maxlength="200"></textarea></td>
+    </tr>
+    <tr>
+        <th>등록성분</th>
+        <td><textarea name="ingredients" maxlength="200"></textarea></td>
+    </tr>
+    <tr>
+        <th>총재고수량</th>
+        <td><input type="text" name="inventory_count" maxlength="7"></td>
+    </tr>
+    <tr>
+        <th>판매처</th>
+        <td>
+            <select name="seller_idx">
+                <option>선택하세요</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>이미지</th>
+        <td><input type="file" placeholder="이미지를 업로드해주세요"></td>
+    </tr>
+</table>
