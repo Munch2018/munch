@@ -1,0 +1,55 @@
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th>아이디</th>
+            <th>주문번호 / 상품 번호</th>
+            <th>내용</th>
+            <th>score</th>
+            <th>노출 / 비노출</th>
+            <th>삭제</th>
+            <th>등록날짜 / 수정날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (isset($list) && sizeof($list) > 0) : ?>
+            <?php foreach ($list as $key => $value) : ?>
+
+                <tr>
+                    <td><?=$total_count - $key?></td>
+                    <td><?=$value['member_idx']?></td>
+                    <td><?=$value['order_idx']?> / <br/><?=$value['goods_idx']?></td>
+                    <td><?=$value['comment']?></td>
+                    <td><?=$value['score_level']?></td>
+                    <td>
+                        <?=$value['use_fl'] == 'y' ? '노출' : '비노출'?><br/>
+                        <input type="button" class="btn btn-primary show_update" data-review_idx="<?=$value['review_idx']?>" data-use_fl="<?=$value['use_fl'] == 'y' ? 'n' : 'y'?>" value="<?=$value['use_fl'] == 'y' ? '비노출' : '노출'?>">
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-primary" value="삭제" onclick="window.location.href='/admin/review/delete/<?=$value['review_idx']?>'">
+                    </td>
+                    <td>
+                        <?=$value['reg_dt']?> / <?=$value['edit_dt']?>
+                    </td>
+                </tr>
+           <?php endforeach; ?>
+        <?php else : ?>
+            <tr>
+                <td colspan="7">해당 내역이 없습니다.</td>
+            </tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".show_update").click(function(){
+            var show = $(this).data('use_fl');
+            var review_idx = $(this).data('review_idx');
+            window.location.href = '/admin/review/update/' + review_idx + '/' + show;
+        });
+
+    });
+</script>
