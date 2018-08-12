@@ -254,6 +254,14 @@ a:visited, a:active, a:hover {
     height: 36px;
     border: none;
 }
+
+#live-chat-area {
+    position: fixed;
+    top: 200px;
+    right: 50%;
+    margin-right: -585px;
+}
+
 /* 공통 - 게시판 */
 .sub_main .title_board{padding:30px 0;font-size:24px;}
 .sub_main .reply table{width:100%;margin-bottom:30px;border-top:2px solid #000}

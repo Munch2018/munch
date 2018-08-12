@@ -24,7 +24,6 @@
                 <img src="/img/main/guide.jpg">
                 <p><a href="/subscribe" class="btn-purple-round">간식시간 갖기 > </a></p>
             </div>
-            <div class="live-chat-area">실시간 채팅</div>
         </div>
     </section>
 
@@ -88,14 +87,17 @@
 
             <?php if(!empty($parentGoods)) { ?>
             <?php foreach($parentGoods as $pkey => $p_goods) { ?>
-            <div id="munch-set-<?=$p_goods['pet_type']?>">
+            <div id="munch-set-<?=$p_goods['pet_type']?>" style="display:<?php echo ($pkey==0) ? 'block' : 'none'?>">
                 <div class="munch-set-img"><img src="<?=$p_goods['img_src']?>"></div>
                 <div class="goods-desc">
                     <ul>
-                        <?php if(!empty($childGoods)) { ?>
-                        <?php foreach($childGoods as $key => $goods) { ?>
-                        <?php if($p_goods['pet_type']==$goods['pet_type']){?>
-                        <li data-goods_idx="<?=$goods['goods_idx']?>"><span>B<?=$key+1?></span><?=$goods['title']?></li>
+                        <?php
+                         if(!empty($childGoods)) {
+                         $idx=0;
+                         foreach($childGoods as $key => $goods) {
+                        $idx++;
+                         if($p_goods['pet_type']==$goods['pet_type']){?>
+                        <li data-goods_idx="<?=$goods['goods_idx']?>"><span>B<?=$idx+1?></span><?=$goods['title']?></li>
                         <?php } ?>
                         <?php } ?>
                         <?php } ?>
