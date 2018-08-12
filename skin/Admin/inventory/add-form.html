@@ -1,46 +1,51 @@
-<?php
-
-echo print_r($childGoods,1);
-
-?>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <div class="table-responsive">
-    <div>
-        <button type="button" onclick="location.href='/admin/inventory/selectGoods'">add</button>
-    </div>
-    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-        <thead>
-        <tr>
-            <th>No.</th>
-            <th>상품명</th>
-            <th>ADD</th>
-            <th>SUB</th>
-            <th>유통기한</th>
-            <th>입고일자</th>
-            <th>특징</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php if(!empty($childGoods)){?>
-        <?php foreach($childGoods as $k=>$v){?>
-        <tr class="add-form">
-            <td><?php echo $k?></td>
-           <td>
-               <?php echo $v['title']?>
-               <input type="hidden" name="goods_idx[]" value="<?php echo $v['goods_idx']?>">
-           </td>
-            <td><input type="text" value="add_count[]"></td>
-            <td><input type="text" value="sub_count[]"></td>
-            <td><input type="text" value="date[]"></td>
-        </tr>
-        <?php }?>
-        <?php }?>
-        </tbody>
-    </table>
+    <form method="post" action="/admin/inventory/add">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>상품명</th>
+                <th>추가수량</th>
+                <th>삭제수량</th>
+                <th>입고일자</th>
+                <th>유통기한</th>
+                <th>특징</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(!empty($childGoods)){?>
+            <?php foreach($childGoods as $k=>$v){?>
+            <tr class="add-form">
+                <td><?php echo $k+1?></td>
+                <td>
+                    <?php echo $v['title']?>
+                    <input type="hidden" name="goods_idx[]" value="<?php echo $v['goods_idx']?>">
+                </td>
+                <td><input type="text" name="add_count[]"></td>
+                <td><input type="text" name="sub_count[]"></td>
+                <td><input type="text" name="receiving_dt[]" readonly value="<?php echo date('Y-m-d')?>" class="receiving_dt"
+                           required maxlength="10"></td>
+                <td><input type="text" name="expiry_dt[]" readonly class="expiry_dt" required maxlength="10"></td>
+                <td><textarea name="memo[]" rows="3" cols="30" maxlength="200"></textarea></td>
+            </tr>
+            <?php }?>
+            <?php }?>
+            </tbody>
+        </table>
+        <button type="submit" class="btn">등록</button>
+    </form>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-
-        $('.add-form').html
+        $(".expiry_dt, .receiving_dt").datepicker({
+            showButtonPanel: true,
+            currentText: '오늘 날짜',
+            closeText: '닫기',
+            dateFormat: "yy-mm-dd"
+        });
     });
 </script>

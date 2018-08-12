@@ -24,7 +24,7 @@ class Admin_goods_model extends CI_Model
             $bind['use_fl'] = $params['use_fl'];
         }
         if (!empty($params['goods_idx'])) {
-            $where[] = ' g.goods_idx in ? ';
+            $where[] = (is_array($params['goods_idx'])) ? ' g.goods_idx in ? ' : ' g.goods_idx = ? ';
             $bind['goods_idx'] = $params['goods_idx'];
         }
 

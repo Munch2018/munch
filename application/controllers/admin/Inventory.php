@@ -13,7 +13,6 @@ class Inventory extends CI_Controller
     {
         parent::__construct();
         $this->load->helper(array('form', 'url'));
-
         $this->load->model('Admin_goods_model', 'goods');
         $this->load->model('Admin_inventory', 'inventory');
     }
@@ -31,11 +30,11 @@ class Inventory extends CI_Controller
         $goods_idx = $this->input->post('goods_idx');
 
         if (empty($goods_idx)) {
-            alert('상품을 선택해주세요');
+            alert('상품을 선택해주세요','/admin/inventory/selectGoods');
             return false;
         }
 
-        $childGoods = $this->goods->getGoods(['use_fl' => 'y', 'goods_idx' => $goods_idx]);
+        $childGoods = $this->goods->getGoods(['goods_idx' => $goods_idx]);
         $this->load->view('admin/common/header');
         $this->load->view('admin/inventory/add-form', compact('childGoods'));
         $this->load->view('admin/common/footer');
@@ -43,7 +42,49 @@ class Inventory extends CI_Controller
 
     public function add()
     {
+        $params = $this->input->post();
 
+        if (empty($params['goods_idx']) || count(array_filter($params['goods_idx'])) == 0) {
+            alert('재고 정보가 없습니다. 다시 입력해주세요.', '/admin/inventory/selectGoods');
+        }
+
+        try {
+            $this->inventory->db->trans_begin();
+
+            for ($cnt = 0; $cnt < count($params['goods_idx']); $cnt++) {
+                if (empty($params['goods_idx'][$cnt]) ||
+                    $params['add_count'][$cnt] < 0
+                ) {
+                    return false;
+                }
+                $before_data = $this->inventory->getTotalCount($params['goods_idx'][$cnt]);
+
+                $before_data = array_shift($before_data);
+                if (!empty($params['add_count'][$cnt])) {
+                    $before_data['total_count'] = $before_data['total_count'] + $params['add_count'][$cnt];
+                }
+                if (!empty($params['sub_count'][$cnt])) {
+                    $before_data['total_count'] = $before_data['total_count'] - $params['sub_count'][$cnt];
+                }
+
+                $this->inventory->insert([
+                    'goods_idx' => $params['goods_idx'][$cnt],
+                    'add_count' => (int)$params['add_count'][$cnt],
+                    'sub_count' => (int)$params['sub_count'][$cnt],
+                    'total_count' => (int)$before_data['total_count'],
+                    'receiving_dt' => $params['receiving_dt'][$cnt],
+                    'expiry_dt' => $params['expiry_dt'][$cnt],
+                    'memo' => $params['memo'][$cnt]
+                ]);
+            }
+
+            $this->inventory->db->trans_complete();
+        } catch (Exception $e) {
+            $this->inventory->db->trans_rollback();
+            alert('재고 등록에 실패하였습니다');
+            return false;
+        }
+        alert('재고 등록을 완료하였습니다', '/admin/inventory/');
     }
 
     public function selectGoods()

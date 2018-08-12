@@ -1,6 +1,6 @@
 <div class="table-responsive">
     <div>
-        <button type="button" onclick="location.href='/admin/inventory/selectGoods'">add</button>
+        <button type="button" class="btn" onclick="location.href='/admin/inventory/selectGoods'">add</button>
     </div>
     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
@@ -10,10 +10,13 @@
             <th>사진</th>
             <th>상품명</th>
             <th>가격</th>
-            <th>재고</th>
+            <th>추가재고</th>
+            <th>삭제재고</th>
+            <th>총 재고</th>
             <th>유통기한</th>
             <th>입고일자</th>
             <th>특징</th>
+            <th>등록일</th>
         </tr>
         </thead>
         <tbody>
@@ -21,15 +24,18 @@
         <?php foreach($history as $key => $data){?>
         <tr>
             <th scope="row"><?php echo $key+1?></th>
-            <td><b><?php echo $goods['title']?></b><br><?php echo $goods['subtitle']?></td>
-            <td><?php echo $goods['detail']?></td>
-            <td><?php echo $goods['price']?></td>
-            <td><?php echo $goods['sell_price']?></td>
-            <td><?php echo $goods['pet_type']?></td>
-            <td><?php echo $goods['material']?></td>
-            <td><?php echo $goods['ingredients']?></td>
-            <td><?php echo !empty($goods['img_src']) ? '<img src="'.$goods['img_src'].'" style="width: 50px;height: 50px;">' : ''?>
-            </td>
+            <td><?php echo $data['goods_idx']?></td>
+            <td><?php echo !empty($data['img_src']) ? '<img src="'.$data['img_src'].'" style="width: 50px;height: 50px;">
+                ' : ''?>
+            <td><?php echo $data['title']?></td>
+            <td><?php echo $data['sell_price']?></td>
+            <td><?php echo $data['add_count']?></td>
+            <td><?php echo $data['sub_count']?></td>
+            <td><?php echo $data['total_count']?></td>
+            <td><?php echo $data['expiry_dt']?></td>
+            <td><?php echo $data['receiving_dt']?></td>
+            <td><?php echo $data['memo']?></td>
+            <td><?php echo $data['reg_dt']?></td>
         </tr>
         <?php }?>
         <?php }?>
@@ -38,5 +44,4 @@
 </div>
 
 <script type="text/javascript">
-
 </script>
