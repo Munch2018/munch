@@ -1,52 +1,115 @@
 <table>
     <tr>
         <th>상품명</th>
-        <td><input type="text" name="title" value="" maxlength="100" required placeholder="상품명을 입력하세요"></td>
+        <td><input type="text" name="title" value="<?php echo !empty($goods['title']) ? $goods['title'] :''?>"
+                   maxlength="100" required placeholder="상품명을 입력하세요"></td>
     </tr>
     <tr>
         <th>서브상품명</th>
-        <td><input type="text" name="subtitle" value="" maxlength="200" placeholder="서브상품명을 입력하세요"></td>
+        <td><input type="text" name="subtitle" value="<?php echo !empty($goods['subtitle']) ? $goods['subtitle'] :''?>"
+                   maxlength="200" placeholder="서브상품명을 입력하세요"></td>
     </tr>
     <tr>
         <th>원가</th>
-        <td><input type="text" name="price" maxlength="7" required></td>
+        <td><input type="text" name="price" value="<?php echo !empty($goods['price']) ? $goods['price'] :0?>"
+                   maxlength="7" required></td>
     </tr>
     <tr>
         <th>할인가</th>
-        <td><input type="text" name="sell_price" maxlength="7" required></td>
+        <td><input type="text" name="sell_price"
+                   value="<?php echo !empty($goods['sell_price']) ? $goods['sell_price'] :0?>" maxlength="7" required>
+        </td>
     </tr>
     <tr>
         <th>애완타입</th>
-        <td><input type="radio" name="pet_type" id="pet_type_cat" value="cat" required><label for="pet_type_cat"></label>
-            <input type="radio" name="pet_type" id="pet_type_dog" value="dog" required><label for="pet_type_dog"></label>
+        <td><input type="radio" name="pet_type" id="pet_type_cat" value="cat" required
+                   checked="<?php echo !empty($goods['pet_type']) && $goods['pet_type']=='cat' ? 'checked' :''?>"><label
+                for="pet_type_cat">고양이</label>
+            <input type="radio" name="pet_type" id="pet_type_dog" value="dog" required
+                   checked="<?php echo !empty($goods['pet_type']) && $goods['pet_type']=='dog' ? 'checked' :''?>"><label
+                    for="pet_type_dog">개</label>
         </td>
     </tr>
     <tr>
         <th>설명</th>
-        <td><textarea name="detail" maxlength="200"></textarea></td>
+        <td><textarea name="detail"
+                      maxlength="200"><?php echo !empty($goods['detail']) ? $goods['detail'] :''?></textarea></td>
     </tr>
     <tr>
         <th>원재료</th>
-        <td><textarea name="material" maxlength="200"></textarea></td>
+        <td><textarea name="material"
+                      maxlength="200"><?php echo !empty($goods['material']) ? $goods['material'] :''?></textarea></td>
     </tr>
     <tr>
         <th>등록성분</th>
-        <td><textarea name="ingredients" maxlength="200"></textarea></td>
+        <td><textarea name="ingredients"
+                      maxlength="200"><?php echo !empty($goods['ingredients']) ? $goods['ingredients'] :''?></textarea>
+        </td>
     </tr>
     <tr>
         <th>총재고수량</th>
-        <td><input type="text" name="inventory_count" maxlength="7"></td>
+        <td><input type="text" name="inventory_count"
+                   value="<?php echo !empty($goods['inventory_count']) ? $goods['inventory_count'] :0?>" maxlength="7">
+        </td>
     </tr>
     <tr>
         <th>판매처</th>
         <td>
             <select name="seller_idx">
-                <option>선택하세요</option>
+                <option value="">선택하세요</option>
             </select>
         </td>
     </tr>
     <tr>
         <th>이미지</th>
-        <td><input type="file" placeholder="이미지를 업로드해주세요"></td>
+        <td>
+            <?php
+            if(!empty($goods['img_src'])){
+                $img_src = explode('|',$goods['img_src']);
+                foreach($img_src as $key => $img){
+            echo "<img src='".$img."'>";
+            }
+            }
+            ?>
+            <br>
+            <input type="file" name="pet_img" size="20" placeholder="이미지를 업로드해주세요">
+
+        </td>
+    </tr>
+    <tr>
+        <th>사용유무</th>
+        <td><input type="radio" name="use_fl" value="y" id="use_fl_y"
+                   checked="<?php echo !empty($goods['use_fl']) && $goods['use_fl']=='y' ? 'checked' :''?>">
+            <label for="use_fl_y">사용</label>
+            <input type="radio" name="use_fl" value="n" id="use_fl_n"
+                   checked="<?php echo !empty($goods['use_fl']) && $goods['use_fl']!='y' ? 'checked' :''?>">
+            <label for="use_fl_n">미사용</label></td>
+    </tr>
+    <tr>
+        <th>패키지 구성품</th>
+        <td>
+            <?php if(!empty($childGoods)){
+            foreach($childGoods as $k=>$v){
+                echo $v['title']."<br>";
+            }
+            }?>
+            <button type="button" id="selected">선택하기</button>
+            <input type="input" name="child_goods_idx" id="child_goods_idx" value="">
+        </td>
     </tr>
 </table>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#selected').on('click', function () {
+            var pet_type = $('input[name=\'pet_type\']:checked').val();
+            if (!pet_type) {
+                alert('애완 타입을 선택해주세요.');
+                return false;
+            }
+
+            window.open('/admin/goods/popupChildGoods/' + pet_type, '', 'width=500,height=800')
+        })
+    })
+</script>

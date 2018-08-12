@@ -29,11 +29,12 @@
             <td><?php echo $goods['pet_type']?></td>
             <td><?php echo $goods['material']?></td>
             <td><?php echo $goods['ingredients']?></td>
-            <td><?php echo $goods['img_src']?></td>
+            <td><?php echo !empty($goods['img_src']) ? '<img src="'.$goods['img_src'].'">' : ''?></td>
             <td>
-                <button type="button" onclick="location.href='/admin/goods/editForm/<?php echo $goods[\'parent_idx\']?>'">수정
+                <button type="button" onclick="location.href='/admin/goods/editForm/'+'<?php echo $goods[" parent_idx
+                "]?>'">수정</button>
+                <button type="button" data-goods_idx="<?php echo $goods['parent_idx']?>" class="goods-delete">삭제
                 </button>
-                <button type="button" data-goods_idx="<?php echo $goods['parent_idx']?>" class="goods-delete">삭제</button>
             </td>
         </tr>
         <?php }?>

@@ -1,5 +1,6 @@
 <div class="table-responsive">
     <form method="post" action="/admin/goods/edit" enctype="multipart/form-data">
+        <input type="hidden" name="goods_idx" value="<?php echo $goods['goods_idx']?>">
         <?php $this->load->view('admin/goods/form'); ?>
         <button type="submit">EDIT</button>
         <button type="reset">RESET</button>

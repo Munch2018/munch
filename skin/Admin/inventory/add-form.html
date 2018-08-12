@@ -1,0 +1,46 @@
+<?php
+
+echo print_r($childGoods,1);
+
+?>
+<div class="table-responsive">
+    <div>
+        <button type="button" onclick="location.href='/admin/inventory/selectGoods'">add</button>
+    </div>
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th>상품명</th>
+            <th>ADD</th>
+            <th>SUB</th>
+            <th>유통기한</th>
+            <th>입고일자</th>
+            <th>특징</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(!empty($childGoods)){?>
+        <?php foreach($childGoods as $k=>$v){?>
+        <tr class="add-form">
+            <td><?php echo $k?></td>
+           <td>
+               <?php echo $v['title']?>
+               <input type="hidden" name="goods_idx[]" value="<?php echo $v['goods_idx']?>">
+           </td>
+            <td><input type="text" value="add_count[]"></td>
+            <td><input type="text" value="sub_count[]"></td>
+            <td><input type="text" value="date[]"></td>
+        </tr>
+        <?php }?>
+        <?php }?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.add-form').html
+    });
+</script>

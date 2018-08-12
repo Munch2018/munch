@@ -1,0 +1,14 @@
+<div class="table-responsive">
+    <form method="post" action="/admin/inventory/addForm">
+        <div>
+            <?php foreach($childGoods as $key => $goods){?>
+            <input type="checkbox" name="goods_idx[]" id="goods_<?php echo $goods['goods_idx']?>"
+                   value="<?php echo $goods['goods_idx']?>">
+            <label for="goods_<?php echo $goods['goods_idx']?>"><?php echo $goods['title']?></label>
+            <br>
+            <?php } ?>
+        </div>
+        <button type="submit">선택</button>
+        <button type="reset">초기화</button>
+    </form>
+</div>
