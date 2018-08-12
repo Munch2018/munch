@@ -19,4 +19,15 @@ class Subscribe extends CI_Controller
         $this->load->view('Subscribe/index', $data);
         $this->load->view('common/footer');
     }
+
+    public function order()
+    {
+        $this->load->model('order_model', 'order');
+
+        $this->load->view('common/header');
+        $this->load->view('Subscribe/order', $data);
+        $this->load->view('common/footer');
+    }
+
 }
+

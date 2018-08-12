@@ -30,11 +30,11 @@ class Accounts extends CI_Controller
 
     public function orders()
     {
-        $member_idx  = $this->session->userdata('member_idx');
+        $member_idx = $this->session->userdata('member_idx');
         $this->load->model('order_model', 'order');
 
         $config = [];
-        $config['base_url'] = base_url().'Accounts/orders';
+        $config['base_url'] = base_url() . 'Accounts/orders';
         $config['total_rows'] = $this->order->orders_count($member_idx);
         $config['per_page'] = 5;
         $config['uri_segment'] = 3;
@@ -54,11 +54,11 @@ class Accounts extends CI_Controller
 
     public function subscribe()
     {
-        $member_idx  = $this->session->userdata('member_idx');
+        $member_idx = $this->session->userdata('member_idx');
         $this->load->model('Subscribe_model', 'subscribe');
 
         $config = [];
-        $config['base_url'] = base_url().'Accounts/subscribe';
+        $config['base_url'] = base_url() . 'Accounts/subscribe';
         $config['total_rows'] = $this->subscribe->subscribe_count($member_idx);
         $config['per_page'] = 5;
         $config['uri_segment'] = 3;
@@ -69,7 +69,6 @@ class Accounts extends CI_Controller
         $data['results'] = $this->subscribe->fetch_subscribe($member_idx, $config['per_page'], $page);
         $data['links'] = $this->pagination->create_links();
         $data['action'] = 'subscribe';
-
 
 
         $this->load->view('common/header');

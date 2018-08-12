@@ -1,0 +1,195 @@
+<link rel="stylesheet" href="/css/order.css">
+<div class="container">
+    <div class="title">주문확인</div>
+    <hr class="title-line">
+
+    <div class="contents">
+        <form action="/order/add">
+            <div class="ord-left brd">
+                <div class="tbl-title">
+                    <span style="float: left;"><b>·주문자 정보</b></span>
+                </div>
+                <div class="wrap-inp">
+                    <div class="input-set">
+                        <label>국&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 가</label>
+                        <input type="text" name="billingCity" class="input-text" value="" required>
+                    </div>
+                    <div class="input-set">
+                        <label>이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 름</label>
+                        <input type="text" name="buyer_name" class="input-text" value="" required>
+                    </div>
+                    <div id="buyer-addr">
+                        <div class="input-set">
+                            <label>주&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 소</label>
+                            <input type="text" name="buyer_zipcode" class="input-text post-addr" value="" required
+                                   disabled>
+                            <button type="button" class="addr-search">주소검색</button>
+                        </div>
+                        <div class="input-set">
+                            <label>상 세 주 소</label>
+                            <input type="text" name="buyer_addr1st" class="input-text addr" value="" required disabled>
+                            <input type="text" name="buyer_addr2nd" class="input-text detail-addr" value="" required>
+                        </div>
+                        <div class="input-set">
+                            <label>이메일주소</label>
+                            <input type="email" name="buyer_email" class="input-text" value="" required>
+                        </div>
+                        <div class="input-set">
+                            <label>전 화 번 호</label>
+                            <input type="telphone" name="buyer_phone" class="input-text" value="" required>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mid-bar">
+                <div class="tbl-title">
+                    <span style="float: left;"><b>·배송 정보</b></span>
+                </div>
+                <div class="wrap-inp">
+                    <span>
+                        <input type="checkbox" name="ord-info-same" id="ord-info-same"> <label for="ord-info-same">주문자 정보와 다른 주소로 배송하기</label>
+                    </span>
+                    <div id="recipient-addr"></div>
+                    <div>
+                        주문메모
+                        <textarea rows=5
+                                  placeholder="반려견 이름 표기를 영문으로 하고 싶은 경우, 또는 알러지 등으로 섭취가 불가능한 식재료가 있을 경우에는 반드시 적어주시길 바랍니다."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="ord-rht">
+                <div class="brd">
+                    <div class="tbl-title">
+                        <span style="float: left;"><b>·고객님의 정보</b></span>
+                    </div>
+                    <div class="wrap-inp">
+                        <label>상품 : </label><span></span><br>
+                        <label>반려견 크기 : </label><span></span><br>
+                        <label>구독 기간 : </label><span></span><br>
+                        <label>총계 : </label><span></span><br>
+                    </div>
+                    <hr class="mid-bar">
+                    <div class="wrap-inp last">
+                        <label>결제 : </label><span>오늘부터 6개월 동안, 매월 동일한 날짜에 자동 결제됩니다.</span><br>
+                        <label>배송 : </label><span>지금 주문하면 다음 주 월요일에 첫 월요일에 첫 먼치세트가 배송 출발합니다.</span>
+                    </div>
+                </div>
+                <div class="brd">
+                    <div class="tbl-title">
+                        <span style="float: left;"><b>·지금 결제 될 금액</b></span>
+                    </div>
+                    <div class="wrap-inp">
+                        <label>소계 : </label><span></span><br>
+                        <label>배송 : </label><span>무료 배송</span><br>
+                        <hr class="mid-bar-gray">
+                        <div class="tot-price">
+                            <label>총계 : </label><span></span><br>
+                        </div>
+                    </div>
+                    <hr class="mid-bar">
+                    <div class="tbl-title gray">
+                        <span style="float: left;"><b>·갱신 합계</b></span>
+                    </div>
+                    <div class="wrap-inp gray last">
+                        <label>소계</label><span></span><br>
+                        <label>무료 배송을 통한 배송</label><span>무료 배송</span><br>
+                        <label>갱신합계</label><span></span><br>
+                        <hr class="mid-bar-gray">
+                        * 오늘을 기준으로, 정기배송 기간 내 매월 같은 날 자동으로 결제가 갱신됩니다.
+                    </div>
+                </div>
+
+                <div class="brd">
+                    <div class="tbl-title">
+                        <span style="float: left;"><b>·결제 정보 입력</b></span>
+                    </div>
+                    <div class="wrap-inp">
+                        <ul>
+                            <li>카드 등록은 1개만 가능합니다</li>
+                            <li>고객님께서 직접 변경하신 카드 정보는 안전하게 관리되며, 결제 실패로 변경하신 경우에는 일정 시간 후에, 돌아오는 갱신일 전에 변경하신 경우에는 갱신 예정일에
+                                고객님이 입력하신 카드로 결제가 진행됩니다.
+                            </li>
+                        </ul>
+                    </div>
+                    <hr class="mid-bar">
+                    <?php if(!empty($card_info)) { ?>
+                    <div class="using-card">
+                        <b>사용중인 카드 정보</b>
+                        <br>
+                        신한카드 (5107-****-****-0056)
+                    </div>
+                    <button type="button" class="btn-purple-square">카드변경</button>
+                    <?php } else { ?>
+                    <div class="wrap-inp last card-info">
+                        <div class="ipt-wrap">
+                            <label>카드종류</label><br>
+                            <input type="radio" value="person" id="ownership_type_person" name="ownership_type" checked><label
+                                class="check-text" for="ownership_type_person">개인카드</label>
+                            <input type="radio" value="company" id="ownership_type_company" name="ownership_type"><label
+                                class="check-text" for="ownership_type_company">기업카드</label>
+                        </div>
+                        <div class="ipt-wrap">
+                            <label>카드번호</label><br>
+                            <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
+                            <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
+                            <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
+                            <input type="text" class="input-text short" name="card_num[]" maxlength="4">
+                        </div>
+                        <div class="ipt-wrap">
+                            <label>유효기간</label><br>
+                            <select class="select" name="validity_month">
+                                <?php for($month=1;$month<=12;$month++){echo '<option>'.sprintf("%02d", $month)
+                                .'</option>';} ?>
+                            </select>
+                            /
+                            <select class="select" name="validity_year">
+                                <?php $year = date('Y');
+                                    for($y = $year;$y<=$year+5;$y++){echo '<option>'.$y.'</option>';}?>
+                            </select>
+                        </div>
+                        <div class="ipt-wrap">
+                            <label>카드소유자명</label><br>
+                            <input type="text" value="" maxlength="50" class="input-text mid-short" name="owner_name">
+                        </div>
+                        <div class="ipt-wrap">
+                            <label>법정 생년월일 (주민번호 앞 6자리)</label><br>
+                            <input type="text" value="" maxlength="6" class="input-text mid-short" name="birthday">
+                        </div>
+                    </div>
+                    <?php }?>
+                </div>
+                <div>
+                    <button type="button" id="doPay">결제하기</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+<script>
+    $(document).ready(function () {
+        var daumApi = new daum.Postcode({
+            oncomplete: function (data) {
+                $('input[name="buyer_zipcode"]').val(data.zonecode);
+                $('input[name="buyer_addr1st"]').val(data.address);
+            }
+        });
+
+        $('.addr-search').on('click', function () {
+            daumApi.open();
+        })
+
+        $('#ord-info-same').on('click', function () {
+            var elt = $(this);
+            if (elt.is(':checked')) {
+
+            } else {
+
+            }
+        })
+
+        $('#doPay').on('click', function () {
+
+        })
+    });
+</script>
