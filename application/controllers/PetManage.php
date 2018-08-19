@@ -37,9 +37,9 @@ class PetManage extends CI_Controller
         $data['cat_kind'] = $this->commonCode->get_codes('2');
         $data['character'] = $this->commonCode->get_codes('3');
 
-        $this->load->view('common/header');
-        $this->load->view('PetManage/index', $data);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('PetManage/index.html', $data);
+        $this->load->view('common/footer.html');
     }
 
     /**
@@ -165,6 +165,7 @@ class PetManage extends CI_Controller
             'name' => $params['pet_name'],
             'pet_type' => $params['pet_type'],
             'pet_kind' => $params['kind'],
+            'pet_size' => $params['size'],
             'character_type' => $params['character'],
             'detail1' => !empty($params['special'][0]) ? $params['special'][0] : '',
             'detail2' => !empty($params['special'][1]) ? $params['special'][1] : '',

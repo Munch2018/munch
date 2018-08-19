@@ -4,7 +4,7 @@
     <hr>
     <div class="tab-menu">
         <ul>
-            <li data-contents="select-pet" class="selected">아이 선택</li>
+            <li data-contents="select-pet">아이 선택</li>
             <li data-contents="set-period">기간 설정</li>
             <li data-contents="pay-info">결제 정보</li>
         </ul>
@@ -12,7 +12,7 @@
     <div class="tab-contents select-pet">
         <?php if(!empty($pets)){?>
         <?php foreach($pets as $idx => $pet){?>
-        <div class="box">
+        <div class="box" data-pet_idx="<?php echo $pet['pet_idx']?>">
             <div class="box-img">
                 <?php if($pet['img_src']){ ?>
                 <img src="<?php echo $pet['img_src']?>">
@@ -21,32 +21,23 @@
                 <?php } else {?>
                 <img src="/img/pet-img/pet-picture2.jpg">
                 <?php }?>
-                <div class="box-name"><?php echo $pet['name']?></div>
             </div>
+            <div class="box-name"><?php echo $pet['name']?></div>
         </div>
         <?php }?>
         <?php }?>
     </div>
     <div class="tab-contents set-period">
-        <div class="box">
-            <div class="box-img"><img class="default" src="/img/subscribe/box1.png"></div>
-            <div class="box-name">1개월 구독 : 24,900원</div>
+        <?php if($subscribe_list){?>
+        <?php foreach($subscribe_list as $key => $val){?>
+        <div class="box" data-period="<?php echo $val['month_count']?>">
+            <div class="box-img"><img class="default" src="/img/subscribe/box<?php echo $key+1?>.png"></div>
+            <div class="box-name"><?php echo $val['title']?> : <?php echo number_format($val['sell_price'])?>원</div>
         </div>
-        <div class="box">
-            <div class="box-img"><img class="default" src="/img/subscribe/box2.png"></div>
-            <div class="box-name">3개월 구독 : 22,500원</div>
-        </div>
-        <div class="box">
-            <div class="box-img"><img class="default" src="/img/subscribe/box3.png"></div>
-            <div class="box-name">6개월 구독 : 20,000원</div>
-        </div>
-        <div class="box">
-            <div class="box-img"><img class="default" src="/img/subscribe/box4.png"></div>
-            <div class="box-name">12개월 구독 : 15,000원</div>
-        </div>
+        <?php }?>
+        <?php }?>
     </div>
     <div class="tab-contents pay-info" style="display: none;">
-
     </div>
     <div class="what-munch">
         <ul>

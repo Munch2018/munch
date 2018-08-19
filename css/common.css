@@ -2,17 +2,13 @@ body {
     margin: 0px;
     /*min-width:960px;*/
     min-width:1216px;
-    font-family: Malgun Gothic, "맑은 고딕",dotum,'돋움', sans-serif;
+    font-family: arial,Malgun Gothic, "맑은 고딕",dotum,'돋움', sans-serif;
     font-size: 20px;
+    line-height: 21px;
 }
 
 a {
     text-decoration: none;
-}
-
-a:visited, a:active, a:hover {
-    text-decoration: none;
-    color: #646464;
 }
 .gnb a, .gnb a:visited {
     text-decoration: none;
@@ -140,24 +136,26 @@ a:visited, a:active, a:hover {
 }
 
 .box,.box-selected {
+    overflow: hidden;
     width: 283px;
-    height: 256px;
+    height: 100%;
     margin: 3px;
-    display: inline-block;
     border-radius: 11px;
-    padding-top: 2px;
+    display: inline-table;
+    border-radius: 11px;
     overflow: hidden;
 }
 
 .box {
-    height: 255px;
-    width: 284px;
+    height: 100%;
+    width: 283px;
     border: 2px solid black;
     cursor: pointer;
+    overflow: hidden;
 }
-.box-img{
+.box-img, .box img{
     height: 203px;
-    width: 283px;
+    width: 284px;
 }
 .box-selected {
     border: 2px solid #EA4241;
@@ -165,29 +163,19 @@ a:visited, a:active, a:hover {
 .box .box-name {
     color: #ffffff;
     height: 52px;
-    vertical-align: middle;
     align-items: center;
     display: grid;
-    border-bottom-left-radius: 11px;
-    border-bottom-right-radius: 11px;
     background-color: #333333;
-    border: 2px solid #333333;
     width: 100%;
 }
 .box-selected .box-name {
     color: #ffffff;
     height: 53px;
-    vertical-align: middle;
     align-items: center;
     display: grid;
-    border-bottom-left-radius: 11px;
-    border-bottom-right-radius: 11px;
     background-color: #EA4241;
-    border: 2px solid #EA4241;
 }
-.box, .box-selected img {
-    border-radius: 11px;
-}
+
 .form-control{
     display: block;
     width: 100%;
@@ -255,9 +243,19 @@ a:visited, a:active, a:hover {
     border: none;
 }
 
+.btn-cancel {
+    background-color: #666666;
+    color: #ffffff;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+    width: 69px;
+    height: 36px;
+    border: none;
+}
 #live-chat-area {
-    position: fixed;
-    top: 200px;
+    position: absolute;
+    top: 170px;
     right: 50%;
     margin-right: -585px;
 }

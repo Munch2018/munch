@@ -3,7 +3,7 @@
     padding-bottom: 55px;
     width:1204px;
     min-width: 1204px;
-    height:806px;
+    height: 100%;
 }
 
 .title {
@@ -43,8 +43,10 @@ hr {
     margin: 3px;
     cursor: Pointer;
 }
-.tab-contents{
-    width:1202px;
+
+.tab-contents {
+    width: 1202px;
+    display: none;
 }
 
 .what-munch {

@@ -24,6 +24,21 @@
     border: none;
 }
 
+.brd .gray {
+    color: #828282;
+}
+
+.now-pay .wrap-inp.gray label {
+    float: left;
+    color: #828282;
+}
+
+.now-pay .wrap-inp.gray span {
+    float: right;
+    text-align: right;
+    color: #828282;
+}
+
 .ord-rht .wrap-inp {
     padding: 10px 0px 20px 0px;
     font-size: 13px;
@@ -39,6 +54,20 @@
 
 .ord-rht .wrap-inp span {
     color: #828282;
+}
+
+.now-pay .wrap-inp span {
+    float: right;
+    color: #424242;
+}
+
+.now-pay .wrap-inp label {
+    color: #424242;
+}
+
+.now-pay .tot-price label, .now-pay .tot-price span {
+    color: #141414;
+    font-weight: bold;
 }
 
 .wrap-inp {
@@ -77,30 +106,35 @@
 }
 
 .tbl-title {
+    text-indent: -8px;
     display: flow-root;
     color: #43277B;
     width: 100%;
 }
 
 .input-set {
-    display: table;
+    display: flex;
     width: 100%;
     margin: 3px;
 }
 
+.input-set .input-box {
+    width: 100%;
+}
+
 .input-set label {
     display: table-cell;
-    text-align: right;
+    text-align: left;
     vertical-align: middle;
-    width: 15%;
+    width: 13%;
     font-size: 13px;
     font-weight: bold;
 }
 
 .input-set input {
     text-align: left;
-    width: 90%;
-    margin-left: 10px;
+    width: 100%;
+    float: left;
 }
 
 .input-set .addr-search {
@@ -118,28 +152,17 @@
 }
 
 .input-set input.addr {
-    width: 68%;
+    width: 70%;
     margin-right: -2px;
 }
 
 .input-set input.detail-addr {
-    width: 20%;
+    width: 29%;
+    float: right;
 }
 
 #ord-info-same {
     margin: 10px 0;
-}
-
-.wrap-inp.gray label {
-    float: left;
-}
-
-.wrap-inp.gray span {
-    float: right;
-}
-
-.brd .gray {
-    color: #828282;
 }
 
 .ord-rht .brd:nth-child(odd) {

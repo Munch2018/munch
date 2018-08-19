@@ -28,16 +28,16 @@ class Member extends CI_Controller
      */
     public function join_form()
     {
-        $this->load->view('common/header');
-        $this->load->view('member/join_form');
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('member/join_form.html');
+        $this->load->view('common/footer.html');
     }
 
     public function login_form()
     {
-        $this->load->view('common/header');
-        $this->load->view('member/login_form');
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('member/login_form.html');
+        $this->load->view('common/footer.html');
     }
 
     /**

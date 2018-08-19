@@ -37,7 +37,7 @@ hr {
 
 .registration-form {
     border-radius: 6px;
-    height: 1216px;
+    height: 100%;
     width: 100%;
     border: solid 1px #CBCBCB;
 }

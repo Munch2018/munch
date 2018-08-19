@@ -23,7 +23,7 @@ jQuery(document).ready(function () {
             prevBtn.show();
         }
         if (elt.data('contents') === 'pay-info') {
-            nextBtn.hide();
+           // nextBtn.hide();
         } else {
             nextBtn.show();
         }
@@ -66,10 +66,36 @@ jQuery(document).ready(function () {
     prevBtn.on('click', function () {
         $('.tab-menu').find('li.selected').prev('li').click();
     });
+
     /**
      * 다음탭 이동
      */
     nextBtn.on('click', function () {
-        $('.tab-menu').find('li.selected').next('li').click();
+        var selectedTab = $('.tab-menu').find('li.selected');
+        if (selectedTab.data('contents') === 'pay-info') {
+            var pet_idx = getBoxSelected('select-pet').data('pet_idx');
+            var period = getBoxSelected('set-period').data('period');
+
+            if (!pet_idx) {
+                alert('아이를 선택해주세요.');
+                tabMenu.eq(0).click();
+                return false;
+            }
+            if (!period) {
+                alert('구독 기간을 선택해주세요.');
+                tabMenu.eq(1).click();
+                return false;
+            }
+
+            location.href = '/subscribe/add?pet_idx=' + pet_idx + '&period=' + period;
+        }
+
+        selectedTab.next('li').click();
     });
+
+    var getBoxSelected = function (type) {
+        return $('.tab-contents.' + type).find('.box-selected');
+    }
+
+    tabMenu.eq(0).click();
 })

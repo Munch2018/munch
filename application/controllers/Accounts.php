@@ -13,6 +13,7 @@ class Accounts extends CI_Controller
         parent::__construct();
         $this->load->helper('url');
         $this->load->library('pagination');
+        $this->load->service('common_code', '', TRUE);
     }
 
     public function index()
@@ -23,9 +24,9 @@ class Accounts extends CI_Controller
     public function dashboard()
     {
 
-        $this->load->view('common/header');
-        $this->load->view('Accounts/dashboard', ['action' => 'dashboard']);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('Accounts/dashboard.html', ['action' => 'dashboard']);
+        $this->load->view('common/footer.html');
     }
 
     public function orders()
@@ -47,9 +48,9 @@ class Accounts extends CI_Controller
         $data['action'] = 'orders';
 
 
-        $this->load->view('common/header');
-        $this->load->view('Accounts/orders', $data);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('Accounts/orders.html', $data);
+        $this->load->view('common/footer.html');
     }
 
     public function subscribe()
@@ -58,38 +59,41 @@ class Accounts extends CI_Controller
         $this->load->model('Subscribe_model', 'subscribe');
 
         $config = [];
-        $config['base_url'] = base_url() . 'Accounts/subscribe';
+        $config['base_url'] = base_url() . 'Accounts/subscribe/page/';
         $config['total_rows'] = $this->subscribe->subscribe_count($member_idx);
-        $config['per_page'] = 5;
+        $config['per_page'] = 20;
         $config['uri_segment'] = 3;
 
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(3)) ? ($this->uri->segment(3)) : 0;
 
+        $data['subscribe_status'] = $this->common_code->getCode('subscribe_status');
         $data['results'] = $this->subscribe->fetch_subscribe($member_idx, $config['per_page'], $page);
         $data['links'] = $this->pagination->create_links();
         $data['action'] = 'subscribe';
 
-
-        $this->load->view('common/header');
-        $this->load->view('Accounts/subscribe', $data);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('accounts/subscribe.html', $data);
+        $this->load->view('common/footer.html');
     }
 
     public function card()
     {
-        $this->load->view('common/header');
-        $this->load->view('Accounts/card', ['action' => 'card']);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('Accounts/card.html', ['action' => 'card']);
+        $this->load->view('common/footer.html');
     }
 
     public function profile()
     {
-        $this->load->view('common/header');
-        $this->load->view('Accounts/profile', ['action' => 'profile']);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('Accounts/profile.html', ['action' => 'profile']);
+        $this->load->view('common/footer.html');
     }
 
+    /**
+     * 비밀번호 확인
+     */
     public function confirmPassword()
     {
         $pwd = $this->input->get_post('pwd');
@@ -102,5 +106,37 @@ class Accounts extends CI_Controller
         }
 
         echo json_encode(['code' => 'fail']);
+    }
+
+    /**
+     * 주소변경
+     */
+    public function changeAddress()
+    {
+        $params = json_decode($this->input->get());
+
+
+        echo json_encode($params);
+    }
+
+    public function pauseSubscribe()
+    {
+        $params = $this->input->get_post();
+
+        if (empty($params['subscribe_idx'])) {
+            echo 'fail';
+            return false;
+        }
+
+        $this->load->service('subscribe_service', '', true);
+
+        if ($this->subscribe_service->pause()) {
+            echo 'success';
+            return true;
+        } else {
+            echo 'fail';
+            return false;
+        }
+
     }
 }

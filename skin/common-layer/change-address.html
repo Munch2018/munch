@@ -1,0 +1,160 @@
+<style>
+    #change-address-layer {
+        font-size: 14px;
+        font-weight: bold;
+        width: 559px;
+        height: 247px;
+        position: absolute;
+        text-indent: 10px;
+        background-color: #ffffff;
+        border: 1px solid #CACACA;
+        color: #5B5B5B;
+    }
+
+    #change-address-layer .title {
+        height: 50px;
+        color: #ffffff;
+        vertical-align: middle;
+        border: 2px solid #ffffff;
+        background-color: #462B78;
+        width: 100%;
+
+    }
+
+    .input-set {
+        padding-bottom: 5px;
+    }
+
+    .inner {
+        padding: 20px 10px 10px 10px;
+    }
+
+    .bottom {
+
+        border-top: solid 1px #CBCBCB;
+    }
+
+    .title strong, .bottom {
+        padding: 10px;
+    }
+
+    #change-address-layer .inner .input-set {
+        width: 100%;
+    }
+
+    #change-address-layer .inner .input-set label {
+        width: 15%;
+        float: left;
+    }
+
+    #change-address-layer .inner .input-set button {
+        height: 43px;
+        width: 18%;
+        border-radius: 7px;
+        border: none;
+        background-color: #333333;
+        color: #ffffff;
+        margin-left: 7px;
+    }
+
+    #change-address-layer .inner .input-set div {
+        width: 80%;
+        display: inline-flex;
+    }
+
+
+</style>
+<div id="change-address-layer">
+    <form action="" name="" id="chg_addr_form">
+        <input type="hidden" name="subscribe_idx" value="">
+        <div class="title">
+            <strong>주소찾기</strong>
+        </div>
+        <div class="inner">
+            <div class="input-set">
+                <label>주소</label>
+                <div>
+                    <input type="text" class="input-text" readonly style="width:60%;" name="zipcode" value="">
+                    <button type="button" id="search_addr_btn">주소검색</button>
+                </div>
+            </div>
+            <div class="input-set">
+                <label>상세주소</label>
+                <div>
+                    <input type="text" class="input-text" style="width:60%;" name="addr1st" value="" readonly>
+                    <input type="text" class="input-text" style="width:40%;margin-left:5px" name="addr2nd" value="">
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <button type="button" class="btn-purple-square" id="chg_addr">주소변경</button>
+            <button type="button" class="btn-cancel" style="float: right;">취소</button>
+        </div>
+    </form>
+</div>
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+<script type="text/javascript">
+
+    var daum =  new daum.Postcode({
+        oncomplete: function (data) {
+            $('input[name="zipcode"]').val(data.zonecode);
+            $('input[name="addr1st"]').val(data.address);
+        }
+    });
+
+    $(document).ready(function () {
+        var layer = $('#change-address-layer');
+        var search_addr_btn = $('#search_addr_btn');
+        var subscribe_idx = $('input[name="subscribe_idx"]');
+        var zipcode = $('input[name="zipcode"]');
+        var addr1st = $('input[name="addr1st"]');
+        var addr2nd = $('input[name="addr2nd"]');
+
+        $('.btn-cancel').on('click', function () {
+            layer.hide();
+        })
+        search_addr_btn.on('click', function () {
+            daum.open();
+        });
+        $('#chg_addr').on('click', function () {
+            if (!validate()) {
+                return false;
+            }
+            $.ajax({
+                method: 'GET',
+                url: 'changeAddress',
+                data: {
+                    subscribe_idx: subscribe_idx.val(),
+                    zipcode: zipcode.val(),
+                    addr1st: addr1st.val(),
+                    addr2nd: addr2nd.val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert(data);
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+        });
+
+        var validate = function () {
+            if (!subscribe_idx.val()) {
+                alert('오류가 발생했습니다. 새로 고침 후 재시도 바랍니다.');
+                return false;
+            }
+            if (!zipcode.val() || !addr1st.val()) {
+                alert('주소를 검색해주세요.');
+                search_addr_btn.focus();
+                return false;
+            }
+            if (!addr2nd.val()) {
+                alert('상세주소를 입력해주세요.');
+                addr2nd.focus();
+                return false;
+            }
+            return true;
+         }
+    })
+</script>

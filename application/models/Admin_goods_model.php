@@ -32,7 +32,7 @@ class Admin_goods_model extends CI_Model
             $whereStr = ' WHERE ' . implode(' and ', $where);
         }
 
-        $sql = 'SELECT g.goods_idx, g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, g.use_fl, g.inventory_count, ' . PHP_EOL
+        $sql = 'SELECT g.goods_idx, g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, g.use_fl, g.inventory_count, g.main_display, ' . PHP_EOL
             . '     group_concat(distinct(gi.img_src) SEPARATOR \'|\') as img_src  ' . PHP_EOL
             . ' FROM goods g ' . PHP_EOL
             . '     LEFT JOIN goods_img gi ON g.goods_idx = gi.goods_idx and gi.use_fl="y"' . PHP_EOL
@@ -151,12 +151,13 @@ class Admin_goods_model extends CI_Model
             'inventory_count' => $params['inventory_count'],
             'seller_idx' => $params['seller_idx'],
             'use_fl' => $params['use_fl'],
+            'main_display' => $params['main_display'],
             'edit_dt' => date('Y-m-d H:i:s'),
             'edit_idx' => $this->session->userdata('member_idx')
         ]);
 
         $this->db->where('goods_idx', $params['goods_idx']);
-        $this->db->update('goods');
+        return $this->db->update('goods');
     }
 
     public function insert($params)
@@ -173,6 +174,7 @@ class Admin_goods_model extends CI_Model
             'inventory_count' => $params['inventory_count'],
             'seller_idx' => $params['seller_idx'],
             'use_fl' => $params['use_fl'],
+            'main_display' => $params['main_display'],
             'reg_dt' => date('Y-m-d H:i:s'),
             'reg_idx' => $this->session->userdata('member_idx')
         ]);

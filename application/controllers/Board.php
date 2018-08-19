@@ -51,9 +51,9 @@ class Board extends CI_Controller
         $data['list'] = $this->board->getLists($where);
         $data['total_count'] = $this->board->getCount($where);
 
-        $this->load->view('common/header');
-        $this->load->view('board/lists', $data);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('board/lists.html', $data);
+        $this->load->view('common/footer.html');
     }
 
     /**
@@ -156,9 +156,9 @@ class Board extends CI_Controller
      */
     public function write_form(){
         $data = array();
-        $this->load->view('common/header');
-        $this->load->view('board/write_form', $data);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('board/write_form.html', $data);
+        $this->load->view('common/footer.html');
     }
     
     /**
@@ -183,9 +183,9 @@ class Board extends CI_Controller
             }
         }
 
-        $this->load->view('common/header');
-        $this->load->view('board/write_form', $data);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('board/write_form.html', $data);
+        $this->load->view('common/footer.html');
     }
 
 }

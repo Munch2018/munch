@@ -49,9 +49,9 @@ class Review extends CI_Controller
 
         }
 
-        $this->load->view('common/header');
-        $this->load->view('review/index', $data);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('review/index.html', $data);
+        $this->load->view('common/footer.html');
     }
 
     /**

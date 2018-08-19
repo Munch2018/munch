@@ -2,47 +2,61 @@
 <div class="container">
     <div class="title">주문확인</div>
     <hr class="title-line">
-
     <div class="contents">
-        <form action="/order/add">
+        <form action="/order/add" id="orderForm" method="post">
             <div class="ord-left brd">
                 <div class="tbl-title">
-                    <span style="float: left;"><b>·주문자 정보</b></span>
+                    <span style="float: left;"><b>· 주문자 정보</b></span>
                 </div>
                 <div class="wrap-inp">
                     <div class="input-set">
-                        <label>국&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 가</label>
-                        <input type="text" name="billingCity" class="input-text" value="" required>
+                        <label>국 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 가</label>
+                        <div class="input-box">
+                            <input type="text" name="billingCity" class="input-text" value="<?php !empty($address[0]['nation']) ? $address[0]['nation'] : '' ?>" required>
+                        </div>
                     </div>
                     <div class="input-set">
-                        <label>이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 름</label>
-                        <input type="text" name="buyer_name" class="input-text" value="" required>
+                        <label>이 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 름</label>
+                        <div class="input-box">
+                            <input type="text" name="buyer_name" class="input-text" value="<?php echo $this->session->userdata('name')?>" required>
+                        </div>
                     </div>
                     <div id="buyer-addr">
                         <div class="input-set">
-                            <label>주&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 소</label>
-                            <input type="text" name="buyer_zipcode" class="input-text post-addr" value="" required
-                                   disabled>
-                            <button type="button" class="addr-search">주소검색</button>
+                            <label>주 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 소</label>
+                            <div class="input-box">
+                                <input type="text" name="buyer_zipcode" class="input-text post-addr" value="<?php !empty($address[0]['zipcode']) ? $address[0]['zipcode'] : '' ?>" required disabled>
+                                <button type="button" class="addr-search">주소검색</button>
+                            </div>
                         </div>
                         <div class="input-set">
                             <label>상 세 주 소</label>
-                            <input type="text" name="buyer_addr1st" class="input-text addr" value="" required disabled>
-                            <input type="text" name="buyer_addr2nd" class="input-text detail-addr" value="" required>
+                            <div class="input-box">
+                                <input type="text" name="buyer_addr1st" class="input-text addr"
+                                       value="<?php !empty($address[0]['addr1st']) ? $address[0]['addr1st'] : '' ?>"
+                                       required disabled>&nbsp;
+                                <input type="text" name="buyer_addr2nd" class="input-text detail-addr"
+                                       value="<?php !empty($address[0]['_addr2nd']) ? $address[0]['_addr2nd'] : '' ?>"
+                                       required>
+                            </div>
                         </div>
                         <div class="input-set">
                             <label>이메일주소</label>
-                            <input type="email" name="buyer_email" class="input-text" value="" required>
+                            <div class="input-box">
+                                <input type="email" name="buyer_email" class="input-text" value="<?php echo $this->session->userdata('email')?>" required>
+                            </div>
                         </div>
                         <div class="input-set">
                             <label>전 화 번 호</label>
-                            <input type="telphone" name="buyer_phone" class="input-text" value="" required>
+                            <div class="input-box">
+                                <input type="telphone" name="buyer_phone" class="input-text" value="<?php echo $this->session->userdata('telphone')?>" required>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <hr class="mid-bar">
                 <div class="tbl-title">
-                    <span style="float: left;"><b>·배송 정보</b></span>
+                    <span style="float: left;"><b>· 배송 정보</b></span>
                 </div>
                 <div class="wrap-inp">
                     <span>
@@ -51,48 +65,58 @@
                     <div id="recipient-addr"></div>
                     <div>
                         주문메모
-                        <textarea rows=5
-                                  placeholder="반려견 이름 표기를 영문으로 하고 싶은 경우, 또는 알러지 등으로 섭취가 불가능한 식재료가 있을 경우에는 반드시 적어주시길 바랍니다."></textarea>
+                        <textarea rows=5 placeholder="반려견 이름 표기를 영문으로 하고 싶은 경우, 또는 알러지 등으로 섭취가 불가능한 식재료가 있을 경우에는 반드시 적어주시길 바랍니다."></textarea>
                     </div>
                 </div>
             </div>
             <div class="ord-rht">
                 <div class="brd">
                     <div class="tbl-title">
-                        <span style="float: left;"><b>·고객님의 정보</b></span>
+                        <span style="float: left;"><b>· 고객님의 정보</b></span>
                     </div>
+                    <?php
+                    $month = $subscribe_info['subscribe_month'];
+                    $total_amount  = $month * $subscribe_info['sell_price'];
+                    ?>
                     <div class="wrap-inp">
-                        <label>상품 : </label><span></span><br>
-                        <label>반려견 크기 : </label><span></span><br>
-                        <label>구독 기간 : </label><span></span><br>
-                        <label>총계 : </label><span></span><br>
+                        <label>상품
+                            : </label><span><?php echo $subscribe_info['title'].' * '.$subscribe_info['buy_count'];?></span><br>
+                        <label>반려견 크기 : </label><span><?php echo $subscribe_info['pet_size'];?></span><br>
+                        <label>구독 기간 : </label><span><?php echo $month;?>개월</span><br>
+                        <label>총계 : </label><span><?php echo $month;?>
+                        달의 &#8361;<?php echo number_format($total_amount);?> / 달</span><br>
                     </div>
                     <hr class="mid-bar">
                     <div class="wrap-inp last">
-                        <label>결제 : </label><span>오늘부터 6개월 동안, 매월 동일한 날짜에 자동 결제됩니다.</span><br>
+                        <label>결제 : </label><span>오늘부터 <?php echo $month;?>개월 동안, 매월 동일한 날짜에 자동 결제됩니다.</span><br>
                         <label>배송 : </label><span>지금 주문하면 다음 주 월요일에 첫 월요일에 첫 먼치세트가 배송 출발합니다.</span>
                     </div>
                 </div>
-                <div class="brd">
+                <div class="brd now-pay">
                     <div class="tbl-title">
-                        <span style="float: left;"><b>·지금 결제 될 금액</b></span>
+                        <span style="float: left;"><b>· 지금 결제 될 금액</b></span>
                     </div>
                     <div class="wrap-inp">
-                        <label>소계 : </label><span></span><br>
+                        <label>소계 : </label><span>&#8361;<?php echo number_format($total_amount);?> </span><br>
                         <label>배송 : </label><span>무료 배송</span><br>
                         <hr class="mid-bar-gray">
                         <div class="tot-price">
-                            <label>총계 : </label><span></span><br>
+                            <label>총계 : </label><span>&#8361;<?php echo number_format($total_amount);?> </span><br>
                         </div>
                     </div>
                     <hr class="mid-bar">
                     <div class="tbl-title gray">
-                        <span style="float: left;"><b>·갱신 합계</b></span>
+                        <span style="float: left;"><b>· 갱신 합계</b></span>
                     </div>
                     <div class="wrap-inp gray last">
-                        <label>소계</label><span></span><br>
-                        <label>무료 배송을 통한 배송</label><span>무료 배송</span><br>
-                        <label>갱신합계</label><span></span><br>
+                        <label>소계</label>
+                        <span><?php echo $month;?>달의 &#8361;<?php echo number_format($total_amount);?></span><br>
+                        <label>무료 배송을 통한 배송</label>
+                        <span>무료 배송</span><br>
+                        <label>갱신합계</label>
+                        <span><?php echo $month;?>달의 &#8361;<?php echo number_format($total_amount);?> / 달<br>
+                            최초갱신 : <?php echo date('Y월 m월 d일');?>
+                        </span><br>
                         <hr class="mid-bar-gray">
                         * 오늘을 기준으로, 정기배송 기간 내 매월 같은 날 자동으로 결제가 갱신됩니다.
                     </div>
@@ -100,7 +124,7 @@
 
                 <div class="brd">
                     <div class="tbl-title">
-                        <span style="float: left;"><b>·결제 정보 입력</b></span>
+                        <span style="float: left;"><b>· 결제 정보 입력</b></span>
                     </div>
                     <div class="wrap-inp">
                         <ul>
@@ -166,30 +190,5 @@
 </div>
 
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
-<script>
-    $(document).ready(function () {
-        var daumApi = new daum.Postcode({
-            oncomplete: function (data) {
-                $('input[name="buyer_zipcode"]').val(data.zonecode);
-                $('input[name="buyer_addr1st"]').val(data.address);
-            }
-        });
 
-        $('.addr-search').on('click', function () {
-            daumApi.open();
-        })
-
-        $('#ord-info-same').on('click', function () {
-            var elt = $(this);
-            if (elt.is(':checked')) {
-
-            } else {
-
-            }
-        })
-
-        $('#doPay').on('click', function () {
-
-        })
-    });
-</script>
+<script src="/js/orderHandler.js"></script>

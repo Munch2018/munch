@@ -3,35 +3,47 @@
     <div class="title">계정 및 주문관리</div>
     <hr class="title-line">
     <div class="contents-wrap">
-        <?php $this->load->view('common/left-menu'); ?>
-
+        <?php $this->load->view('common/left-menu.html'); ?>
         <p><?php echo $links; ?></p>
-
         <div class="account-contents">
             <div class="tbls">
                 <div class="orders-tbl">
                     <div class="account-tbl-dt">
                         <table>
                             <colgroup>
-                                <col width="25%">
-                                <col width="25%">
-                                <col width="25%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="15%">
                                 <col width="25%">
                             </colgroup>
                             <tr>
                                 <th>주문</th>
-                                <th>날짜</th>
+                                <th>아이</th>
                                 <th>상태</th>
-                                <th>총계</th>
+                                <th>다음결제</th>
+                                <th>총합</th>
+                                <th>작업</th>
                             </tr>
-                            <!--<?php foreach($orders as $key => $order){?>-->
-                            <!--<tr>-->
-                            <!--<td><?php echo $data['goods_name']?></td>-->
-                            <!--<td><?php echo $data['reg_dt']?></td>-->
-                            <!--<td><?php echo $data['status']?></td>-->
-                            <!--<td><?php echo number_format($data['total_amount'])?></td>-->
-                            <!--</tr>-->
-                            <!--<?php }?>-->
+                            <?php foreach($results as $key => $data){?>
+                            <tr data-subscribe_idx="<?php echo $data['subscribe_idx']?>">
+                                <td><?php echo $data['title']?></td>
+                                <td><?php echo $data['name']?></td>
+                                <td><?php echo $subscribe_status[$data['status']]?></td>
+                                <td><?php echo $data['schedule_dt']?></td>
+                                <td>&#8361; <?php echo number_format($data['total_amount'])?></td>
+                                <td>
+                                    <?php if($data['status']==='stop'){?>
+                                    <button type="button" class="restart-btn">다시시작</button>
+                                    <?php } else {?>
+                                    <button type="button" class="change-addr-btn">주소변경</button>
+                                    <button type="button" class="stop-btn">일시중지</button>
+                                    <button type="button" class="cancel-btn">취소</button>
+                                    <?php }?>
+                                </td>
+                            </tr>
+                            <?php }?>
                         </table>
                     </div>
                 </div>
@@ -39,3 +51,40 @@
         </div>
     </div>
 </div>
+<?php $this->load->view('common-layer/change-address.html');?>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+          $('.stop-btn').on('click', function () {
+            if (!confirm('구독을 일시중지 하시겠습니까?')) {
+                return false;
+            }
+            var subscribe_idx = $(this).closest('tr').data('subscribe-idx');
+        });
+        $('.cancel-btn').on('click', function () {
+            if (!confirm('구독을 취소하시겠습니까?')) {
+                return false;
+            }
+            var subscribe_idx = $(this).closest('tr').data('subscribe-idx');
+        });
+
+        $('.change-addr-btn').on('click', function () {
+            var subscribe_idx = $(this).closest('tr').data('subscribe_idx');
+            var layer = $('#change-address-layer');
+            var w = window.outerWidth;
+            var h = window.outerHeight;
+
+            var layer_width = layer.width();
+            var layer_height = layer.outerHeight();
+
+            layer.css({
+                'top': (h - layer_height) / 2,
+                'left': (w - layer_width) / 2
+            });
+
+            layer.find('input[name="subscribe_idx"]').val(subscribe_idx);
+            layer.show();
+        });
+
+    })
+</script>

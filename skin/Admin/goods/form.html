@@ -79,22 +79,34 @@
     <tr>
         <th>사용유무</th>
         <td><input type="radio" name="use_fl" value="y" id="use_fl_y"
-                   checked="<?php echo !empty($goods['use_fl']) && $goods['use_fl']=='y' ? 'checked' :''?>">
+            <?php echo (!empty($goods['use_fl']) && $goods['use_fl']=='y') ? 'checked' : ''?>>
             <label for="use_fl_y">사용</label>
             <input type="radio" name="use_fl" value="n" id="use_fl_n"
-                   checked="<?php echo !empty($goods['use_fl']) && $goods['use_fl']!='y' ? 'checked' :''?>">
+            <?php echo (!empty($goods['use_fl']) && $goods['use_fl']!='y') ? 'checked' : ''?>>
             <label for="use_fl_n">미사용</label></td>
+    </tr>
+    <tr>
+        <th>메인노출유무</th>
+        <td><input type="radio" name="main_display" value="y" id="main_display_y"
+                  <?php echo (!empty($goods['main_display']) && $goods['main_display']=='y') ? 'checked' : ''?>>
+            <label for="main_display_y">노출</label>
+            <input type="radio" name="main_display" value="n" id="main_display_n"
+                   <?php echo (!empty($goods['main_display']) && $goods['main_display']!='y') ? 'checked' : ''?>>
+            <label for="main_display_n">미노출</label></td>
     </tr>
     <tr>
         <th>패키지 구성품</th>
         <td>
-            <?php if(!empty($childGoods)){
+            <?php
+            $child_goods_idx = [];
+            if(!empty($childGoods)){
             foreach($childGoods as $k=>$v){
+                $child_goods_idx[] = $v['goods_idx'];
                 echo $v['title']."<br>";
             }
             }?>
             <button type="button" id="selected">선택하기</button>
-            <input type="input" name="child_goods_idx" id="child_goods_idx" value="">
+            <input type="input" readonly name="child_goods_idx" id="child_goods_idx" value="<?php echo !empty($child_goods_idx) ? implode(',',$child_goods_idx) : ''?>">
         </td>
     </tr>
 </table>

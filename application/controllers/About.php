@@ -17,8 +17,8 @@ class About extends CI_Controller
 
     public function index()
     {
-        $this->load->view('common/header');
-        $this->load->view('About/index');
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('About/index.html');
+        $this->load->view('common/footer.html');
     }
 }

@@ -20,9 +20,9 @@ class Inventory extends CI_Controller
     public function index()
     {
         $history = $this->inventory->getList();
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/inventory/list', compact('history'));
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/inventory/list.html', compact('history'));
+        $this->load->view('admin/common/footer.html');
     }
 
     public function addForm()
@@ -35,9 +35,9 @@ class Inventory extends CI_Controller
         }
 
         $childGoods = $this->goods->getGoods(['goods_idx' => $goods_idx]);
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/inventory/add-form', compact('childGoods'));
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/inventory/add-form.html', compact('childGoods'));
+        $this->load->view('admin/common/footer.html');
     }
 
     public function add()
@@ -90,9 +90,9 @@ class Inventory extends CI_Controller
     public function selectGoods()
     {
         $childGoods = $this->goods->getChildGoods();
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/inventory/select-goods', compact('childGoods'));
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/inventory/select-goods.html', compact('childGoods'));
+        $this->load->view('admin/common/footer.html');
     }
 
 

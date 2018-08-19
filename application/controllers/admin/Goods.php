@@ -30,25 +30,25 @@ class Goods extends CI_Controller
         $parentGoods = $this->model->getParentGoods();
         $childGoods = $this->model->getChildGoods();
 
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/goods/parent-goods-list', compact('parentGoods', 'childGoods'));
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/goods/parent-goods-list.html', compact('parentGoods', 'childGoods'));
+        $this->load->view('admin/common/footer.html');
     }
 
     public function childGoodsList()
     {
         $childGoods = $this->model->getChildGoods();
 
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/goods/child-goods-list', compact('childGoods'));
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/goods/child-goods-list.html', compact('childGoods'));
+        $this->load->view('admin/common/footer.html');
     }
 
     public function addForm()
     {
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/goods/add-form');
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/goods/add-form.html');
+        $this->load->view('admin/common/footer.html');
     }
 
     public function add()
@@ -106,15 +106,14 @@ class Goods extends CI_Controller
         $goods = array_shift($goods);
         $childGoods = $this->model->getChildGoods(['parent_idx' => $goods_idx, 'use_fl']);
 
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/goods/edit-form', compact('goods', 'childGoods'));
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/goods/edit-form.html', compact('goods', 'childGoods'));
+        $this->load->view('admin/common/footer.html');
     }
 
     public function edit()
     {
         $params = $this->input->post();
-
         $goods_idx = $params['goods_idx'];
 
         if (empty($goods_idx)) {
@@ -154,9 +153,9 @@ class Goods extends CI_Controller
                 }
             }
 
+
             $this->model->db->trans_complete();
         } catch (Exception $exception) {
-            $this->model->db->rollback();
             alert('상품 수정이 실패하였습니다. 잠시후 재시도해주세요.');
         }
 
@@ -206,9 +205,9 @@ class Goods extends CI_Controller
     public function popupChildGoods($pet_type = '')
     {
         $childGoods = $this->model->getChildGoods(['pet_type' => $pet_type]);
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/goods/popup-child-goods', compact('childGoods'));
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/goods/popup-child-goods.html', compact('childGoods'));
+        $this->load->view('admin/common/footer.html');
     }
 
 }

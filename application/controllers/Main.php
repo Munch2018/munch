@@ -14,9 +14,9 @@ class Main extends CI_Controller
         $parentGoods = $this->goods->getParentGoods();
         $childGoods = $this->goods->getChildGoods();
 
-        $this->load->view('common/header');
-        $this->load->view('Main/index', ['parentGoods' => $parentGoods, 'childGoods' => $childGoods]);
-        $this->load->view('common/footer');
+        $this->load->view('common/header.html');
+        $this->load->view('Main/index.html', ['parentGoods' => $parentGoods, 'childGoods' => $childGoods]);
+        $this->load->view('common/footer.html');
     }
 
     public function goodsDetail()
@@ -29,7 +29,7 @@ class Main extends CI_Controller
 
         $goods = $this->goods->getChildGoods(['goods_idx' => $goods_idx]);
 
-        $this->load->view('Main/goods-detail', [
+        $this->load->view('Main/goods-detail.html', [
             'goods' => $goods[0]
         ]);
     }

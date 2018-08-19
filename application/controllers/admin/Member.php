@@ -30,8 +30,8 @@ class Member extends CI_Controller
         $data['list'] = $this->member->getMembers($where);
         $data['total_count'] = $this->member->getCount($where);
 
-        $this->load->view('admin/common/header');
-        $this->load->view('admin/member/lists', $data);
-        $this->load->view('admin/common/footer');
+        $this->load->view('admin/common/header.html');
+        $this->load->view('admin/member/lists.html', $data);
+        $this->load->view('admin/common/footer.html');
     }
 }
