@@ -138,6 +138,7 @@ table td {
     color: #8D8D8D;
     border-bottom: 1px solid #8D8D8D;
     font-weight: bold;
+    text-align: center;
 }
 
 table td button {
@@ -150,6 +151,7 @@ table td button {
 table td button.restart-btn {
     border: 1px solid #F24C5E;
     color: #F24C5E;
+    width:100%;
 }
 
 table td button.change-addr-btn {
@@ -157,7 +159,7 @@ table td button.change-addr-btn {
     color: #47357F;
 }
 
-table td button.stop-btn {
+table td button.pause-btn {
     border: 1px solid #FF5C2A;
     color: #FF5C2A;
 }

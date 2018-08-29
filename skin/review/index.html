@@ -1,7 +1,7 @@
 <style type="text/css">
     .fix {display:block !important; margin:auto !important;}
     .pets_info {position:relative; margin-top:50px; text-align:center; display: inline-block;}
-    .pets_info div {float:left; width:220px; height:185px; border:2px solid #e2e2e2; border-radius:8px; margin-right:20px;}
+    .pets_info div {float:left; width:220px; height:185px; border:2px solid #e2e2e2; border-radius:8px; margin-right:20px;cursor: pointer}
     div.goods_list ul li {list-style:none; width:227px; height:293px; border:2px solid #e2e2e2; border-radius:10px;}
     div.goods_list ul li span {height:45px;}
 
@@ -55,28 +55,28 @@
     <h2 class="title">간식 평가하기</h2>
     <div class="fix"></div>
     <div class="pets_info">
-        <?php // if (isset($pet_list) && sizeof($pets_list) > 0) : ?>
-        <!-- pets -->
-            <div>
-                <img src="">
+        <?php if (!empty($pet_list)) : ?>
+        <?php foreach($pet_list as $k => $pet){?>
+            <div class="pet" data-pet_idx="<?php echo $pet['pet_idx']?>">
+                <img src="<?php echo $pet['img_src']?>">
             </div>
-
-        <?php // endif; ?>
-
-        <img src="/img/review/add_btn.png" alt="펫 추가">
+        <?php }?>
+        <?php endif; ?>
+        <a href="/petManage/"><img src="/img/review/add_btn.png" alt="펫 추가"></a>
     </div>
     <div class="fixable" style="margin-top:70px border:1px solid black; width:150px;"></div>
     <div class="goods_list" style="margin-top:67px;">
         <div style="margin-top:70px; margin-bottom:30px; text-align:center; color:#452b78; font-size:26px;">
-            <?=$type?>가 여태까지 먹은 간식들
+            <?php echo $pet_list[0]['name']?>가 여태까지 먹은 간식들
         </div>
-        <!-- 간식들 폼 -->
-        <?php if (isset($goods_list[$type]) && sizeof($goods_list[$type]) > 0) : ?>
+        <?php if (!empty($goods_list)) : ?>
             <ul>
-                <?php foreach ($goods_list[$type] as $value) : ?>
-                    <li>
-                        <img class="goods_img" src="<?=$value['goods_img']?>" >
-                        <span style="height:45px;"><?=$value['goods_name']?></span>
+                <?php foreach ($goods_list as $k => $value) :
+                $goods_img_arr = explode('|',$value['goods_img']);
+                ?>
+                    <li data-pet_idx="<?=$value['pet_idx']?>" >
+                        <img class="goods_img" src="<?=base_url().$value['goods_img']?>" >
+                        <span style="height:45px;"><?=$goods_img_arr[0]?></span>
                         <div style="height:74px !important;">
                             <div class="star">
                                 <img src="/img/common/bg_star.png" alt="별점" />

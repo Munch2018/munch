@@ -32,7 +32,7 @@ class Admin_goods_model extends CI_Model
             $whereStr = ' WHERE ' . implode(' and ', $where);
         }
 
-        $sql = 'SELECT g.goods_idx, g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, g.use_fl, g.inventory_count, g.main_display, ' . PHP_EOL
+        $sql = 'SELECT g.goods_idx, g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, g.use_fl, g.inventory_count, g.main_display, g.package_fl, ' . PHP_EOL
             . '     group_concat(distinct(gi.img_src) SEPARATOR \'|\') as img_src  ' . PHP_EOL
             . ' FROM goods g ' . PHP_EOL
             . '     LEFT JOIN goods_img gi ON g.goods_idx = gi.goods_idx and gi.use_fl="y"' . PHP_EOL
@@ -46,7 +46,7 @@ class Admin_goods_model extends CI_Model
     {
         $bind = [];
         $where = [];
-        $whereStr = '';
+        $whereStr = " WHERE g.package_fl='y' ";
 
         if (!empty($params['parent_idx'])) {
             $where[] = ' gr.parent_idx = ? ';
@@ -56,12 +56,13 @@ class Admin_goods_model extends CI_Model
             $where[] = ' g.parent_idx = ? ';
             $bind['goods_idx'] = $params['goods_idx'];
         }
+
         if (!empty($where)) {
-            $whereStr = ' WHERE  gr.use_fl="y" AND ' . implode(' and ', $where);
+            $whereStr .= ' AND  gr.use_fl="y" AND ' . implode(' and ', $where);
         }
 
         $sql = 'SELECT gr.parent_idx, ' . PHP_EOL
-            . '     g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, ' . PHP_EOL
+            . '     g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, g.package_fl, ' . PHP_EOL
             . '     group_concat(distinct(gi.img_src) SEPARATOR \'|\') as img_src  ' . PHP_EOL
             . ' FROM goods_relation gr ' . PHP_EOL
             . '     JOIN goods g ON gr.parent_idx = g.goods_idx ' . PHP_EOL
@@ -76,7 +77,7 @@ class Admin_goods_model extends CI_Model
     {
         $bind = [];
         $where = [];
-        $whereStr = '';
+        $whereStr = " WHERE g.package_fl != 'y' ";
 
         if (!empty($params['goods_idx'])) {
             $where[] = ' g.goods_idx = ? ';
@@ -91,11 +92,11 @@ class Admin_goods_model extends CI_Model
             $bind['pet_type'] = $params['pet_type'];
         }
         if (!empty($where)) {
-            $whereStr = ' WHERE ' . implode(' and ', $where);
+            $whereStr .= ' AND ' . implode(' and ', $where);
         }
 
         $sql = 'SELECT gr.parent_idx, gr.child_idx ,  ' . PHP_EOL
-            . '     g.goods_idx, g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, ' . PHP_EOL
+            . '     g.goods_idx, g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, g.package_fl, ' . PHP_EOL
             . '     group_concat(distinct(gi.img_src) SEPARATOR \'|\') as img_src ' . PHP_EOL
             . ' FROM goods g  ' . PHP_EOL
             . '     LEFT JOIN goods_relation gr ON gr.child_idx = g.goods_idx and gr.use_fl="y" ' . PHP_EOL
@@ -104,8 +105,10 @@ class Admin_goods_model extends CI_Model
             . ' GROUP BY g.goods_idx ' . PHP_EOL
             . ' ORDER BY g.goods_idx ';
 
-        return $this->db->query($sql, $bind)->result_array();
+        $result = $this->db->query($sql, $bind)->result_array();
+        return $result;
     }
+
 
     public function deleteGoods($goods_idx)
     {
@@ -152,6 +155,7 @@ class Admin_goods_model extends CI_Model
             'seller_idx' => $params['seller_idx'],
             'use_fl' => $params['use_fl'],
             'main_display' => $params['main_display'],
+            'package_fl' => $params['package_fl'],
             'edit_dt' => date('Y-m-d H:i:s'),
             'edit_idx' => $this->session->userdata('member_idx')
         ]);
@@ -175,6 +179,7 @@ class Admin_goods_model extends CI_Model
             'seller_idx' => $params['seller_idx'],
             'use_fl' => $params['use_fl'],
             'main_display' => $params['main_display'],
+            'package_fl' => $params['package_fl'],
             'reg_dt' => date('Y-m-d H:i:s'),
             'reg_idx' => $this->session->userdata('member_idx')
         ]);

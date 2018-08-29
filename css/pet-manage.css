@@ -221,6 +221,7 @@ hr {
     z-index: 1000;
     position: absolute;
     height: 60px;
+    cursor: pointer;
 }
 .inp-wrap{
     width:100%;

@@ -10,11 +10,11 @@ $(function () {
 
         'registerEvent': function () {
             doPayButton.on('click', function () {
-                if (!this.validate()) {
+                if (!orderHandler.validate()) {
                     return false;
                 }
 
-                this.doPay();
+                orderHandler.doPay();
             })
 
 
@@ -34,13 +34,14 @@ $(function () {
 
         'daumApi': new daum.Postcode({
             oncomplete: function (data) {
-                $('input[name="buyer_zipcode"]').val(data.zonecode);
-                $('input[name="buyer_addr1st"]').val(data.address);
+                $('input[name="zipcode"]').val(data.zonecode);
+                $('input[name="addr1st"]').val(data.address);
+                $('input[name="address_idx"]').val('');
             }
         }),
 
         'validate': function () {
-
+            return true;
         },
 
         'doPay': function () {

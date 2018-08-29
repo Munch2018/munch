@@ -13,16 +13,6 @@ class Subscribe_model extends CI_Model
         parent::__construct();
     }
 
-    public function getAddress($member_idx = 0)
-    {
-        $this->db->select('zipcode, addr1st, addr2nd, sort, nation');
-        $this->db->from('address');
-        $this->db->where('member_idx', $member_idx);
-        $this->db->order_by('sort', 'ASC');
-      //  return $this->db->query($this->db->get())->result
-        return $this->db->get()->result_array();
-    }
-
     public function getSubscribeGoodsPrice()
     {
         $this->db->where('use_fl', 'y');
@@ -47,15 +37,15 @@ class Subscribe_model extends CI_Model
             $where[] = 's.use_fl = ?';
             $bind['use_fl'] = $params['use_fl'];
         }
-        if(!empty($where)){
-            $whereStr = 'WHERE '.implode(' and ',$where);
+        if (!empty($where)) {
+            $whereStr = 'WHERE ' . implode(' and ', $where);
         }
 
         $sql = '
         SELECT 
             s.subscribe_idx, s.subscribe_month, s.goods_idx, s.buy_count,
             g.title,
-            sp.sell_price,
+            sp.sell_price, sp.price,
             p.pet_kind, p.pet_size
         FROM
             subscribe s 
@@ -67,25 +57,41 @@ class Subscribe_model extends CI_Model
        return $this->db->query($sql, $bind)->result_array();
     }
 
+    public function getNextSubscribeSchedule($subscribe_idx)
+    {
+        $this->db->select('subscribe_schedule_idx');
+        $this->db->where([
+            'subscribe_idx' => $subscribe_idx,
+            'use_fl' => 'y',
+            'payment_idx' => null
+        ]);
+        $this->db->order_by('sequence', 'ASC');
+        $this->db->limit(1);
+
+        return $this->db->get('subscribe_schedule')->result();
+    }
+
     public function subscribe_count($member_idx)
     {
         $this->db->where('member_idx', $member_idx);
         return $this->db->count_all("subscribe");
     }
 
-    public function fetch_subscribe($member_idx, $limit, $start)
+    public function fetch_subscribe($params, $limit, $start)
     {
         $this->db->select(' subscribe.subscribe_idx,
                         subscribe.subscribe_month,
+                        subscribe.start_date,
+                        subscribe.end_date,
                         subscribe.goods_idx,
                         subscribe.buy_count,
                         subscribe.status,
                         goods.title,
                         (subscribe_price.sell_price * subscribe_price.month_count) AS total_amount,
                         pet.name,
-                        ( select min(subscribe_detail.schedule_dt)  from subscribe_detail
-                            LEFT join payment on subscribe_detail.payment_idx = payment.payment_idx and payment.use_fl=\'y\' and payment.status !=\'complet\'
-                            where subscribe_detail.use_fl=\'y\' and subscribe_detail.subscribe_idx=subscribe.subscribe_idx) 
+                        ( select min(subscribe_schedule.schedule_dt)  from subscribe_schedule
+                            LEFT join payment on subscribe_schedule.payment_idx = payment.payment_idx and payment.use_fl=\'y\' and payment.status !=\'complet\'
+                            where subscribe_schedule.use_fl=\'y\' and subscribe_schedule.subscribe_idx=subscribe.subscribe_idx) 
                          as schedule_dt
                         ');
 
@@ -94,11 +100,15 @@ class Subscribe_model extends CI_Model
         $this->db->join('goods','subscribe.goods_idx = goods.goods_idx ');
         $this->db->join('subscribe_price','subscribe.subscribe_month = subscribe_price.month_count AND subscribe_price.use_fl = \'y\'');
 
-
         $this->db->limit($limit, $start);
-        $this->db->where('subscribe.member_idx', $member_idx);
-        return  $this->db->get()->result_array();
+        $this->db->where('subscribe.member_idx', $params['member_idx']);
 
+        if (!empty($params['subscribe_idx'])) {
+            $this->db->where('subscribe.subscribe_idx', $params['subscribe_idx']);
+
+        }
+        $result = $this->db->get()->result_array();
+        return $result;
     }
 
     public function insertSubscribe($params)
@@ -131,7 +141,7 @@ class Subscribe_model extends CI_Model
             'reg_idx' => $params['member_idx'],
         ]);
 
-        return $this->db->insert('subscribe_detail');
+        return $this->db->insert('subscribe_schedule');
     }
 
     public function getGoodsToBuy($pet_idx = 0)
@@ -161,5 +171,46 @@ class Subscribe_model extends CI_Model
         return $this->db->query($sql, $bind)->result_array();
     }
 
+    public function updateStatusSubscribe($subscribe_idx, $status = '')
+    {
+        if (empty($status) || !in_array($status, ['active', 'pause', 'cancel', 'complete'])) {
+            return false;
+        }
+
+        $data = [
+            'status' => $status,
+            'edit_dt' => date('Y-m-d H:i:s'),
+            'edit_idx' => $this->session->userdata('member_idx')
+        ];
+        $this->db->where('subscribe_idx', $subscribe_idx);
+        return $this->db->update('subscribe', $data);
+    }
+
+    /**
+     * 결제 완료되지않은 구독스케쥴의 주소 변경
+     * @param array $params
+     * @return bool
+     */
+    public function updateSubscribeSchedule($params = [])
+    {
+        if (empty($params) || empty($params['subscribe_idx'])) {
+            return false;
+        }
+
+        $data = [
+            'edit_dt' => date('Y-m-d H:i:s'),
+            'edit_idx' => $this->session->userdata('member_idx')
+        ];
+
+        if (!empty($params['address_idx'])) {
+            $data['address_idx'] = $params['address_idx'];
+        }
+
+        $this->db->where('subscribe_idx', $params['subscribe_idx']);
+        $this->db->where('use_fl', 'y');
+        $this->db->where('payment_idx', null);
+
+       return $this->db->update('subscribe_schedule', $data);
+    }
 
 }

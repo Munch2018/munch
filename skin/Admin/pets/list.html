@@ -1,0 +1,45 @@
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th>주문자</th>
+            <th>반려동물이름</th>
+            <th>반려동물 특징</th>
+            <th>반려동물 평가</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(!empty($pets)){ ?>
+            <?php foreach($pets as $key => $pet){?>
+                <tr>
+                    <th scope="row"><?php echo $key+1?></th>
+                    <td><?php echo $pet['member_name']?></td>
+                    <td><?php echo $pet['name']?></td>
+                    <td>
+                        <?php echo ($pet['detail1']) ? '<li>'.$pet['detail1'].'</li>' : ''?>
+                        <?php echo ($pet['detail2']) ? '<li>'.$pet['detail2'].'</li>' : ''?>
+                        <?php echo ($pet['detail3']) ? '<li>'.$pet['detail3'].'</li>' : ''?>
+                    </td>
+                    <td><?php echo $pet['name']?></td>
+                </tr>
+            <?php }?>
+        <?php }?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.goods-delete').on('click', function () {
+            console.log('dd');
+            var goods_idx = $(this).data('goods_idx');
+            if (!goods_idx) {
+                alert('오류가 발생했습니다. 페이지 새로고침 후 재시도해주세요.');
+            }
+            if (confirm('정말로 삭제하시겠습니까?')) {
+                location.href = '/admin/goods/delete/' + goods_idx;
+            }
+        })
+    })
+</script>

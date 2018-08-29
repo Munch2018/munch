@@ -6,7 +6,6 @@
           enctype='multipart/form-data'>
         <input type="hidden" name="gender" value="" required>
         <input type="hidden" name="pet_type" value="" required>
-        <input type="hidden" name="size" value="" required>
         <input type="hidden" name="kind" value="" required>
         <input type="hidden" name="character" value="">
         <div class="desc">
@@ -62,16 +61,6 @@
                             <button type="button" class="btn-default" value="cat">고양이</button>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="detail_info dog size">
-                <div class="detail_title">
-                    <span class="txt">·크기</span>
-                </div>
-                <div class="detail-content">
-                    <button type="button" value="소형견">소형견 </button>
-                    <button type="button" value="중형견">중형견 </button>
-                    <button type="button" value="대형견">대형견 </button>
                 </div>
             </div>
             <div class="detail_info dog type">
@@ -139,10 +128,8 @@
         var petTypeBtn = $('.input-set.pet_type');
         var dogArea = $('.detail_info.dog');
         var dogTypeArea = $('.detail_info.dog.type');
-        var dogSizeArea = $('.detail_info.dog.size');
         var catArea = $('.detail_info.cat');
         var catTypeArea = $('.detail_info.cat.type');
-        var catSizeArea = $('.detail_info.cat.size');
         var characterArea = $('.detail_info.character');
 
         var btnClickEvent = function (elt, elements, inputName, max) {
@@ -195,12 +182,7 @@
         catTypeArea.find('button').on('click', function () {
             btnClickEvent($(this), catTypeArea, 'kind', 3);
         });
-        dogSizeArea.find('button').on('click', function () {
-            btnClickEvent($(this), dogSizeArea, 'size', 1);
-        });
-        catSizeArea.find('button').on('click', function () {
-            btnClickEvent($(this), catSizeArea, 'size', 1);
-        });
+
         characterArea.find('button').on('click', function () {
             btnClickEvent($(this), characterArea, 'character', 3);
         });

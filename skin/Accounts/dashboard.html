@@ -20,16 +20,13 @@
                             <th>주문</th>
                             <th>날짜</th>
                             <th>상태</th>
+                            <?php foreach($orders as $key => $order){?>
                             <tr>
-                                <td>dkffhrekf</td>
-                                <td>2018/45/01</td>
-                                <td>결제완료</td>
+                                <td><?php echo $order['title']?></td>
+                                <td><?php echo substr($order['reg_dt'],0,10)?></td>
+                                <td><?php echo $order_status[$order['status']]?></td>
                             </tr>
-                            <tr>
-                                <td>dkffhrekf</td>
-                                <td>2018/45/01</td>
-                                <td>결제완료</td>
-                            </tr>
+                            <?php }?>
                         </table>
                     </div>
                 </div>
@@ -44,19 +41,22 @@
                         </div>
                         <br>
                         <table>
+                            <tr>
                             <th>주문</th>
-                            <th>날짜</th>
+                            <th>시작일</th>
+                            <th>종료일</th>
+                            <th>아이</th>
                             <th>상태</th>
-                            <tr>
-                                <td>dkffhrekf</td>
-                                <td>2018/45/01</td>
-                                <td>결제완료</td>
                             </tr>
+                            <?php foreach($subscribes as $key => $data){?>
                             <tr>
-                                <td>dkffhrekf</td>
-                                <td>2018/45/01</td>
-                                <td>결제완료</td>
+                                <td><?php echo $data['title']?></td>
+                                <td><?php echo $data['start_date']?></td>
+                                <td><?php echo $data['end_date']?></td>
+                                <td><?php echo $data['name']?></td>
+                                <td><?php echo $subscribe_status[$data['status']]?></td>
                             </tr>
+                            <?php }?>
                         </table>
                     </div>
                 </div>

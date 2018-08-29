@@ -77,7 +77,7 @@
         </div>
     </section>
 
-    <section class="main-product-introduction">
+    <section class="main-product-introduction" id="goods">
         <div class="sub-product-introduction">
             <div class="big-title">이 달의 <strong>"먼치세트"</strong></div>
             <div class="select-pet-area">
@@ -87,19 +87,24 @@
 
             <?php if(!empty($parentGoods)) { ?>
             <?php foreach($parentGoods as $pkey => $p_goods) { ?>
-            <div id="munch-set-<?=$p_goods['pet_type']?>" style="display:<?php echo ($pkey==0) ? 'block' : 'none'?>">
+            <div id="munch-set-<?=$p_goods['pet_type']?>" <?php echo ($pkey==0) ? 'style="display:block"' : 'style="display:none"'?>>
                 <div class="munch-set-img"><img src="<?=$p_goods['img_src']?>"></div>
                 <div class="goods-desc">
                     <ul>
                         <?php
                          if(!empty($childGoods)) {
-                         $idx=0;
-                         foreach($childGoods as $key => $goods) {
-                        $idx++;
-                        if($p_goods['pet_type']==$goods['pet_type']){?>
-                        <li data-goods_idx="<?=$goods['goods_idx']?>"><span>B<?=$idx+1?></span><?=$goods['title']?></li>
-                        <?php } ?>
-                        <?php } ?>
+                             $idx['C'] = 0;
+                             $idx['D'] = 0;
+                             foreach($childGoods as $key => $goods) {
+                                $petType = ($p_goods['pet_type']=='dog') ? 'D':'C';
+                                if($p_goods['pet_type']==$goods['pet_type']){
+                                $idx[$petType]++;
+                                ?>
+                                    <li data-goods_idx="<?=$goods['goods_idx']?>">
+                                        <span><?=$petType.$idx[$petType]?></span><?=$goods['title']?>
+                                    </li>
+                                <?php } ?>
+                            <?php } ?>
                         <?php } ?>
                     </ul>
                     <p id="point">※ 반려동물의 특성에 따라 구성품이 조금 다를 수 있습니다.</p>

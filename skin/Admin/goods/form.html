@@ -1,4 +1,11 @@
-<table>
+<style>
+    input[type="text"] {
+        width: 100%;
+    }
+</style>
+
+<table class="table table-bordered" id="dataTable" width="30%" cellspacing="0">
+    <tbody>
     <tr>
         <th>상품명</th>
         <td><input type="text" name="title" value="<?php echo !empty($goods['title']) ? $goods['title'] :''?>"
@@ -23,10 +30,10 @@
     <tr>
         <th>애완타입</th>
         <td><input type="radio" name="pet_type" id="pet_type_cat" value="cat" required
-                   checked="<?php echo !empty($goods['pet_type']) && $goods['pet_type']=='cat' ? 'checked' :''?>"><label
+                  <?php echo !empty($goods['pet_type']) && $goods['pet_type']=='cat' ? 'checked' :''?>><label
                 for="pet_type_cat">고양이</label>
             <input type="radio" name="pet_type" id="pet_type_dog" value="dog" required
-                   checked="<?php echo !empty($goods['pet_type']) && $goods['pet_type']=='dog' ? 'checked' :''?>"><label
+                  <?php echo !empty($goods['pet_type']) && $goods['pet_type']=='dog' ? 'checked' :''?>><label
                     for="pet_type_dog">개</label>
         </td>
     </tr>
@@ -78,12 +85,14 @@
     </tr>
     <tr>
         <th>사용유무</th>
-        <td><input type="radio" name="use_fl" value="y" id="use_fl_y"
+        <td>
+            <input type="radio" name="use_fl" value="y" id="use_fl_y"
             <?php echo (!empty($goods['use_fl']) && $goods['use_fl']=='y') ? 'checked' : ''?>>
             <label for="use_fl_y">사용</label>
             <input type="radio" name="use_fl" value="n" id="use_fl_n"
             <?php echo (!empty($goods['use_fl']) && $goods['use_fl']!='y') ? 'checked' : ''?>>
-            <label for="use_fl_n">미사용</label></td>
+            <label for="use_fl_n">미사용</label>
+        </td>
     </tr>
     <tr>
         <th>메인노출유무</th>
@@ -93,6 +102,17 @@
             <input type="radio" name="main_display" value="n" id="main_display_n"
                    <?php echo (!empty($goods['main_display']) && $goods['main_display']!='y') ? 'checked' : ''?>>
             <label for="main_display_n">미노출</label></td>
+    </tr>
+    <tr>
+        <th>패키지 유무</th>
+        <td>
+            <input type="radio" name="package_fl" value="y" id="package_fl_y"
+            <?php echo (!empty($goods['package_fl']) && $goods['package_fl']=='y') ? 'checked' : ''?>>
+            <label for="package_fl_y">유</label>
+            <input type="radio" name="package_fl" value="n" id="package_fl_n"
+            <?php echo (!empty($goods['package_fl']) && $goods['package_fl']!='y') ? 'checked' : ''?>>
+            <label for="package_fl_n">무</label></td>
+        </td>
     </tr>
     <tr>
         <th>패키지 구성품</th>
@@ -105,14 +125,14 @@
                 echo $v['title']."<br>";
             }
             }?>
-            <button type="button" id="selected">선택하기</button>
+            <button type="button" class="btn" id="selected">선택하기</button>
             <input type="input" readonly name="child_goods_idx" id="child_goods_idx" value="<?php echo !empty($child_goods_idx) ? implode(',',$child_goods_idx) : ''?>">
         </td>
     </tr>
+    </tbody>
 </table>
 
 <script type="text/javascript">
-
     $(document).ready(function () {
         $('#selected').on('click', function () {
             var pet_type = $('input[name=\'pet_type\']:checked').val();

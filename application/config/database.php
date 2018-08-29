@@ -74,7 +74,7 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-    'dsn'	=> '',
+    'dsn'	=> 'mysql:host=183.111.227.234;dbname=munch_db',
 //	'hostname' => '183.111.227.234',
     'hostname' => '183.111.227.234',
     'username' => 'munch',

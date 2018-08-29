@@ -111,6 +111,7 @@
         var addr2nd = $('input[name="addr2nd"]');
 
         $('.btn-cancel').on('click', function () {
+            $('input[type="text"]').val('');
             layer.hide();
         })
         search_addr_btn.on('click', function () {
@@ -131,10 +132,15 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    alert(data);
+                    if (data.responseText === 'success') {
+                        alert('주소 변경이 완료되었습니다.');
+                        layer.hide();
+                    } else {
+                        alert('주소 변경에 실패하였습니다. 잠시 후 재시도해주세요.');
+                    }
                 },
-                error: function (data) {
-                    alert(data);
+                error: function () {
+                    alert('주소 변경에 실패하였습니다. 잠시 후 재시도해주세요.');
                 }
             });
         });

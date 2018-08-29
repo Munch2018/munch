@@ -24,14 +24,14 @@
                                 <th>상태</th>
                                 <th>총계</th>
                             </tr>
-                            <!--<?php foreach($orders as $key => $order){?>-->
-                            <!--<tr>-->
-                                <!--<td><?php echo $data['goods_name']?></td>-->
-                                <!--<td><?php echo $data['reg_dt']?></td>-->
-                                <!--<td><?php echo $data['status']?></td>-->
-                                <!--<td><?php echo number_format($data['total_amount'])?></td>-->
-                            <!--</tr>-->
-                            <!--<?php }?>-->
+                            <?php foreach($results as $key => $order){?>
+                            <tr>
+                                <td><?php echo $order['title']?></td>
+                                <td><?php echo substr($order['reg_dt'],0,10)?></td>
+                                <td><?php echo $order_status[$order['status']]?></td>
+                                <td>&#8361; <?php echo number_format($order['total_amount'])?></td>
+                            </tr>
+                            <?php }?>
                         </table>
                     </div>
                 </div>

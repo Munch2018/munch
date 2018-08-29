@@ -1,0 +1,47 @@
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th>주문일자</th>
+            <th>주문번호</th>
+            <th>주문자</th>
+            <th>반려동물이름</th>
+            <th>주문상품</th>
+            <th>수량(개월)</th>
+            <th>금액</th>
+            <th>배송상태</th>
+            <th>주문상품 수정</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(!empty($orders)){?>
+        <?php foreach($orders as $key => $order){?>
+        <tr>
+            <th scope="row"><?php echo $key+1?></th>
+            <td><?php echo $order['reg_dt']?></td>
+            <td><?php echo $order['order_idx']?></td>
+            <td><?php echo $order['name']?></td>
+            <td><?php echo $order['pet_name']?></td>
+            <td><?php echo $order['title']?></td>
+            <td><?php echo $order['subscribe_month']?></td>
+            <td><?php echo number_format($order['total_amount'])?></td>
+            <td><?php echo $order_status[$order['status']]?></td>
+            <td>
+                <button type="button" class="chgChildGoods" data-goods_idx="<?php echo $order['goods_idx']?>">수정</button>
+            </td>
+        </tr>
+        <?php }?>
+        <?php }?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.chgChildGoods').on('click', function () {
+            var goods_idx = $(this).data('goods_idx');
+            window.open('/admin/orders/popupChildGoods/' + goods_idx, '', 'width=500,height=800');
+        })
+    })
+</script>

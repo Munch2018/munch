@@ -38,9 +38,7 @@ jQuery(document).ready(function () {
         elt.removeClass('box').addClass('box-selected');
     }
 
-    tabMenu.on('click', function () {
-        var elt = $(this);
-
+    var changeMenuBar = function (elt) {
         if (elt.hasClass('selected')) {
             return;
         }
@@ -51,20 +49,22 @@ jQuery(document).ready(function () {
         $('.' + elt.data('contents')).show();
 
         showOrHideStepBtn(elt);
-    });
+    };
 
     periodBox.on('click', function () {
         onClickBox($(this), periodBox);
+        nextBtn.click();
     });
     petImgBox.on('click', function () {
         onClickBox($(this), petImgBox);
+        nextBtn.click();
     });
 
     /**
      * 이전탭 이동
      */
     prevBtn.on('click', function () {
-        $('.tab-menu').find('li.selected').prev('li').click();
+        changeMenuBar($('.tab-menu').find('li.selected').prev('li'));
     });
 
     /**
@@ -78,24 +78,23 @@ jQuery(document).ready(function () {
 
             if (!pet_idx) {
                 alert('아이를 선택해주세요.');
-                tabMenu.eq(0).click();
+                changeMenuBar(tabMenu.eq(0));
                 return false;
             }
             if (!period) {
                 alert('구독 기간을 선택해주세요.');
-                tabMenu.eq(1).click();
+                changeMenuBar(tabMenu.eq(1));
                 return false;
             }
 
             location.href = '/subscribe/add?pet_idx=' + pet_idx + '&period=' + period;
         }
-
-        selectedTab.next('li').click();
+        changeMenuBar(selectedTab.next('li'));
     });
 
     var getBoxSelected = function (type) {
         return $('.tab-contents.' + type).find('.box-selected');
     }
 
-    tabMenu.eq(0).click();
+    changeMenuBar(tabMenu.eq(0));
 })

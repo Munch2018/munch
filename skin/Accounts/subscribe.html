@@ -34,13 +34,15 @@
                                 <td><?php echo $data['schedule_dt']?></td>
                                 <td>&#8361; <?php echo number_format($data['total_amount'])?></td>
                                 <td>
-                                    <?php if($data['status']==='stop'){?>
-                                    <button type="button" class="restart-btn">다시시작</button>
-                                    <?php } else {?>
-                                    <button type="button" class="change-addr-btn">주소변경</button>
-                                    <button type="button" class="stop-btn">일시중지</button>
-                                    <button type="button" class="cancel-btn">취소</button>
-                                    <?php }?>
+                                    <div style="width:80%;margin: auto;">
+                                        <?php if($data['status']==='active'){?>
+                                        <button type="button" class="change-addr-btn">주소변경</button>
+                                        <button type="button" class="pause-btn">일시중지</button>
+                                        <button type="button" class="cancel-btn">취소</button>
+                                        <?php } elseif(in_array($data['status'],['pause','cancel'])){?>
+                                        <button type="button" class="restart-btn">다시시작</button>
+                                        <?php } ?>
+                                    </div>
                                 </td>
                             </tr>
                             <?php }?>
@@ -55,17 +57,81 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-          $('.stop-btn').on('click', function () {
+        $('.pause-btn').on('click', function () {
             if (!confirm('구독을 일시중지 하시겠습니까?')) {
                 return false;
             }
-            var subscribe_idx = $(this).closest('tr').data('subscribe-idx');
+            var subscribe_idx = $(this).closest('tr').data('subscribe_idx');
+            $.ajax({
+                method: 'get',
+                url: '/accounts/pauseSubscribe',
+                data: {
+                    subscribe_idx: subscribe_idx
+                },
+                complete: function (data) {
+                    if (data.responseText === 'success') {
+                        alert('구독이 정지되었습니다.');
+                    } else {
+                        alert('구독 정지가 실패하였습니다. 잠시 후 재시도해주세요.');
+                    }
+                },
+                complete: function () {
+                    location.reload();
+                }
+            })
         });
         $('.cancel-btn').on('click', function () {
             if (!confirm('구독을 취소하시겠습니까?')) {
                 return false;
             }
-            var subscribe_idx = $(this).closest('tr').data('subscribe-idx');
+            var subscribe_idx = $(this).closest('tr').data('subscribe_idx');
+            $.ajax({
+                method: 'get',
+                url: '/accounts/cancelSubscribe',
+                data: {
+                    subscribe_idx: subscribe_idx
+                },
+                complete: function (data) {
+                    if (data.responseText === 'success') {
+                        alert('구독이 정상적으로 취소되었습니다.');
+                    } else {
+                        alert('구독 취소가 실패하였습니다. 잠시 후 재시도해주세요.');
+                    }
+                },
+                error: function () {
+                    alert('구독 취소가 실패하였습니다. 잠시 후 재시도해주세요.');
+                },
+                complete: function () {
+                    location.reload();
+                }
+            })
+        });
+
+        $('.restart-btn').on('click', function () {
+            if (!confirm('구독을 재시작하시겠습니까?')) {
+                return false;
+            }
+            var subscribe_idx = $(this).closest('tr').data('subscribe_idx');
+            $.ajax({
+                method: 'get',
+                url: '/accounts/restartSubscribe',
+                data: {
+                    subscribe_idx: subscribe_idx
+                },
+                complete: function (data) {
+                    if (data.responseText === 'success') {
+                        alert('구독이 재시작되었습니다.');
+                    } else {
+                        alert('구독 재시작이 실패하였습니다. 잠시 후 재시도해주세요.');
+                    }
+                },
+                error: function () {
+                    alert('구독 재시작이 실패하였습니다. 잠시 후 재시도해주세요.');
+                },
+                complete: function () {
+                    location.reload();
+                }
+            })
         });
 
         $('.change-addr-btn').on('click', function () {
@@ -85,6 +151,5 @@
             layer.find('input[name="subscribe_idx"]').val(subscribe_idx);
             layer.show();
         });
-
     })
 </script>

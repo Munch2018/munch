@@ -4,6 +4,8 @@
     <hr class="title-line">
     <div class="contents">
         <form action="/order/add" id="orderForm" method="post">
+            <input type="hidden" name="address_idx" value="<?php echo !empty($address[0]['address_idx']) ? $address[0]['address_idx'] : ''; ?>">
+            <input type="hidden" name="subscribe_idx" value="<?php echo $subscribe_info['subscribe_idx']; ?>">
             <div class="ord-left brd">
                 <div class="tbl-title">
                     <span style="float: left;"><b>· 주문자 정보</b></span>
@@ -12,7 +14,7 @@
                     <div class="input-set">
                         <label>국 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 가</label>
                         <div class="input-box">
-                            <input type="text" name="billingCity" class="input-text" value="<?php !empty($address[0]['nation']) ? $address[0]['nation'] : '' ?>" required>
+                            <input type="text" name="nation" class="input-text" value="<?php echo !empty($address[0]['nation']) ? $address[0]['nation'] : '' ?>" required>
                         </div>
                     </div>
                     <div class="input-set">
@@ -25,18 +27,18 @@
                         <div class="input-set">
                             <label>주 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 소</label>
                             <div class="input-box">
-                                <input type="text" name="buyer_zipcode" class="input-text post-addr" value="<?php !empty($address[0]['zipcode']) ? $address[0]['zipcode'] : '' ?>" required disabled>
+                                <input type="text" name="zipcode" class="input-text post-addr" value="<?php echo !empty($address[0]['zipcode']) ? $address[0]['zipcode'] : '' ?>" required readonly>
                                 <button type="button" class="addr-search">주소검색</button>
                             </div>
                         </div>
                         <div class="input-set">
                             <label>상 세 주 소</label>
                             <div class="input-box">
-                                <input type="text" name="buyer_addr1st" class="input-text addr"
-                                       value="<?php !empty($address[0]['addr1st']) ? $address[0]['addr1st'] : '' ?>"
-                                       required disabled>&nbsp;
-                                <input type="text" name="buyer_addr2nd" class="input-text detail-addr"
-                                       value="<?php !empty($address[0]['_addr2nd']) ? $address[0]['_addr2nd'] : '' ?>"
+                                <input type="text" name="addr1st" class="input-text addr"
+                                       value="<?php echo !empty($address[0]['addr1st']) ? $address[0]['addr1st'] : '' ?>"
+                                       required readonly>&nbsp;
+                                <input type="text" name="addr2nd" class="input-text detail-addr"
+                                       value="<?php echo !empty($address[0]['addr2nd']) ? $address[0]['addr2nd'] : '' ?>"
                                        required>
                             </div>
                         </div>
@@ -65,7 +67,7 @@
                     <div id="recipient-addr"></div>
                     <div>
                         주문메모
-                        <textarea rows=5 placeholder="반려견 이름 표기를 영문으로 하고 싶은 경우, 또는 알러지 등으로 섭취가 불가능한 식재료가 있을 경우에는 반드시 적어주시길 바랍니다."></textarea>
+                        <textarea name="memo" rows=5 placeholder="반려견 이름 표기를 영문으로 하고 싶은 경우, 또는 알러지 등으로 섭취가 불가능한 식재료가 있을 경우에는 반드시 적어주시길 바랍니다."></textarea>
                     </div>
                 </div>
             </div>

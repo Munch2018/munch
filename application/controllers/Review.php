@@ -20,34 +20,22 @@ class Review extends CI_Controller
         $this->lists();
     }
 
-    public function lists($type = "dog")
+    public function lists()
     {
         // 회원에 해당되는 pet 정보 가져오기
         // order 기준으로 리뷰 써야되서 order 에대한 정보 가져오기
         $this->load->model(
             array(
+                'pet_manage',
                 'order_model',
                 'Goods'
             )
         );
         $data = array();
-        $data['type'] = $type;
 
-        $order_list = $this->order_model->getOrders(array('where' => array('order.member_idx' => $this->session->userdata('member_idx'), 'goods.use_fl' => 'y'), 'group_by' => 'order_detail.goods_idx'));
-
-        if (!empty($order_list)) {
-            $data['goods_list'] = array();
-
-            foreach ($order_list as $key => $value) {
-                //goods_name && goods_idx && goods_img 가지고와서 뿌려주기
-                $data['goods_list'][$value['pet_type']][$key]['goods_idx'] = $value['goods_idx'];
-                $data['goods_list'][$value['pet_type']][$key]['goods_img'] = $value['img_src'];
-                $data['goods_list'][$value['pet_type']][$key]['goods_name'] = $value['goods_name'];
-                $data['goods_list'][$value['pet_type']][$key]['goods_title'] = $value['title'];
-                $data['goods_list'][$value['pet_type']][$key]['sell_price'] = $value['sell_price'];
-            }
-
-        }
+        $member_idx = $this->session->userdata('member_idx');
+        $data['pet_list'] = $this->pet_manage->getPets($member_idx);
+        $data['goods_list'] = $this->order_model->getOrders();
 
         $this->load->view('common/header.html');
         $this->load->view('review/index.html', $data);

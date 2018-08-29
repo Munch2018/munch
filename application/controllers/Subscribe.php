@@ -12,10 +12,10 @@ class Subscribe extends CI_Controller
 
     public function index()
     {
-        $data['subscribe_list'] = $this->subscribe->getSubscribeGoodsPrice();
         $this->load->model('Pet_manage', 'petmanage');
         $member_idx = $this->session->userdata('member_idx');
 
+        $data['subscribe_list'] = $this->subscribe->getSubscribeGoodsPrice();
         $data['pets'] = $this->petmanage->getPets($member_idx);
 
         $this->load->view('common/header.html');
@@ -23,55 +23,21 @@ class Subscribe extends CI_Controller
         $this->load->view('common/footer.html');
     }
 
-    public function order()
-    {
-        $this->load->model('order_model', 'order');
-
-        $this->load->view('common/header.html');
-        $this->load->view('Subscribe/order.html', $data);
-        $this->load->view('common/footer.html');
-    }
-
+    /**
+     * 구독 추가
+     */
     public function add()
     {
         $params = $this->input->get();
-        $subscribe_idx = 0;
+        $this->load->service('subscribe_service', '', true);
 
-        $goods =  $this->subscribe->getGoodsToBuy($params['pet_idx']);
+        $subscribe_idx = $this->subscribe_service->insert($params);
 
-        try {
-            $this->subscribe->db->trans_begin();
-
-            $member_idx = $this->session->userdata('member_idx');
-            $subscribe_idx = $this->subscribe->insertSubscribe([
-                'pet_idx' => $params['pet_idx'],
-                'period' => $params['period'],
-                'member_idx' => $member_idx,
-                'goods_idx' => $goods[0]['goods_idx'],
-                'buy_count' => 1
-            ]);
-
-            for ($sequence = 1; $sequence <= $params['period']; $sequence++) {
-                $this->subscribe->insertSubscribeDetail([
-                    'subscribe_idx' => $subscribe_idx,
-                    'member_idx' => $member_idx,
-                    'sequence' => $sequence,
-                    'schedule_dt' => date('Y-m-d', strtotime("+" . $sequence . " month")),
-                ]);
-            }
-
-            $this->subscribe->db->trans_complete();
-        } catch (Exception $e) {
-            $this->subscribe->db->trans_rollback();
+        if (!empty($subscribe_idx)) {
+            redirect('/order/index/' . $subscribe_idx);
+        } else {
             alert('오류가 발생했습니다. 구독 정보를 다시 선택해주세요.', '/subscribe');
         }
-
-        redirect('/order/index/' . $subscribe_idx);
-    }
-
-    public function popupAddress()
-    {
-
     }
 }
 

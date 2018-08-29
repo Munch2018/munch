@@ -51,6 +51,15 @@ class Goods extends CI_Model
             $bind['goods_idx'] = $params['goods_idx'];
         }
 
+        if (!empty($params['parent_idx'])) {
+            $where[] = ' gr.parent_idx = ? ';
+            $bind['parent_idx'] = $params['parent_idx'];
+        }
+        if(!empty($params['use_fl'])){
+            $where[] = ' gr.use_fl = ? ';
+            $bind['use_fl'] = $params['use_fl'];
+        }
+
         if (!empty($where)) {
             $whereStr = ' WHERE ' . implode(' and ', $where);
         }

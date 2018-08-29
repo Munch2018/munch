@@ -1,0 +1,35 @@
+<div class="table-responsive">
+    <form>
+        <div>
+            <?php if(!empty($allChildGoods)){?>
+            <?php foreach($allChildGoods as $key => $goods){?>
+            <input type="checkbox" name="goods_idx[]" id="goods_<?php echo $goods['goods_idx']?>"
+                   value="<?php echo $goods['goods_idx']?>"
+                    <?php echo ($goods_idx===$goods['parent_idx']) ? 'checked' : ''?>>
+            <label for="goods_<?php echo $goods['goods_idx']?>"><?php echo $goods['title']?></label>
+            <br>
+            <?php } ?>
+            <?php } ?>
+        </div>
+        <button type="button" id="selected">선택</button>
+        <button type="reset">초기화</button>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#selected').on('click', function () {
+            var goods_idx = $('input[name="goods_idx[]"]');
+            var selected = [];
+
+            for (var i = 0; i < goods_idx.length; i++) {
+                if (!!goods_idx[i].checked) {
+                    selected.push(goods_idx[i].getAttribute('value'));
+                }
+            }
+
+            $("#child_goods_idx", opener.document).val(selected);
+            self.close();
+        })
+    })
+</script>

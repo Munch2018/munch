@@ -6,9 +6,11 @@
  * Time: 오후 11:35
  */
 
-class Member_model extends CI_Model{
+class Member_model extends CI_Model
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -105,5 +107,33 @@ class Member_model extends CI_Model{
         }
 
         return true;
+    }
+
+    public function getAddress($member_idx = 0, $address_idx = 0)
+    {
+        $this->db->select('address_idx, zipcode, addr1st, addr2nd, sort, nation');
+        $this->db->from('address');
+        $this->db->where('member_idx', $member_idx);
+        $this->db->where('use_fl', 'y');
+        if(!empty($address_idx)){
+            $this->db->where('address_idx',$address_idx);
+        }
+        $this->db->order_by('sort', 'ASC');
+
+        return $this->db->get()->result_array();
+    }
+
+    public function insertAddress($data)
+    {
+        if (empty($data)) {
+            return false;
+        }
+
+        $data['use_fl'] = 'y';
+        $data['reg_dt'] = date('Y-m-d H:i:s');
+        $data['reg_idx'] = $data['member_idx'];
+
+        $this->db->insert('address', $data);
+        return $this->db->insert_id();
     }
 }
