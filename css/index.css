@@ -87,6 +87,8 @@
 }
 
 .main-guide .sub-guide .contents .big-title {
+    display: block;
+    margin-bottom: 9px;
     font-size: 52px;
 }
 
@@ -100,6 +102,7 @@
 }
 
 .main-explanation {
+    background-image: url("../img/main/explanation.jpg");
     height: 1055px;
     background-color: #BE9310;
 }
@@ -112,17 +115,17 @@
 .main-explanation .sub-explanation .big-title {
     font-size: 52px;
     text-align: center;
-    padding: 77px 0px 47px 0px;
+    padding: 77px 0px 58px 0px;
 }
 
 .main-explanation .sub-explanation .square-box {
-    min-height: 637px;
+    min-height: 523px;
     background-color: #000000;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.77);
     text-align: center;
     width: 80%;
     margin: auto;
-    padding-top: 86px;
+    padding-top: 110px;
 }
 
 .main-explanation .sub-explanation .square-box #line-horizon {
@@ -159,36 +162,59 @@
 .main-explanation .sub-explanation .square-box .desc-icon, .desc-txt {
     display: inline-block;
     vertical-align: top;
+    padding-right: 3px;
+}
+.main-explanation .sub-explanation .square-box .desc-price{
+    color: #FFB900;
+    display: inline-block;
 }
 
+.main-explanation .sub-explanation .square-box .desc-price:first-child {
+    margin-left: 30px;
+}
+
+.main-explanation .sub-explanation .square-box .desc-price .normal {
+    display: block;
+    font-size: 25px;
+    color: #FFFAF6;
+    padding-bottom: 20px;
+}
+.main-explanation .sub-explanation .square-box .desc-price .point{
+    font-size: 41px;
+}
 .main-product-introduction {
-    height: 1828px;
+    height: 100%;
     background-color: #FFF8EE;
 }
 
 .main-product-introduction .sub-product-introduction {
     max-width: 1220px;
-    margin: 0 auto;
+    margin: 0 auto 100px auto;
     text-align: center;
-    height: 1474px;
+    height: 100%;
 }
 
 .main-product-introduction .sub-product-introduction .big-title {
     font-size: 52px;
-    padding: 40px 0px 20px 0px;
+    padding: 90px 0px 36px 0px;
 }
 
 .main-product-introduction .sub-product-introduction .select-pet-area {
     margin: auto;
     padding-bottom: 50px;
+    display: inline-flex;
 }
 
+
 .main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     border: 2px solid #462B78;
     width: 270px;
-    font-weight: bold;
+    height: 73px;
     vertical-align: middle;
+    color:#49316F;
+background-color: #ffffff;
 }
 
 .main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet:first-child {
@@ -199,11 +225,20 @@
     border-radius: 0px 50px 50px 0px;
 }
 
-.main-product-introduction .sub-product-introduction .select-pet-area img {
-    width: 55px;
-    height: 55px;
+.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet.on{
+    background-color: #462B78;
+    color:#ffffff;
 }
 
+.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet div{
+    margin: auto;
+    display: inline-flex;
+    align-items: center;
+}
+
+.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet img {
+    margin-right: 10px;
+}
 .main-product-introduction .sub-product-introduction .munch-set-img {
     margin: 0 auto;
     text-align: center;
@@ -259,42 +294,6 @@
     text-align: center;
     margin: auto;
     padding-top: 60px;
-}
-
-.main-product-introduction .sub-production-interrogation div {
-    display: inline-grid;
-}
-
-.main-product-introduction .sub-production-interrogation div p {
-    text-align: left;
-    margin: 0px;
-    padding-bottom: 10px;
-}
-
-.main-product-introduction .sub-production-interrogation div .big-txt {
-    margin: 0px;
-    text-align: left;
-    font-weight: bold;
-    font-size: 22px;
-}
-
-.main-product-introduction .sub-production-interrogation div .small-txt {
-    margin: 0px;
-    text-align: left;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.main-product-introduction .sub-production-interrogation img {
-    border-radius: 21px;
-}
-
-.btn-purple-round {
-    background-color: #462B78;
-    color: #ffffff;
-    border-radius: 50px;
-    padding: 20px 27px 20px 27px;
-    font-weight: bold;
 }
 
 /* goods detail frame */

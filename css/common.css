@@ -119,9 +119,10 @@ a {
 
 .container {
     margin: auto;
-    height: 4531px;
+    height: 100%;
     text-align: center;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .container .title:first-child {
@@ -302,3 +303,66 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
 .footer .sub_footer div{display:inline-block; line-height:7px; font-size:13px;}
 .footer .sub_footer {margin-top:57px;     position: relative;     display: inline-block;     text-align: left;    width: 1197px;}
 .footer .sub_footer .logo{position:relative; top:-44px;}
+
+.btn-purple-round {
+    background-color: #462B78;
+    color: #ffffff;
+    border-radius: 50px;
+    padding: 20px 27px 20px 27px;
+    font-weight: bold;
+}
+
+#main_floating {
+    position: fixed;
+    height: 100px;
+    width: 100%;
+    display: block;
+    bottom: 0px;
+    z-index: 99;
+}
+#main_floating *{
+    box-sizing: border-box;
+}
+
+#main_floating .inner {
+    min-width: 960px;
+    background-image: url(../img/common/gnb-background.jpg);
+    margin: auto;
+    width: 80%;
+    height: 100%;
+    display: flex;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+#main_floating .inner .menu {
+display: block;
+    text-align: center;
+    width: 65%;
+    max-width: 700px;
+    font-size: 17px;
+}
+#main_floating .inner .btn_area{
+    width: 35%;
+    display: flex;
+    margin: auto;
+}
+#main_floating .inner ul{
+    padding-top: 14px;
+    display: inline-flex;
+}
+#main_floating .inner ul li{
+    display: grid;
+    padding-left: 10px;
+    align-items: center;
+    vertical-align: middle;
+    font-weight: bold;
+    color: #FFFEFC;
+    cursor: pointer;
+}
+
+#main_floating .inner .btn-purple-round {
+    display: inline-block;
+    float: right;
+    padding: 25px 50px;
+}

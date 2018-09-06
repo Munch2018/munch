@@ -62,17 +62,14 @@ class Review_model extends CI_Model{
             $this->setWhere($where);
         }
 
-//        return $this->db->get('review')->result_array();
         $return = $this->db->get('review')->result_array();
-        echo '<pre>';
-        print_r($where);
-        print_r($this->db->last_query());
-        echo '</pre>';
+       // echo $this->db->last_query();
         return $return;
     }
 
     public function getCount($where = [])
     {
+
         if (!empty($where)) {
             if (isset($where['offset'])) {
                 unset($where['offset']);
@@ -135,9 +132,7 @@ class Review_model extends CI_Model{
                 return false;
             } else {
                 $this->db->trans_commit();
-                echo '<pre>';
-                print_r($this->db->last_query());
-                echo '</pre>';
+
                 return true;
             }
         } else {
@@ -180,4 +175,7 @@ class Review_model extends CI_Model{
         return false;
 
     }
+
+
+
 }

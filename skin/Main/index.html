@@ -8,9 +8,6 @@
                 <p>내 아이의 한 달 간식,<br><span class="point">먼치</span>하세요!</p>
                 <p>내 반려동물을 위한 간식 정기배송 서비스<br>우리 아이들이 잘 먹는 건강한 간식들을 단 한번의 주문으로 매달 편하게 받아보세요.</p>
             </span>
-            <div class="btn-munch-area">
-                <a href="/subscribe" class="btn-munch"><strong>지금 먼치하기 ></strong></a>
-            </div>
         </div>
     </section>
 
@@ -22,7 +19,6 @@
                     <span class="small-title">새로운 간식을 경험하세요!</span>
                 </p>
                 <img src="/img/main/guide.jpg">
-                <p><a href="/subscribe" class="btn-purple-round">간식시간 갖기 > </a></p>
             </div>
         </div>
     </section>
@@ -31,10 +27,10 @@
         <div class="sub-explanation">
             <div class="big-title"><strong>"먼치세트"</strong> 안에는?</div>
             <div class="square-box">
-                <!--                <hr id="line-horizon">-->
-                <!--                <hr id="line-vertical">-->
+                                <hr id="line-horizon">
+                                <hr id="line-vertical">
                 <div class="desc">
-                    <div class="desc-icon"><img src="/img/main/desc-icon.jpg"></div>
+                    <div class="desc-icon"><img src="/img/main/munch_icon1.png"></div>
                     <div class="desc-txt">
                         <p>건강한 간식만 엄선</p>
                         100% 원산지 표시, 전제품 원재료 및<br>
@@ -44,7 +40,7 @@
                 </div>
 
                 <div class="desc">
-                    <div class="desc-icon"><img src="/img/main/desc-icon.jpg"></div>
+                    <div class="desc-icon"><img src="/img/main/munch_icon2.png"></div>
                     <div class="desc-txt">
                         <p>맞춤 간식 서비스</p>
                         반려동물의 특이사항과 기호를 바탕으로<br>
@@ -54,7 +50,7 @@
                 </div>
 
                 <div class="desc">
-                    <div class="desc-icon"><img src="/img/main/desc-icon.jpg"></div>
+                    <div class="desc-icon"><img src="/img/main/munch_icon3.png"></div>
                     <div class="desc-txt"><p>총 5만원 상당의 간식</p>
                         먼치박스는 반려동물에 맞는 간식 10종으로<br>
                         구성됩니다. 총 5만원 상당의 구성을 15,000<br>
@@ -62,7 +58,7 @@
                     </div>
                 </div>
                 <div class="desc">
-                    <div class="desc-icon"><img src="/img/main/desc-icon.jpg"></div>
+                    <div class="desc-icon"><img src="/img/main/munch_icon4.png"></div>
                     <div class="desc-txt"><p>무료배송 / 위약금 0원</p>
                         배송비 0원! 무료배송으로 다양한 간식들을<br>
                         받아보세요. 또한, 구독기간 중 사정상 취소를<br>
@@ -71,9 +67,11 @@
                 </div>
                 <div class="desc-price">
                     <span class="normal">이 모든 것이</span>
-                    <span class="point">월 15,000원</span>12개월 구독 시
+                    <span class="point">월 15,000원</span>
                 </div>
-            </div>
+                <div class="desc-price">
+                    12개월 구독 시
+                </div>
         </div>
     </section>
 
@@ -81,8 +79,8 @@
         <div class="sub-product-introduction">
             <div class="big-title">이 달의 <strong>"먼치세트"</strong></div>
             <div class="select-pet-area">
-                <div class="btn-select-pet dog"><img src="/img/main/dog-icon.png">강아지</div>
-                <div class="btn-select-pet cat"><img src="/img/main/cat-icon.png">고양이</div>
+                <div class="btn-select-pet dog on"><div><img src="/img/common/dduri_border.png">강아지</div></div>
+                <div class="btn-select-pet cat"><div><img src="/img/common/yeti_border.png">고양이</div></div>
             </div>
 
             <?php if(!empty($parentGoods)) { ?>
@@ -112,41 +110,33 @@
             </div>
             <?php } ?>
             <?php } ?>
-            <div>
-                <p><a href="/subscribe" class="btn-purple-round">먼치 시작하기</a></p>
-            </div>
-        </div>
-        <div class="sub-production-interrogation">
-            <div>
-                <a href="qna">
-                    <p><span class="big-txt">자주 묻는 질문</span><span class="small-txt">먼치에 질문이 있으신가요?</span></p>
-                    <img src="/img/main/fna_img.jpg">
-                </a>
-            </div>
-            <div>
-                <a href="/subscribe">
-                    <p><span class="big-txt">뇸뇸, 먼치하기</span><span class="small-txt">내 아이의 즐거운 간식시간</span></p>
-                    <img src="/img/main/fna_img2.jpg">
-                </a>
-            </div>
         </div>
     </section>
     <iframe src="" id="goods-detail-frame" frameborder="0" scrolling="no"></iframe>
 </div>
-
 
 <script type="text/javascript">
     var dimmed = $('#dimmed');
     var frame = $('#goods-detail-frame');
     var goods_src = 'main/goodsDetail?goods_idx=';
     var goods_li = $('.goods-desc').find('li');
+    var btns = $('.btn-select-pet');
+
+    $(window).scroll(function () {
+        var target = $("#main_floating");
+        target.css('bottom', '0px');
+    });
 
     $(document).ready(function () {
         $('.btn-select-pet.dog').on('click', function () {
+            btns.removeClass('on');
+            $(this).addClass('on');
             $('#munch-set-cat').hide();
             $('#munch-set-dog').show();
         })
         $('.btn-select-pet.cat').on('click', function () {
+            btns.removeClass('on');
+            $(this).addClass('on');
             $('#munch-set-dog').hide();
             $('#munch-set-cat').show();
         })

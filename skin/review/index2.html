@@ -1,0 +1,370 @@
+<style type="text/css">
+    .container {
+        width: 80%;
+        text-align: center;
+    }
+
+    .fix {
+        display: block !important;
+        margin: auto !important;
+    }
+
+    .box, .box-selected {
+        height: 100%;
+        width: 214px;
+        height: 186px;
+        border: 2px solid black;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .box-name {
+        text-align: center;
+    }
+
+    .box-selected {
+        border: 2px solid #EA4241;
+    }
+
+    .box-img, .box img, .box-selected img {
+        height: auto;
+        width: 100%;
+    }
+
+    .box .edit_img, .box-selected .edit_img {
+        overflow: hidden;
+        width: 212px;
+        height: 43px;
+        position: absolute;
+    }
+
+    .box .edit_img .edit_img_btn, .box-selected .edit_img .edit_img_btn {
+        width: 43px;
+        height: 43px;
+        float: right;
+    }
+
+    .pets_info {
+        overflow: hidden;
+        height: 100%;
+        display: block;
+        padding: 45px 0 65px 0;
+        border-bottom: 2px solid #444444;
+        text-align: left;
+    }
+
+    .goods_list {
+        padding: 65px 0;
+    }
+
+    .goods_list .tit {
+        color: #452b78;
+        font-size: 26px;
+    }
+
+    .goods_list ul {
+        padding: 20px 0 0 0;
+        margin: 0px;
+        display: flex;
+        list-style: none;
+    }
+
+    .goods_list ul li {
+        display: grid;
+        margin-right: 7px;
+        border-radius: 4px;
+        width: 226px;
+        height: 294px;
+        border: 1px solid #CDCDCD;
+        overflow: hidden;
+    }
+
+    .goods_list ul li .goods_img {
+        height: 170px;
+        width: 100%;
+    }
+
+    .goods_list ul li .goods_name {
+        height: 45px;
+        font-size: 14px;
+        font-weight: bold;
+        border-top: 1px solid #CDCDCD;
+        border-bottom: 1px solid #CDCDCD;
+    }
+
+    .goods_list ul li .comment {
+        cursor: pointer;
+        color: #9A9A9A;
+        font-size: 12px;
+        width: 45%;
+    }
+
+    .goods_list ul li .like {
+        cursor: pointer;
+        color: #9A9A9A;
+        font-size: 12px;
+        width: 55%;
+    }
+
+    .goods_list ul li .comment label, .goods_list ul li .like label {
+        float: left;
+    }
+
+    .goods_list ul li .comment_like_heart {
+        position: relative;
+        float: left;
+        display: block;
+        width: 18px;
+        height: 18px;
+        background: url(/img/review/no_heart.png) no-repeat;
+    }
+
+    .goods_list ul li .like.on .comment_like_heart {
+        background: url(/img/review/heart.png) no-repeat;
+    }
+
+    .goods_list ul li .like.on label {
+        color: #F8423E;
+    }
+
+    .goods_list ul li .comment .comment_write {
+        position: relative;
+        float: left;
+        display: block;
+        width: 18px;
+        height: 14px;
+        background: url(/img/review/no_comment.png) no-repeat;
+    }
+
+    .goods_list ul li .comment.on .comment_write {
+        background: url('/img/review/comment.png') no-repeat;
+    }
+
+    .goods_list ul li .comment.on label {
+        color: #422B73;
+    }
+
+    #review_layer {
+        display: block;
+        width: 430px;
+        height: 290px;
+        position: fixed;
+        top: 100px;
+        margin: auto;
+        background-color: #ffffff;
+        font-size: 17px;
+    }
+
+    #review_layer * {
+        box-sizing: border-box;
+    }
+
+    #review_layer .contents {
+        width: 100%;
+        height: 100%;
+    }
+
+    #review_layer .header {
+        padding: 15px;
+        width: 100%;
+        height: 50px;
+        background-color: #462B78;
+        color: #ffffff;
+    }
+
+    #review_layer .header .title {
+        float: left
+    }
+
+    #review_layer .header .close {
+        float: right
+    }
+
+    #review_layer .body {
+        height: 168px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    #review_layer .body .review_form {
+        display: flex;
+    }
+
+    #review_layer .body .review_explain {
+        display: grid;
+    }
+
+    #review_layer .bottom {
+        height: 66px;
+        width: 100%;
+        text-align: center;
+    }
+
+    #review_layer .rating {
+        overflow: hidden;
+        display: inline-block;
+    }
+
+    #review_layer .rating-star, .goods_list .rating-star {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: url(/img/common/gray_star.png) 0 -16px;
+    }
+
+    #review_layer .rating-star.on, .goods_list .rating-star.on {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: url(/img/common/star.png) 0 -16px;
+    }
+
+    #review_layer .rating-input {
+        float: right;
+        width: 16px;
+        height: 16px;
+        padding: 0;
+        margin: 0 0 0 -16px;
+        opacity: 0;
+    }
+</style>
+
+<div class="container">
+    <h2 class="title">간식 평가하기</h2>
+    <div class="fix"></div>
+
+    <div class="pets_info">
+        <?php echo $pet_idx;?>
+        <?php if (!empty($pet_list)) : ?>
+        <?php foreach($pet_list as $k => $pet){?>
+        <div class="<?php echo ($pet_idx==$pet['pet_idx']) ? 'box-selected' : 'box'; ?>"
+             data-pet_idx="<?php echo $pet['pet_idx']?>">
+            <div class="edit_img">
+                <a href="/petManage/index/<?php echo $pet['pet_idx']?>"><img class="edit_img_btn"
+                                                                             src="/img/common/edit_btn.png"></a>
+            </div>
+            <div class="box-img">
+                <?php if($pet['img_src']){ ?>
+                <img src="<?php echo $pet['img_src']?>">
+                <?php } elseif($pet['pet_type']=='cat') {?>
+                <img src="/img/pet-img/pet-picture1.jpg">
+                <?php } else {?>
+                <img src="/img/pet-img/pet-picture2.jpg">
+                <?php }?>
+            </div>
+            <div class="box-name">애긔</div>
+        </div>
+        <?php }?>
+        <?php endif; ?>
+        <a href="/petManage/"><img src="/img/review/add_btn.png" alt="펫 추가"></a>
+    </div>
+    <div class="goods_list">
+    </div>
+</div>
+
+<form action="/review/register/" method="post" id="review_layer" name="review_form">
+    <input type="hidden" name="goods_idx" value="">
+    <input type="hidden" name="review_idx" value="">
+    <input type="hidden" name="pet_idx" value="">
+    <input type="hidden" name="score_level" value="">
+    <div class="contents">
+        <div class="header">
+            <div class="title">코멘트 쓰기</div>
+            <div class="close">
+                <img src="/img/common/close.png">
+            </div>
+        </div>
+        <div class="body">
+            <div class="review_form">
+                <div>
+                    <img src="" class="goods_img" alt="이미지"
+                         style="width:135px; height:125px; margin-right:15px;">
+                </div>
+                <div class="review_explain">
+                                <span class="star_rating">
+                                    <span class="rating">
+                                        <?php for($i=1;$i<=5;$i++) {?>
+                                        <input type="radio" class="rating-input"
+                                               id="rating-input-1-<?php echo $i?>" name="score_level">
+                                            <label for="rating-input-1-<?php echo $i?>" class="rating-star"
+                                                   value="<?php echo $i?>"></label>
+                                        <?php } ?>
+                                    </span>
+                                </span>
+                    <span class="explain">알록달록 간식에 대한 생각을 자유롭게 표현해 주세요.</span>
+                    <textarea class="form-control" name="comment"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <button type="submit" class="btn btn-primary">확인</button>
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var boxs = $('.box,.box-selected');
+        var goods_list = $('.goods_list');
+
+        boxs.on('click', function () {
+            onClickBox($(this));
+        })
+
+        $('.comment_like_heart').on('click', function () {
+            var pet_idx = $(this).closest('li').data('pet_idx');
+            sendLike(pet_idx);
+        });
+
+        var onClickBox = function (elt) {
+            if (elt.hasClass('box-selected')) {
+                return;
+            }
+
+            boxReset();
+            elt.removeClass('box').addClass('box-selected');
+            loadHtml(elt.data('pet_idx'));
+        }
+
+        var boxReset = function () {
+            boxs.removeClass('box-selected').addClass('box');
+        }
+
+        var loadHtml = function (pet_idx) {
+            $.ajax({
+                method: 'GET',
+                url: '/review/goodsList',
+                data: {
+                    pet_idx: pet_idx
+                },
+                dataType: 'json',
+                complete: function (data) {
+                    if (data.status == 200) {
+                        goods_list.html(data.responseText);
+                    }
+                }
+            });
+        }
+
+        var sendLike = function(){
+            $.ajax({
+                method: 'GET',
+                url: '/review/goodsList',
+                data: {
+                    pet_idx: pet_idx
+                },
+                dataType: 'json',
+                complete: function (data) {
+                    if (data.status == 200) {
+                        goods_list.html(data.responseText);
+                    }
+                }
+            });
+        };
+
+        loadHtml(<?php echo $pet_idx; ?>);
+    });
+
+
+</script>

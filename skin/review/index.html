@@ -151,6 +151,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $(".goods_list ul li .comment img").click(function(){
+            $('#exampleModalLong').show();
 //            var src = $(this).find("img").attr("src");
             var src = $(this).parents().find("img.goods_img").attr("src");
             $(".modal-content .review_form img.goods_img").attr("src", src);

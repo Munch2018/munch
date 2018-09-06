@@ -48,8 +48,12 @@ class Order_model extends CI_Model
 
         $bind['member_idx'] = $this->session->userdata('member_idx');
 
+        if (!empty($params['pet_idx'])) {
+            $bind['pet_idx'] = $params['pet_idx'];
+            $where[] = ' pet.pet_idx=? ';
+        }
         if (!empty($where)) {
-            $whereStr = ' WHERE ' . implode(' and ', $where);
+            $whereStr = ' and ' . implode(' and ', $where);
         }
 
 
@@ -69,8 +73,9 @@ class Order_model extends CI_Model
                 pet.use_fl = \'y\' AND s.use_fl = \'y\'
                     AND o.use_fl = \'y\'
                     AND od.use_fl = \'y\'
-                    AND o.member_idx = ?
-            GROUP BY g.goods_idx ';
+                    AND o.member_idx = ? '
+            . $whereStr
+            . ' GROUP BY g.goods_idx ';
 
         $result = $this->db->query($sql, $bind)->result_array();
         //echo $this->db->last_query();

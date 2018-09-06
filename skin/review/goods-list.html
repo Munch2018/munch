@@ -1,0 +1,70 @@
+<div class="goods_list">
+    <div class="tit">
+        <b>·</b> <?php echo '';?>가 여태까지 먹은 간식들
+    </div>
+    <?php if (!empty($goods_list)) : ?>
+    <ul>
+        <?php
+                foreach ($goods_list as $k => $value) :
+        $review_data = [];
+        if (!empty($review_list)) {
+        for($ii = 0; $ii
+        <count
+        ($review_list); $ii++ ){
+        $review = $review_list[$ii];
+        if($review['goods_idx']==$value['goods_idx']){
+        $review_data = $review;
+        }
+        }
+        }
+        $goods_img_arr = explode('|',$value['goods_img']);
+        ?>
+        <li data-pet_idx="<?=$value['pet_idx']?>">
+            <img class="goods_img" src="<?=base_url().$goods_img_arr[0]?>">
+            <span class="goods_name"><?=$value['goods_name']?></span>
+            <div style="height:74px !important; display: contents;">
+                <div class="star" style="margin-bottom: 2px;">
+                    <?php for($i=1;$i<=5;$i++) {?>
+                    <span class="rating-star <?php echo (!empty($review_data['score_level']) && $i<=$review_data['score_level']) ? 'on' : ''?>"></span>
+                    <?php } ?>
+                </div>
+                <div class="review" data-review_idx="<?=($review_data['review_idx']) ? $review_data['review_idx'] : 0 ?>" data-goods_idx="<?=$value['goods_idx']?>" style="width: 90%; display: flex;  margin: auto;">
+                    <div class="like">
+                        <span class="comment_like_heart"></span>
+                        <label class="comment_like" alert="또 받고싶어요!">또 받고싶어요!</label>
+                    </div>
+                    <div class="comment <?php echo (!empty($review_data) && !empty($review_data['comment'])) ? 'on' : ''?>">
+                        <span class="comment_write"></span>
+                        <label>코멘트쓰기</label>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+    <?php else : ?>
+    <p>구매 작성할 상품이 없습니다.</p>
+    <?php endif; ?>
+</div>
+
+<script type="text/javascript">
+
+    var review_layer = $('#review_layer');
+    var review_comment = $('.goods_list ul li .comment');
+
+    review_comment.on('click', function () {
+        var review_data = $(this).closest('div.review');
+        var src = $(this).closest('li').find('img.goods_img').attr("src");
+        review_layer.show();
+
+        review_layer.find(".review_form img.goods_img").attr("src", src);
+        review_layer.find("input[name=goods_idx]").val(review_data.data("goods_idx"));
+        review_layer.find("input[name=pet_idx]").val(review_data.data("pet_idx"));
+        review_layer.find("input[name=review_idx]").val(review_data.data("review_idx"));
+    });
+
+    review_layer.find('.close').on('click', function () {
+        review_layer.reset;
+        review_layer.hide();
+    })
+</script>

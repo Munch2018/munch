@@ -3,8 +3,9 @@
     h2{color:#333333; font-weight:bold;}
     div.login_form .fix {width:40px; display:inline-block; border: 1px solid #222222;}
     .login_form .inner {border:1px solid #cccccc; border-radius:8px; padding:50px 52px; width:500px; display:inline-block; margin: 50px 0;}
-    input[type=text], input[type=password] {margin-bottom:7px;}
-    .btn.btn-primary{width: 398px; height: 55px; background-color: #452b78; border: none; margin-top: 21px;}
+    .login_form .inner div{ width:100%; margin:auto;    padding-top: 3px;  font-size: 16px;}
+    input[type=text], input[type=password] {margin-bottom:7px; box-sizing: border-box; height:47px; }
+    .btn.btn-primary{width: 100%; height: 55px; background-color: #452b78; color:#ffffff; border: none; margin-top: 21px;}
     .login_form div {position:relative; top:10px;}
     .login_form div span:first-child{float:left}
     .login_form div span:nth-child(2){float:right;font-weight:bold; color:#452b78;}
@@ -18,9 +19,11 @@
     <div>
         <div class="inner">
             <form action="/member/login/" method="post">
+                <div>
                 <input type="text" class="form-control" name="email" placeholder="아이디(이메일)" value="">
                 <input type="password" class="form-control" name="password" placeholder="비밀번호" value="">
-                <input type="button" class="btn btn-primary submit" value="확인">
+                <input type="button" class="btn btn-primary submit" value="로그인">
+                </div>
             </form>
             <div>
                 <span>비밀번호찾기</span>
