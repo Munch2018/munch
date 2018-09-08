@@ -18,7 +18,6 @@
                     <span class="big-title"><strong>"먼치세트"</strong>와 <strong>매달</strong></span><br>
                     <span class="small-title">새로운 간식을 경험하세요!</span>
                 </p>
-                <img src="/img/main/guide.jpg">
             </div>
         </div>
     </section>
@@ -27,8 +26,7 @@
         <div class="sub-explanation">
             <div class="big-title"><strong>"먼치세트"</strong> 안에는?</div>
             <div class="square-box">
-                                <hr id="line-horizon">
-                                <hr id="line-vertical">
+                <div class="square-box-bg"></div>
                 <div class="desc">
                     <div class="desc-icon"><img src="/img/main/munch_icon1.png"></div>
                     <div class="desc-txt">
@@ -128,6 +126,8 @@
     });
 
     $(document).ready(function () {
+        goodsViewAction();
+
         $('.btn-select-pet.dog').on('click', function () {
             btns.removeClass('on');
             $(this).addClass('on');
@@ -184,4 +184,5 @@
         var goods_idx = chgElt.data('goods_idx') || 0;
         frame.attr('src', goods_src + goods_idx);
     }
+
 </script>

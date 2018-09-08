@@ -28,7 +28,7 @@
             </div>
             <div class="gnb-menu">
                 <ul>
-                    <li href='/main'>이 달의 메뉴</li>
+                    <li><a href='/main' onmousedown="viewGoods()">이 달의 메뉴</a></li>
                     <li>·</li>
                     <li><a href="/about">먼치 소개</a></li>
                     <li>·</li>
@@ -36,14 +36,11 @@
                     <li>·</li>
                     <li><a href="/accounts">계정 및 주문관리</a></li>
                 </ul>
-            </div>
-            <div class="gnb-login">
-                <ul>
+                <ul class="gnb-login">
                     <li class="btn-login">
                         <?php //if (isset($this->session->userdata('member_idx'))) : ?>
                         <?php if ($this->session->userdata('member_idx') != "") : ?>
                         <a href="/member/logout/">로그아웃</a>
-
                         <?php else : ?>
                         <a href="/member/login_form/">로그인</a>
                         <?php endif; ?>
@@ -52,5 +49,6 @@
                     <li><a class="btn-munch" href="/subscribe">지금 먼치하기</a></li>
                 </ul>
             </div>
+
         </div>
     </div>
