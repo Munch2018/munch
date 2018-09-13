@@ -1,0 +1,243 @@
+<form name="registration-form" id="registration-form" method="post" action="/petManage/register"
+      enctype='multipart/form-data'>
+    <input type="hidden" name="pet_idx" value="<?php echo !empty($pet_info['pet_idx']) ? $pet_info['pet_idx'] :''?>">
+    <input type="hidden" name="gender" value="<?php echo !empty($pet_info['gender']) ? $pet_info['gender'] :''?>" required>
+    <input type="hidden" name="pet_type" value="<?php echo !empty($pet_info['pet_type']) ? $pet_info['pet_type'] :''?>" required>
+    <input type="hidden" name="kind" value="<?php echo !empty($pet_info['pet_kind']) ? $pet_info['pet_kind'] :''?>" required>
+    <input type="hidden" name="character" value="<?php echo !empty($pet_info['character_type']) ? $pet_info['character_type'] :''?>">
+    <div class="desc">
+        <div style="float:left">
+            <button type="submit" class="btn btn-default submit">등록하기</button>
+            <button type="submit" class="btn btn-default add">추가하기</button>
+        </div>
+        <div style="float:right;margin-top: 19px;">
+            <b>최대 5개까지 등록가능</b>
+        </div>
+    </div>
+    <div class="registration-form">
+        <div class="basic-info">
+            <div class="box">
+                <?php if(!empty($pet_info['img_src'])) { ?>
+                <div style="height: 184px;background-image: url('<?=$pet_info['img_src']?>');background-repeat: no-repeat">
+                </div>
+                <?php } else {?>
+                <div style="height: 184px;background-image: url('/img/pet-manage/default-bg.jpg');background-repeat: no-repeat">
+                </div>
+                <?php }?>
+                <input type="file" id="pet-img" name="pet_img" class="upload">
+                <div class="box-name upload-button">
+                    사진 등록하기
+                </div>
+            </div>
+            <div class="basic-input">
+                <div class="input-set">
+                    <label for="pet_name">이름</label>
+                    <div class="inp-wrap">
+                        <input type="text" class="input-text" maxlength="50" name="pet_name" id="pet_name"
+                               value="<?php echo !empty($pet_info['name']) ? $pet_info['name'] :''?>"
+                               placeholder="이름을 입력하세요." required>
+                    </div>
+                </div>
+                <div class="input-set">
+                    <label for="birth_year">생일</label>
+                    <div class="inp-wrap">
+                        <input type="text" class="input-text birth" name="birth_year" maxlength="4" id="birth_year"
+                               value="<?php echo !empty($pet_info['birth_year']) ? $pet_info['birth_year'] :''?>"
+                               placeholder="YYYY" required><span>년</span>
+                        <input type="text" class="input-text birth" name="birth_month" maxlength="2"
+                               id="birth_month"
+                               value="<?php echo !empty($pet_info['birth_month']) ? $pet_info['birth_month'] :''?>"
+                               placeholder="MM" min="1" max="12" required><span>월</span>
+                        <input type="text" class="input-text birth" name="birth_day" maxlength="2" id="birth_day"
+                               value="<?php echo !empty($pet_info['birth_day']) ? $pet_info['birth_day'] :''?>"
+                               placeholder="DD" min="1" max="32" required><span>일</span>
+                    </div>
+                </div>
+                <div class="input-set gender">
+                    <label>성별</label>
+                    <div class="inp-wrap">
+                        <button type="button" class="btn-default <?php echo !empty($pet_info['gender']) && $pet_info['gender']=='male' ? 'selected' :''?>" value="male">남</button>
+                        <button type="button" class="btn-default <?php echo !empty($pet_info['gender']) && $pet_info['gender']=='female' ? 'selected' :''?>" value="female">여</button>
+                    </div>
+                </div>
+                <div class="input-set pet_type">
+                    <label>종류</label>
+                    <div class="inp-wrap">
+                        <button type="button" class="btn-default <?php echo !empty($pet_info['pet_type']) && $pet_info['pet_type']=='dog' ? 'selected' :''?>" value="dog">강아지</button>
+                        <button type="button" class="btn-default <?php echo !empty($pet_info['pet_type']) && $pet_info['pet_type']=='cat' ? 'selected' :''?>" value="cat">고양이</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="detail_info dog type" style="display: <?php echo !empty($pet_info['pet_type']) && $pet_info['pet_type']=='cat' ? 'none' :'block'?>;">
+            <div class="detail_title">
+                <span class="txt">·품종</span>
+            </div>
+            <div class="detail-content">
+                <?php foreach($dog_kind as $key => $code){?>
+                <button type="button" value="<?php echo $code['code']?>"
+                        class="<?=(!empty($pet_info['pet_type']) && $pet_info['pet_type']=='dog' && !empty($pet_info['pet_kind_array']) && in_array($code['code'], $pet_info['pet_kind_array'])) ? 'selected' : '' ?>"><?php echo $code['name']?></button>
+                <?php }?>
+                <div class="more_kind">
+                    <input type="button" value="더 많은 품종보기 >">
+                </div>
+            </div>
+        </div>
+        <div class="detail_info cat type" style="display: <?php echo !empty($pet_info['pet_type']) && $pet_info['pet_type']=='cat' ? 'block' :'none'?>;">
+            <div class="detail_title">
+                <span class="txt">·품종</span>
+            </div>
+            <div class="detail-content">
+                <?php foreach($cat_kind as $key => $code){?>
+                <button type="button" value="<?php echo $code['code']?>"
+                        class="<?=(!empty($pet_info['pet_type']) && $pet_info['pet_type']=='cat' && !empty($pet_info['pet_kind_array']) && in_array($code['code'], $pet_info['pet_kind_array'])) ? 'selected' : '' ?>"><?php echo $code['name']?></button>
+                <?php }?>
+                <div class="more_kind">
+                    <input type="button" value="더 많은 품종보기 >">
+                </div>
+            </div>
+        </div>
+        <div class="detail_info character">
+            <div class="detail_title">
+                <span class="txt">·특징</span>
+                <span class="small_txt">(최대 3개 선택 가능)</span>
+            </div>
+            <div class="detail-content">
+                <?php foreach($character as $key => $code) { ?>
+                <button type="button" value="<?php echo $code['code']?>" class="<?=!empty($pet_info['character_array']) && in_array($code['code'], $pet_info['character_array']) ? 'selected' : '' ?>">
+                    <?php echo $code['name']?></button>
+                <?php }?>
+            </div>
+        </div>
+        <div class="detail_info">
+            <div class="detail_title">
+                <span class="txt">·기타 특이사항</span>
+                <span class="small_txt">(최대 3개 입력 가능)</span>
+            </div>
+            <div class="detail-content special">
+                <input type="text" maxlength="100" class="input-text" name='special[]' value="<?=!empty($pet_info['detail1']) ? $pet_info['detail1'] : '' ?>" placeholder="아이의 특징을 적어주세요.">
+                <input type="text" maxlength="100" class="input-text" name='special[]' value="<?=!empty($pet_info['detail2']) ? $pet_info['detail2'] : '' ?>" placeholder="아이의 특징을 적어주세요.">
+                <input type="text" maxlength="100" class="input-text" name='special[]' value="<?=!empty($pet_info['detail3']) ? $pet_info['detail3'] : '' ?>" placeholder="아이의 특징을 적어주세요.">
+            </div>
+        </div>
+    </div>
+    <div class="desc">
+        <div style="float:right">
+            <button type="submit" class="btn btn-default submit register">저장하기</button>
+            <button type="button" id="reset" class="btn btn-default delete">초기화</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var regForm = $("#registration-form");
+        var genderBtn = $('.input-set.gender');
+        var petTypeBtn = $('.input-set.pet_type');
+        var dogArea = $('.detail_info.dog');
+        var dogTypeArea = $('.detail_info.dog.type');
+        var catArea = $('.detail_info.cat');
+        var catTypeArea = $('.detail_info.cat.type');
+        var characterArea = $('.detail_info.character');
+
+        var btnClickEvent = function (elt, elements, inputName, max) {
+            var selected = elements.find('.selected');
+
+            if (!elt.hasClass('selected') &&
+                selected.length >= parseInt(max) &&
+                parseInt(max) > 1) {
+                alert(max + '개만 선택가능합니다.');
+                return false;
+            }
+
+            if (elt.hasClass('selected')) {
+                elt.removeClass('selected');
+            } else {
+                if (parseInt(max) === 1) {
+                    elements.find('button').removeClass('selected');
+                }
+                elt.addClass('selected');
+            }
+
+            var selectCodes = elements.find('.selected');
+            var values = [];
+            for (var i = 0; i < selectCodes.length; i++) {
+                values.push(selectCodes[i].getAttribute('value'));
+            }
+
+            $('input[name="' + inputName + '"]').val(values.join('|'));
+        }
+
+        genderBtn.find('button').on('click', function () {
+            btnClickEvent($(this), genderBtn, 'gender', 1);
+        });
+
+        petTypeBtn.find('button').on('click', function () {
+            if ($(this).val() === 'dog') {
+                dogArea.show();
+                catArea.hide();
+            } else {
+                dogArea.hide();
+                catArea.show();
+            }
+
+            btnClickEvent($(this), petTypeBtn, 'pet_type', 1);
+        });
+
+        dogTypeArea.find('button').on('click', function () {
+            btnClickEvent($(this), dogTypeArea, 'kind', 3);
+        });
+        catTypeArea.find('button').on('click', function () {
+            btnClickEvent($(this), catTypeArea, 'kind', 3);
+        });
+
+        characterArea.find('button').on('click', function () {
+            btnClickEvent($(this), characterArea, 'character', 3);
+        });
+
+        $('.more_kind input[type=button]').on('click', function () {
+            if ($(this).hasClass('on')) {
+                $('.detail_info.cat button:gt(22)').hide();
+                $('.detail_info.dog button:gt(22)').hide();
+                $('.more_kind').find('input[type="button"]').removeClass('on').val('더 많은 품종보기 >');
+            } else {
+                $('.detail_info.cat button:gt(22)').show();
+                $('.detail_info.dog button:gt(22)').show();
+                $('.more_kind').find('input[type="button"]').addClass('on').val('가리기 >');
+            }
+        });
+
+        var year = $('#birth_year');
+        var month = $('#birth_month');
+        var day = $('#birth_day');
+
+        $('#registration-form').on('submit', function () {
+            if (!/^(19|20)\d{2}$/.test(year.val())) {
+                alert('생년월일을 정상적으로 입력해주세요');
+                year.focus();
+                return false;
+            }
+            if (!/^(0[1-9]|1[012])$/.test(month.val())) {
+                alert('생년월일을 정상적으로 입력해주세요');
+                month.focus();
+                return false;
+            }
+            if (!/^(0[1-9]|[12][0-9]|3[0-1])$/.test(day.val())) {
+                alert('생년월일을 정상적으로 입력해주세요');
+                day.focus();
+                return false;
+            }
+
+        });
+
+        $('#reset').on('click', function () {
+            genderBtn.find('button.selected').click();
+            petTypeBtn.find('button.selected').click();
+            dogArea.find('button.selected').click();
+            catArea.find('button.selected').click();
+            characterArea.find('button.selected').click();
+
+            regForm.find('input').val('');
+        });
+    });
+</script>

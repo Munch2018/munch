@@ -137,17 +137,8 @@
         $('.change-addr-btn').on('click', function () {
             var subscribe_idx = $(this).closest('tr').data('subscribe_idx');
             var layer = $('#change-address-layer');
-            var w = window.outerWidth;
-            var h = window.outerHeight;
 
-            var layer_width = layer.width();
-            var layer_height = layer.outerHeight();
-
-            layer.css({
-                'top': (h - layer_height) / 2,
-                'left': (w - layer_width) / 2
-            });
-
+            commonShowLayer(layer);
             layer.find('input[name="subscribe_idx"]').val(subscribe_idx);
             layer.show();
         });

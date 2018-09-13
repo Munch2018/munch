@@ -1,35 +1,33 @@
 <div class="goods_list">
     <div class="tit">
-        <b>·</b> <?php echo '';?>가 여태까지 먹은 간식들
+        <b>·</b> <?php echo $pet_info['name'];?>가 여태까지 먹은 간식들
     </div>
     <?php if (!empty($goods_list)) : ?>
     <ul>
         <?php
-                foreach ($goods_list as $k => $value) :
-        $review_data = [];
-        if (!empty($review_list)) {
-        for($ii = 0; $ii
-        <count
-        ($review_list); $ii++ ){
-        $review = $review_list[$ii];
-        if($review['goods_idx']==$value['goods_idx']){
-        $review_data = $review;
-        }
-        }
-        }
+        foreach ($goods_list as $k => $value) :
+            $review_data = [];
+            if (!empty($review_list)) {
+                for($ii = 0; $ii < count ($review_list); $ii++ ){
+                    $review = $review_list[$ii];
+                    if($review['goods_idx']==$value['goods_idx']){
+                        $review_data = $review;
+                    }
+                }
+            }
         $goods_img_arr = explode('|',$value['goods_img']);
         ?>
-        <li data-pet_idx="<?=$value['pet_idx']?>">
+        <li data-pet_idx="<?=$value['pet_idx']?>" data-goods_idx="<?=$value['goods_idx']?>" data-review_idx="">
             <img class="goods_img" src="<?=base_url().$goods_img_arr[0]?>">
             <span class="goods_name"><?=$value['goods_name']?></span>
             <div style="height:74px !important; display: contents;">
                 <div class="star" style="margin-bottom: 2px;">
                     <?php for($i=1;$i<=5;$i++) {?>
-                    <span class="rating-star <?php echo (!empty($review_data['score_level']) && $i<=$review_data['score_level']) ? 'on' : ''?>"></span>
+                    <span class="rating-star <?php echo (!empty($review_data['score_level']) && $i<=$review_data['score_level']) ? 'on' : ''?>" value="<?=$i?>"></span>
                     <?php } ?>
                 </div>
-                <div class="review" data-review_idx="<?=($review_data['review_idx']) ? $review_data['review_idx'] : 0 ?>" data-goods_idx="<?=$value['goods_idx']?>" style="width: 90%; display: flex;  margin: auto;">
-                    <div class="like">
+                <div class="review" style="width: 90%; display: flex;  margin: auto;">
+                    <div class="like  <?php echo (!empty($review_data) && !empty($review_data['like']) && $review_data['like']==='y') ? 'on' : ''?>">
                         <span class="comment_like_heart"></span>
                         <label class="comment_like" alert="또 받고싶어요!">또 받고싶어요!</label>
                     </div>
@@ -53,18 +51,87 @@
     var review_comment = $('.goods_list ul li .comment');
 
     review_comment.on('click', function () {
-        var review_data = $(this).closest('div.review');
+        var data = $(this).closest('li');
         var src = $(this).closest('li').find('img.goods_img').attr("src");
+
+        commonShowLayer(review_layer);
         review_layer.show();
 
         review_layer.find(".review_form img.goods_img").attr("src", src);
-        review_layer.find("input[name=goods_idx]").val(review_data.data("goods_idx"));
-        review_layer.find("input[name=pet_idx]").val(review_data.data("pet_idx"));
-        review_layer.find("input[name=review_idx]").val(review_data.data("review_idx"));
+        review_layer.find("input[name=goods_idx]").val(data.data("goods_idx"));
+        review_layer.find("input[name=pet_idx]").val(data.data("pet_idx"));
     });
 
     review_layer.find('.close').on('click', function () {
         review_layer.reset;
+        review_layer.find('input[type="checkbox"]').prop('checked', false);
+        review_layer.find('label.rating-star').removeClass('on');
         review_layer.hide();
     })
+
+    review_layer.find('label.rating-star').on('click', function () {
+        var score = $(this).attr('value');
+        review_layer.find('input[name=score_level]').val(score);
+
+        review_layer.find('label.rating-star').removeClass('on');
+        $('.rating label[value="'+score+'"]').addClass('on').prevAll('label.rating-star').addClass('on');
+       // $(this).addClass('on').prevAll('label.rating-star').addClass('on');
+    });
+
+    $('.goods_list .star').find('span.rating-star').on('click', function () {
+        sendReview($(this), 'score_level');
+    });
+
+    $('.goods_list .like').on('click', function () {
+        sendReview($(this), 'like');
+    })
+
+    var sendReview =function (elt, actionCode) {
+        var target = elt
+        var data = target.closest('li');
+        var pet_idx = data.data('pet_idx');
+        var goods_idx = data.data('goods_idx');
+        var likeProcess = null;
+
+        if (likeProcess !== null) {
+            alert('처리중입니다.');
+            return false;
+        }
+
+        if (!!pet_idx && !!goods_idx) {
+            likeProcess = $.ajax({
+                method: 'GET',
+                url: '/review/sendLike',
+                data: {
+                    pet_idx: pet_idx,
+                    goods_idx: goods_idx,
+                    code: actionCode,
+                    value: (actionCode === 'score_level') ? elt.attr('value') : ''
+                },
+                dataType: 'json',
+                complete: function (data) {
+                    var code = data.responseJSON;
+                    if (code === 'logout') {
+                        alert('로그아웃되었습니다. 로그인해주세요.');
+                        location.href = '/member/login_form/';
+                    } else if (code === 'success') {
+                        switch (actionCode) {
+                            case 'like':
+                                target.hasClass('on') ? target.removeClass('on') : target.addClass('on');
+                                break;
+                            case 'score_level' :
+                                elt.closest('.star').find('span.rating-star').removeClass('on');
+                                elt.addClass('on').prevAll('span.rating-star').addClass('on');
+                                break;
+                        }
+                    } else if (code == 'fail') {
+                        alert('요청이 정상적이지 않습니다. 페이지를 새로고침 후 재시도해주세요.');
+                    }
+                    likeProcess = null;
+                }
+            });
+        } else {
+            alert('요청이 정상적이지 않습니다. 먼치에게 문의해주세요.');
+        }
+    }
 </script>

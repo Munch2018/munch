@@ -1,0 +1,303 @@
+.container {
+    height: 100%;
+    width: 1200px;
+    padding: 70px 0 0 0;
+    margin: auto;
+    font-size: 16px;
+}
+
+hr {
+    width: 20px;
+    height: 0px;
+    border-top: 1px solid black;
+}
+
+.box, .box-selected {
+    height: 100%;
+    width: 214px;
+    height: 186px;
+    border: 2px solid black;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.box-name {
+    text-align: center;
+}
+
+.box-selected {
+    border: 2px solid #EA4241;
+}
+
+.box-img, .box img, .box-selected img {
+    height: auto;
+    width: 100%;
+}
+
+.box .edit_img, .box-selected .edit_img {
+    overflow: hidden;
+    width: 212px;
+    height: 43px;
+    position: absolute;
+}
+
+.box .edit_img .edit_img_btn, .box-selected .edit_img .edit_img_btn {
+    width: 43px;
+    height: 43px;
+    float: right;
+}
+
+.pets_info {
+    overflow: hidden;
+    height: 100%;
+    display: block;
+    padding: 45px 0 65px 0;
+    border-bottom: 2px solid #444444;
+    text-align: left;
+}
+
+.goods_list {
+    padding: 65px 0;
+}
+
+.goods_list .tit {
+    color: #452b78;
+    font-size: 26px;
+}
+
+.goods_list ul {
+    padding: 20px 0 0 0;
+    margin: 0px;
+    display: flex;
+    list-style: none;
+}
+
+.goods_list ul li {
+    display: grid;
+    margin-right: 7px;
+    border-radius: 4px;
+    width: 226px;
+    height: 294px;
+    border: 1px solid #CDCDCD;
+    overflow: hidden;
+}
+
+.goods_list ul li .goods_img {
+    height: 170px;
+    width: 100%;
+}
+
+.goods_list ul li .goods_name {
+    height: 45px;
+    font-size: 14px;
+    font-weight: bold;
+    border-top: 1px solid #CDCDCD;
+    border-bottom: 1px solid #CDCDCD;
+}
+
+.goods_list ul li .comment {
+    cursor: pointer;
+    color: #9A9A9A;
+    font-size: 12px;
+    width: 45%;
+}
+
+.goods_list ul li .like {
+    cursor: pointer;
+    color: #9A9A9A;
+    font-size: 12px;
+    width: 55%;
+}
+
+.goods_list ul li .comment label, .goods_list ul li .like label {
+    float: left;
+}
+
+.goods_list ul li .comment_like_heart, .dislike_form .comment_like_heart {
+    position: relative;
+    float: left;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url(/img/review/no_heart2.png) no-repeat;
+}
+
+.goods_list ul li .like.on .comment_like_heart{
+    background: url(/img/review/heart.png) no-repeat;
+}
+
+.goods_list ul li .like.on label{
+    color: #F8423E;
+}
+
+.goods_list ul li .comment .comment_write {
+    position: relative;
+    float: left;
+    display: block;
+    width: 18px;
+    height: 14px;
+    background: url(/img/review/no_comment.png) no-repeat;
+}
+
+.goods_list ul li .comment.on .comment_write {
+    background: url('/img/review/comment.png') no-repeat;
+}
+
+.goods_list ul li .comment.on label {
+    color: #422B73;
+}
+
+#review_layer {
+    display: none;
+    width: 435px;
+    height: 290px;
+    position: fixed;
+    top: 100px;
+    margin: auto;
+    background-color: #ffffff;
+    font-size: 17px;
+    border: 1px solid #CBCBCB;
+    z-index: 99;
+}
+
+#review_layer * {
+    box-sizing: border-box;
+}
+
+#review_layer .contents {
+    width: 100%;
+    height: 100%;
+}
+
+#review_layer .header {
+    padding: 15px;
+    width: 100%;
+    height: 50px;
+    background-color: #746AB0;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+#review_layer .header .title {
+    float: left
+}
+
+#review_layer .header .close {
+    float: right
+}
+
+#review_layer .body {
+    height: 168px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#review_layer .body .review_form {
+    display: flex;
+    padding: 10px;
+    height: 100%;
+}
+
+#review_layer .body .review_explain {
+    display: grid;
+}
+
+#review_layer .dislike_area {
+    display: block;
+    left: -70px;
+    top: 50px;
+    position: absolute;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+#review_layer .dislike_form_title {
+    width: 100%;
+    border-bottom: 1px solid #ffffff;
+    text-align: center;
+    height: 45px;
+    display: flex;
+}
+
+#review_layer .dislike_area .point {
+    height: 10px;
+    width: 100%;
+    text-align: center;
+    background: url('/img/review/speech_triangle.png') center center no-repeat;
+}
+
+#review_layer .dislike_area .dislike_form {
+    width: 260px;
+    height: 130px;
+    background-color: #333333;
+    border-radius: 18px;
+}
+.dislike_form .rating-star ~ .rating-input:checked{
+
+}
+.dislike_form .comment_dislike_heart {
+    position: relative;
+    float: left;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url(/img/review/no_trash.png) no-repeat;
+}
+
+.dislike_form .like, .dislike_form .dislike {
+    width:50%;
+}
+
+.dislike_form #chk_dislike:checked + .comment_dislike_heart {
+    background: url(/img/review/trash_icon.png) no-repeat;
+}
+.dislike_form #chk_dislike:checked + .comment_dislike_heart + span {
+    color: #FA9E00;
+}
+.dislike_form #chk_like:checked + .comment_like_heart {
+    background: url(/img/review/heart.png) no-repeat;
+}
+.dislike_form #chk_like:checked + .comment_like_heart + span {
+    color: #F8423E;
+}
+#review_layer .bottom {
+    height: 66px;
+    width: 100%;
+    text-align: center;
+}
+
+#review_layer .bottom .btn.btn-primary {
+    background-color: #7268AD;
+    color: #ffffff;
+}
+
+#review_layer .rating {
+    overflow: hidden;
+    display: inline-block;
+}
+
+#review_layer .rating-star, .goods_list .rating-star {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(/img/common/gray_star.png) 0 -16px;
+    cursor: pointer;
+}
+
+#review_layer .rating-star.on, .goods_list .rating-star.on {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(/img/common/star.png) 0 -16px;
+}
+
+#review_layer .rating-input {
+    float: right;
+    position: absolute;
+    z-index: -99;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    margin: 0px;
+    opacity: 0;
+}

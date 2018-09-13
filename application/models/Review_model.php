@@ -101,12 +101,6 @@ class Review_model extends CI_Model{
             $this->setWhere($where);
         }
 
-//        $return = $this->db->get('review')->row_array();
-//        echo '<pre>';
-//        print_r($this->db->last_query());
-//        echo '</pre>';
-//        return $return;
-
         return $this->db->get('review')->row_array();
     }
 

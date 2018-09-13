@@ -164,8 +164,10 @@ class Goods extends CI_Controller
 
     public function upload()
     {
-        $config['upload_path'] = 'C:\workspace\munch\img\goods-img';
+        $config['upload_path'] = './img/goods-img';
         $config['allowed_types'] = 'gif|jpg|png';
+        $config['encrypt_name'] = TRUE;
+        //$config['file_name'] = time();
 //        $config['max_size'] = 500;
 //        $config['max_width'] = 1024;
 //        $config['max_height'] = 768;

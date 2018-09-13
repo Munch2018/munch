@@ -22,33 +22,6 @@ class Review extends CI_Controller
 
     public function lists()
     {
-        // 회원에 해당되는 pet 정보 가져오기
-        // order 기준으로 리뷰 써야되서 order 에대한 정보 가져오기
-        $this->load->model(
-            array(
-                'pet_manage',
-                'order_model',
-                'Goods'
-            )
-        );
-        $data = array();
-
-        $member_idx = $this->session->userdata('member_idx');
-        $data['pet_list'] = $this->pet_manage->getPets($member_idx);
-        $data['goods_list'] = $this->order_model->getOrders();
-
-        $this->load->view('common/header.html');
-        $this->load->view('review/index.html', $data);
-        $this->load->view('common/footer.html');
-    }
-
-    public function index2()
-    {
-        $this->lists2();
-    }
-
-    public function lists2()
-    {
         $this->load->model(
             array(
                 'pet_manage',
@@ -82,7 +55,7 @@ class Review extends CI_Controller
         ]);
 
         $this->load->view('common/header.html');
-        $this->load->view('review/index2.html', $data);
+        $this->load->view('review/index.html', $data);
         $this->load->view('common/footer.html');
     }
 
@@ -99,18 +72,16 @@ class Review extends CI_Controller
 
         $data = array();
         $params = $_GET;
+        $pet_idx = !empty($pet_idx) ? $pet_idx :  $params['pet_idx'];
         $member_idx = $this->session->userdata('member_idx');
-        $data['pet_list'] = $this->pet_manage->getPets($member_idx);
+        $data['pet_list'] = $this->pet_manage->getPets($member_idx, $pet_idx);
 
         if (empty($pet_idx)) {
-            if
-            (!empty($params['pet_idx'])) {
-                $pet_idx = $params['pet_idx'];
-            } else {
-                alert('요청이 정상적이지 않습니다.');
-                return false;
-            }
+            alert('요청이 정상적이지 않습니다.');
+            return false;
         }
+
+        $pet_info = $data['pet_list'][0];
 
         $data['review_list'] = $this->review_model->getList([
             'where' => [
@@ -120,7 +91,7 @@ class Review extends CI_Controller
             ]
         ]);
         $data['goods_list'] = $this->order_model->getOrders(['pet_idx' => $pet_idx, 'member_idx' => $member_idx]);
-        $data['pet_idx'] = $pet_idx;
+        $data['pet_info'] = $pet_info;
         $result['contents'] = $this->load->view('review/goods-list.html', $data);
 
         return json_encode($result);
@@ -131,12 +102,6 @@ class Review extends CI_Controller
      */
     public function register()
     {
-        /**
-         * member_idx / goods_idx / score / like / dislike
-         */
-$params  =  $this->input->get_post();
-print_r($params,1);
-exit;
         $member_idx = $this->session->userdata('member_idx');
 
         if (empty($member_idx)) {
@@ -144,21 +109,30 @@ exit;
             return false;
         }
 
+        $params = $this->input->post();
+
+        $reviewData = $this->review_model->getReview([
+            'where' => [
+                'member_idx' => $member_idx,
+                'pet_idx' => $params['pet_idx'],
+                'goods_idx' => $params['goods_idx'],
+                'use_fl' => 'y'
+            ]
+        ]);
+
         $data = array(
-            'member_idx' => $this->session->userdata('member_idx'),
-            'goods_idx' => $this->input->post('goods_idx'),
-            'pet_idx' => $this->input->post('pet_idx'),
-            'order_idx' => $this->input->post('order_idx'),
-            'score_level' => $this->input->post('score_level'),
-            'like' => $this->input->post('like'),
-            'dislike' => $this->input->post('dislike'),
-            'comment' => $this->input->post('comment'),
+            'member_idx' => $member_idx,
+            'goods_idx' => $params['goods_idx'],
+            'pet_idx' => $params['pet_idx'],
+            'score_level' => $params['score_level'],
+            'dislike' => $params['chk_dislike'],
+            'like' => $params['chk_like'],
+            'comment' => $params['comment'],
             'use_fl' => 'y',
-            'review_idx' => $this->input->post('review_idx'),
         );
 
-        if (!empty($this->input->post('review_idx'))) {
-            if ($this->review_model->doUpdate($data) === false) {
+        if (!empty($reviewData)) {
+            if ($this->review_model->doUpdate(['score_level' => $params['score_level'], 'dislike' => $params['dislike'], 'comment' => $params['comment']], ['where' => ['review_idx' => $reviewData['review_idx']]]) === false) {
                 alert("리뷰 수정에 실패하였습니다.");
             } else {
                 alert("리뷰 수정 완료하였습니다.", "/review/");
@@ -170,22 +144,63 @@ exit;
                 alert("리뷰 등록 완료하였습니다.", "/review/");
             }
         }
+
+        exit;
     }
-
-    public function updateLike()
-    {
-        if ($this->session->userdata('member_idx') != "") {
-
-        }
-    }
-
 
     /**
-     * 리뷰 점수 평가하기
+     * 또 받고 싶어요, 평점 클릭 시
      */
-    public function score ()
+    public function sendLike()
     {
-        
-    }
+        $member_idx = $this->session->member_idx;
+        if (empty($member_idx)) {
+            echo json_encode('logout');
+            exit;
+        }
 
+        $pet_idx = $this->input->get_post('pet_idx');
+        $goods_idx = $this->input->get_post('goods_idx');
+        $code = $this->input->get_post('code');
+        $value = $this->input->get_post('value');
+
+        $reviewData = $this->review_model->getReview([
+            'where' => [
+                'member_idx' => $member_idx,
+                'pet_idx' => $pet_idx,
+                'goods_idx' => $goods_idx,
+                'use_fl' => 'y'
+            ]
+        ]);
+
+        //등록된 리뷰가 없으면 새로 입력
+        if (empty($reviewData)) {
+            $data = array(
+                'member_idx' => $member_idx,
+                'goods_idx' => $goods_idx,
+                'pet_idx' => $pet_idx,
+                'like' => 'y',
+                'use_fl' => 'y',
+            );
+
+            echo json_encode($this->review_model->doRegister($data) === false ?  'fail' : 'success');
+            exit;
+        }
+
+        //좋아요, 싫어요, 별점 업데이트
+        if (in_array($code, ['like', 'dislike', 'score_level'])) {
+            if (in_array($code, ['like', 'dislike'])) {
+                $value = !empty($reviewData[$code]) && $reviewData[$code] === 'y' ? 'n' : 'y';
+            }
+
+            if ($this->review_model->doUpdate([$code => $value],
+                ['where' => ['review_idx' => $reviewData['review_idx'], 'member_idx' => $member_idx]])) {
+                echo json_encode('success');
+            } else {
+                echo json_encode('fail');
+            }
+        }
+
+        exit;
+    }
 }
