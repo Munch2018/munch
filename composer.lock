@@ -1,0 +1,82 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d4b9f1736c6e8b2ed130c26e0d3421a3",
+    "packages": [
+        {
+            "name": "nltbinh/codeigniter-service-layer",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nltbinh/codeigniter-service-layer.git",
+                "reference": "e59baf918cefb33f8fdc8f886cdcfb78fc606b84"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nltbinh/codeigniter-service-layer/zipball/e59baf918cefb33f8fdc8f886cdcfb78fc606b84",
+                "reference": "e59baf918cefb33f8fdc8f886cdcfb78fc606b84",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nguyen Luu Thanh binh",
+                    "email": "nguyenluuthanhbinh@outlook.com"
+                }
+            ],
+            "description": "A simple service layer for CodeIgniter",
+            "time": "2017-03-16T04:18:11+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "mikey179/vfsStream",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikey179/vfsStream.git",
+                "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
+                "reference": "fc0fe8f4d0b527254a2dc45f0c265567c881d07e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "org\\bovigo\\vfs": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "homepage": "http://vfs.bovigo.org/",
+            "time": "2012-08-25T12:49:29+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.2.4"
+    },
+    "platform-dev": []
+}

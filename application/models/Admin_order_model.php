@@ -13,9 +13,21 @@ class Admin_order_model extends CI_Model
         parent::__construct();
     }
 
-    public function getOrders($limit = 20, $start = 0)
+    public function getOrders($params = [], $limit = 20, $start = 0)
     {
         $bind = [];
+        $where = [];
+        $whereStr = '';
+
+        if (!empty($params['status'])) {
+            $where['status'] = ' p.status = ? ';
+            $bind[] = $params['status'];
+        }
+
+        if (!empty($where)) {
+            $whereStr = ' AND ' . implode(' AND ', $where);
+        }
+
         $sql = " SELECT
                  m.name, o.order_idx, g.title, 
                  p.reg_dt, p.status, o.total_amount, 
@@ -30,10 +42,9 @@ class Admin_order_model extends CI_Model
                     JOIN pet pet ON s.pet_idx = pet.pet_idx
                     JOIN member m ON m.member_idx = o.member_idx
             WHERE 
-                    s.use_fl = 'y' 
-                    AND o.use_fl = 'y' AND p.use_fl = 'y'
-                    AND g.use_fl = 'y'
-                  limit " . $limit . " offset " . $start;
+                    s.use_fl = 'y' AND o.use_fl = 'y' AND p.use_fl = 'y' AND g.use_fl = 'y' "
+            . $whereStr
+            . "      limit " . $limit . " offset " . $start;
 
         $result = $this->db->query($sql, $bind)->result_array();
      //   echo $this->db->last_query();

@@ -111,7 +111,7 @@ class Member_model extends CI_Model
 
     public function getAddress($member_idx = 0, $address_idx = 0)
     {
-        $this->db->select('address_idx, zipcode, addr1st, addr2nd, sort, nation');
+        $this->db->select('address_idx, zipcode, addr1st, addr2nd, sort, nation, name, telphone');
         $this->db->from('address');
         $this->db->where('member_idx', $member_idx);
         $this->db->where('use_fl', 'y');

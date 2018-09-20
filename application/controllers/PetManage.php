@@ -32,8 +32,8 @@ class PetManage extends CI_Controller
 
     public function index()
     {
-        if ($this->getPetCount() > 0) {
-            redirect('/review/index');
+        if (!$this->canPetRegister()) {
+            alert('우리아이 정보등록은 최대 5개까지 등록이 가능합니다.');
             return false;
         }
 
@@ -50,7 +50,7 @@ class PetManage extends CI_Controller
     public function edit($pet_idx)
     {
         if (empty($pet_idx)) {
-            redirect('/petManage/index');
+            redirect('/review');
         }
 
         $this->load->model('Common_code', 'commonCode');
@@ -85,52 +85,32 @@ class PetManage extends CI_Controller
         return (count($pets) < self::REGISTER_MAX_CNT);
     }
 
-
-    public function getPetCount()
-    {
-        $member_idx = $this->session->userdata('member_idx');
-
-        $pets = $this->petmanage->getPets($member_idx);
-
-        return count($pets);
-    }
-
     public function register()
     {
         $params = $this->input->post();
 
-        if (empty($params['pet_idx']) && !$this->canPetRegister()) {
-            alert('우리아이 정보등록은 최대 5개까지 등록이 가능합니다.');
-            return false;
-        }
-
         try {
-            $params['img_src'] = '';
-
             if (!empty($_FILES['pet_img']['name'])) {
                 $upload_result = $this->upload($_FILES);
                 $params['img_src'] = $upload_result['upload_data']['full_path'];
             }
 
             if (!empty($upload_result['error'])) {
-                echo print_r($upload_result,1);
-                exit;
                 alert('파일 업로드에 실패하였습니다. 재시도해주세요.');
                 return false;
             } else {
                 $this->load->model('Pet_manage', 'petManage');
-
                 //업데이트
                 if (!empty($params['pet_idx'])) {
                     if ($this->petManage->update(['pet_idx' => $params['pet_idx']] + $this->validate($params))) {
-                        alert('우리아이 수정이 완료되었습니다.', '/petManage');
+                        alert('우리아이 수정이 완료되었습니다.', '/review');
                     } else {
                         alert('우리아이 수정이 실패되었습니다.');
                         return false;
                     }
                 } else {
                     if ($this->petManage->insert($this->validate($params))) {
-                        alert('우리아이 등록이 완료되었습니다.', '/petManage');
+                        alert('우리아이 등록이 완료되었습니다.', '/review');
                     } else {
                         alert('우리아이 등록이 실패되었습니다.');
                         return false;
@@ -188,9 +168,12 @@ class PetManage extends CI_Controller
             'character_type' => !empty($params['character']) ? $params['character'] : '',
             'detail1' => !empty($params['special'][0]) ? $params['special'][0] : '',
             'detail2' => !empty($params['special'][1]) ? $params['special'][1] : '',
-            'detail3' => !empty($params['special'][2]) ? $params['special'][2] : '',
-            'img_src' => !empty($params['img_src']) ? $params['img_src'] : ''
+            'detail3' => !empty($params['special'][2]) ? $params['special'][2] : ''
         ];
+
+        if (!empty($params['img_src'])) {
+            $insertData['img_src'] = $params['img_src'];
+        }
 
         return $insertData;
     }

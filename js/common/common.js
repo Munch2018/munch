@@ -1,7 +1,7 @@
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
@@ -9,7 +9,7 @@ function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -20,13 +20,15 @@ function getCookie(cname) {
     }
     return "";
 }
+
 function viewGoods() {
     setCookie('goods_view', 'y', 1);
 }
+
 function goodsViewAction() {
     var goods_view = getCookie('goods_view');
-    console.log(goods_view);
-    if (goods_view=='y') {
+
+    if (goods_view == 'y') {
         $('html, body').animate({
             scrollTop: $('#goods').offset().top
         }, 500, function () {
@@ -36,7 +38,7 @@ function goodsViewAction() {
 }
 
 
-function commonShowLayer(layer){
+function commonShowLayer(layer) {
     var w = window.outerWidth;
     var h = window.outerHeight;
 
@@ -47,5 +49,4 @@ function commonShowLayer(layer){
         'top': (h - layer_height) / 2,
         'left': (w - layer_width) / 2
     });
-
 }

@@ -124,7 +124,7 @@ a:link, a:visited, a:hover, a:active {
     overflow: hidden;
 }
 
-.box-img, .box img {
+.box-img, .box img,.box-selected img {
     height: 203px;
     width: 284px;
 }
@@ -305,12 +305,11 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
 
 #main_floating .inner {
     min-width: 960px;
-   /* background-color: #F9F7F8;*/
+    max-width: 1200px;
+    width: 1200px;
     background-color: rgba(0, 0, 0, 0.77);
     color:#ffffff;
-    /*//background-image: url(../img/common/gnb-background.jpg);*/
     margin: auto;
-    width: 80%;
     height: 100%;
     display: flex;
     border-top-left-radius: 4px;
@@ -320,13 +319,13 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
 #main_floating .inner .menu {
     display: flex;
     text-align: center;
-    width: 70%;
+    width: 65%;
     max-width: 700px;
     font-size: 17px;
 }
 
 #main_floating .inner .btn_area {
-    width: 30%;
+    width: 35%;
     display: flex;
     margin: auto;
     padding-left: 30px;
@@ -334,6 +333,7 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
 
 #main_floating .inner ul {
     display: inline-flex;
+    margin: auto;
 }
 
 #main_floating .inner ul li {

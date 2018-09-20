@@ -31,7 +31,7 @@
         <?php if($subscribe_list){?>
         <?php foreach($subscribe_list as $key => $val){?>
         <div class="box" data-period="<?php echo $val['month_count']?>">
-            <div class="box-img"><img class="default" src="/img/subscribe/box<?php echo $key+1?>.png"></div>
+            <div class="box-img"><img class="default box_month_<?php echo $key+1?>"></div>
             <div class="box-name"><?php echo $val['title']?> : <?php echo number_format($val['sell_price'])?>원</div>
         </div>
         <?php }?>

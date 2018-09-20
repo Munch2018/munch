@@ -22,13 +22,8 @@ $(function () {
                 orderHandler.daumApi.open();
             })
 
-            $('#ord-info-same').on('click', function () {
-                var elt = $(this);
-                if (elt.is(':checked')) {
-
-                } else {
-
-                }
+            $('#ord_addr_chg').on('click', function () {
+                window.open('/order/popupAddress', '', 'width=500,height=800');
             })
         },
 

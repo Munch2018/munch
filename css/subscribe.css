@@ -37,7 +37,7 @@ hr {
     display: grid;
     width: 395px;
     border-radius: 4px;
-    border: 1px solid;
+    border: 1px solid #555555;
     height: 52px;
     align-items: center;
     margin: 3px;
@@ -78,4 +78,30 @@ hr {
     border: 0px;
     width: 119px;
     height: 40px;
+}
+
+.box .box_month_1 {
+    background: url('/img/subscribe/box1.png') center center no-repeat;
+}
+.box .box_month_2 {
+    background: url('/img/subscribe/box2.png') center center no-repeat;
+}
+.box .box_month_3 {
+    background: url('/img/subscribe/box3.png') center center no-repeat;
+}
+.box .box_month_4 {
+    background: url('/img/subscribe/box4.png') center center no-repeat;
+}
+
+.box-selected .box_month_1 {
+    background: url('/img/subscribe/box-selected1.png') center center no-repeat;
+}
+.box-selected .box_month_2 {
+    background: url('/img/subscribe/box-selected2.jpg') center center no-repeat;
+}
+.box-selected .box_month_3 {
+    background: url('/img/subscribe/box-selected3.jpg') center center no-repeat;
+}
+.box-selected .box_month_4 {
+    background: url('/img/subscribe/box-selected4.jpg') center center no-repeat;
 }

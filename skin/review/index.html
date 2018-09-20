@@ -25,94 +25,69 @@
         <?php endif; ?>
         <?php if(empty($pet_list) || count($pet_list)<5){ ?>
         <a href="/petManage/"><img src="/img/review/add_btn.png" alt="펫 추가"></a>
-        <?php }?>
+        <?php } ?>
     </div>
-    <div class="goods_list">
+    <div class="goods_area">
     </div>
 </div>
 
-
-<form action="/review/register/" method="post" id="review_layer" name="review_form">
-    <input type="hidden" name="goods_idx" value="">
-    <input type="hidden" name="review_idx" value="">
-    <input type="hidden" name="pet_idx" value="">
-    <input type="hidden" name="score_level" value="">
-
-    <div class="dislike_area">
-        <div class="point"></div>
-        <div class="dislike_form">
-            <div style="height:74px !important; display: contents;">
-                <div class="dislike_form_title"><span style="margin: auto;">평가를 먼저 해주세요.</span></div>
-                <div class="star" style="margin: 10px;text-align: center;">
-                    <span class="star_rating">
-                        <span class="rating">
-                            <?php for($i=1;$i<=5;$i++) {?>
-                            <input type="radio" class="rating-input"
-                                   id="rating-input-<?php echo $i?>">
-                                <label for="rating-input-<?php echo $i?>" class="rating-star"
-                                       value="<?php echo $i?>"></label>
-                            <?php } ?>
-                        </span>
-                    </span>
-                </div>
-                <div class="review" style="width: 90%; display: flex;  margin: auto;">
-                    <div class="like  <?php echo (!empty($review_data) && !empty($review_data['like']) && $review_data['like']==='y') ? 'on' : ''?>">
-                        <label for="chk_like" class="comment_like" alert="또 받고싶어요">
-                            <input type="checkbox" name="chk_like" value="y" id="chk_like" style="z-index: -99; position: absolute;">
-                            <span class="comment_like_heart"></span>
-                            <span>또 받고싶어요</span>
-                        </label>
-                    </div>
-                    <div class="dislike  <?php echo (!empty($review_data) && !empty($review_data['dislike']) && $review_data['dislike']==='y') ? 'on' : ''?>">
-                        <label for="chk_dislike" class="comment_dislike" alert="다신 받기 싫어요">
-                            <input type="checkbox" name="chk_dislike" value="y" id="chk_dislike" style="z-index: -99; position: absolute;">
-                            <span class="comment_dislike_heart"></span>
-                            <span>다신 받기 싫어요</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="contents">
-        <div class="header">
-            <div class="title">코멘트 쓰기</div>
-            <div class="close">
-                <img src="/img/common/close.png">
-            </div>
-        </div>
-        <div class="body">
-            <div class="review_form">
-                <div>
-                    <img src="" class="goods_img" alt="이미지"
-                         style="width:135px; height:125px; margin-right:15px;">
-                </div>
-                <div class="review_explain">
-                                <span class="star_rating">
-                                    <span class="rating">
-                                        <?php for($i=1;$i<=5;$i++) {?>
-                                        <input type="radio" class="rating-input"
-                                               id="rating-input-1-<?php echo $i?>">
-                                            <label for="rating-input-1-<?php echo $i?>" class="rating-star"
-                                                   value="<?php echo $i?>"></label>
-                                        <?php } ?>
-                                    </span>
-                                </span>
-                    <span class="explain">알록달록 간식에 대한 생각을 자유롭게 표현해 주세요.</span>
-                    <textarea class="form-control" name="comment"></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="bottom">
-            <button type="submit" class="btn btn-primary">확인</button>
-        </div>
-    </div>
-</form>
+<div id="review_frame"></div>
 
 <script type="text/javascript">
+    var review_comment = $('.goods_list ul li .comment');
+
+    //리뷰레이어 내용 ajax
+    var reviewContents = function (pet_idx, goods_idx) {
+        $.ajax({
+            method: 'GET',
+            url: '/review/reviewLayer',
+            data: {
+                pet_idx: pet_idx,
+                goods_idx: goods_idx,
+            },
+            dataType: 'json',
+            complete: function (data) {
+                if (data.status == 200 && data.responseText.length > 0) {
+                    var review_frame = $('#review_frame');
+                    review_frame.html(data.responseText);
+
+                    commonShowLayer(review_frame);
+                    review_frame.show();
+
+                    registerReviewLayerEvent();
+                } else {
+                    alert('일시적으로 통신에 장애가 있습니다. 새로고침 후 재시도해주세요.');
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    var registerReviewLayerEvent = function () {
+        var review_frame = $('#review_frame');
+        var dislike_area = $('.dislike_area');
+        var score_level = review_frame.find('input[name="score_level"]').val();
+
+        if (!score_level || typeof score_level == 'undefined') {
+            dislike_area.show();
+            return false;
+        }
+
+        review_frame.find('input[type="submit"]').on('click', function () {
+            var score_level = review_frame.find('input[name="score_level"]').val();
+            if (!score_level || typeof score_level == 'undefined') {
+                dislike_area.show();
+                return false;
+            }
+        });
+        review_frame.find('.close').on('click', function () {
+            review_frame.html('').hide();
+        });
+    };
+
     $(document).ready(function () {
         var boxs = $('.box,.box-selected');
-        var goods_list = $('.goods_list');
+        var goods_area = $('.goods_area');
 
         boxs.on('click', function () {
             onClickBox($(this));
@@ -142,14 +117,13 @@
                 dataType: 'json',
                 complete: function (data) {
                     if (data.status == 200) {
-                        goods_list.html(data.responseText);
+                        goods_area.html(data.responseText);
                     }
                 }
             });
         }
 
-
-
         loadHtml(<?php echo $pet_idx; ?>);
     });
+
 </script>

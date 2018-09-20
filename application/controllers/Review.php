@@ -13,11 +13,36 @@ class Review extends CI_Controller
     {
         parent::__construct();
         $this->load->model('review_model');
+
+        $this->checkLogin();
+    }
+
+    public function checkLogin()
+    {
+        if (empty($this->session->userdata('member_idx'))) {
+            alert('로그인이 필요한 서비스입니다.', '/member');
+        }
+
+        return true;
     }
 
     public function index()
     {
+        if ($this->getPetCount() === 0) {
+            redirect('/petManage/');
+            return false;
+        }
+
         $this->lists();
+    }
+
+    public function getPetCount()
+    {
+        $member_idx = $this->session->userdata('member_idx');
+        $this->load->model('Pet_manage', 'petmanage');
+        $pets = $this->petmanage->getPets($member_idx);
+
+        return count($pets);
     }
 
     public function lists()
@@ -48,7 +73,7 @@ class Review extends CI_Controller
         $data['pet_idx'] = $pet_idx;
         $data['review_list'] = $this->review_model->getList([
             'where' => [
-                'pet_idx' =>$pet_idx,
+                'pet_idx' => $pet_idx,
                 'member_idx' => $this->session->userdata('member_idx'),
                 'use_fl' => 'y'
             ]
@@ -72,7 +97,7 @@ class Review extends CI_Controller
 
         $data = array();
         $params = $_GET;
-        $pet_idx = !empty($pet_idx) ? $pet_idx :  $params['pet_idx'];
+        $pet_idx = !empty($pet_idx) ? $pet_idx : $params['pet_idx'];
         $member_idx = $this->session->userdata('member_idx');
         $data['pet_list'] = $this->pet_manage->getPets($member_idx, $pet_idx);
 
@@ -103,13 +128,17 @@ class Review extends CI_Controller
     public function register()
     {
         $member_idx = $this->session->userdata('member_idx');
+        $params = $this->input->post();
 
         if (empty($member_idx)) {
-            alert("로그인을 이용해야 사용할 수 있습니다.");
+            alert("로그인이 필요합니다.");
             return false;
         }
 
-        $params = $this->input->post();
+        if (empty($params['pet_idx']) || empty($params['goods_idx'])) {
+            alert("정상적인 요청이 아닙니다. 페이지를 새로고침 후 재시도해주세요.");
+            return false;
+        }
 
         $reviewData = $this->review_model->getReview([
             'where' => [
@@ -124,15 +153,19 @@ class Review extends CI_Controller
             'member_idx' => $member_idx,
             'goods_idx' => $params['goods_idx'],
             'pet_idx' => $params['pet_idx'],
-            'score_level' => $params['score_level'],
-            'dislike' => $params['chk_dislike'],
-            'like' => $params['chk_like'],
-            'comment' => $params['comment'],
+            'score_level' => !empty($params['score_level']) ? $params['score_level'] : 0,
+            'dislike' => !empty($params['chk_dislike']) ? $params['chk_dislike'] : 'n',
+            'like' => !empty($params['chk_like']) ? $params['chk_like'] : 'n',
+            'comment' => !empty($params['comment']) ? $params['comment'] : '',
             'use_fl' => 'y',
         );
 
         if (!empty($reviewData)) {
-            if ($this->review_model->doUpdate(['score_level' => $params['score_level'], 'dislike' => $params['dislike'], 'comment' => $params['comment']], ['where' => ['review_idx' => $reviewData['review_idx']]]) === false) {
+            if ($this->review_model->doUpdate([
+                    'score_level' => !empty($params['score_level']) ? $params['score_level'] : 0,
+                    'dislike' => !empty($params['chk_dislike']) ? $params['chk_dislike'] : 'n',
+                    'comment' => !empty($params['comment']) ? $params['comment'] : '',
+                ], ['where' => ['review_idx' => $reviewData['review_idx']]]) === false) {
                 alert("리뷰 수정에 실패하였습니다.");
             } else {
                 alert("리뷰 수정 완료하였습니다.", "/review/");
@@ -183,7 +216,7 @@ class Review extends CI_Controller
                 'use_fl' => 'y',
             );
 
-            echo json_encode($this->review_model->doRegister($data) === false ?  'fail' : 'success');
+            echo json_encode($this->review_model->doRegister($data) === false ? 'fail' : 'success');
             exit;
         }
 
@@ -202,5 +235,30 @@ class Review extends CI_Controller
         }
 
         exit;
+    }
+
+
+    public function reviewLayer()
+    {
+        $params = $_GET;
+
+        $member_idx = $this->session->userdata('member_idx');
+        $this->load->model('Pet_manage', 'petmanage');
+
+        $data = [];
+        $data['pet'] = $this->petmanage->getPets($member_idx, $params['pet_idx']);
+        $data['pet'] = array_shift($data['pet']);
+
+        $data['review_data'] = $this->review_model->getReview([
+            'where' => [
+                'member_idx' => $member_idx,
+                'pet_idx' => $params['pet_idx'],
+                'goods_idx' => $params['goods_idx'],
+                'use_fl' => 'y'
+            ]
+        ]);
+
+        $contents = $this->load->view('review/review_layer.html', $data);
+        echo json_encode($contents);
     }
 }

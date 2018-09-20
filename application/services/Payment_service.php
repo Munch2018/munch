@@ -42,7 +42,7 @@ class Payment_service extends MY_Service
             'order_idx' => $this->paymentData['order_idx'],
             'amount' => $this->paymentData['last_amount'],
             'pay_method' => !empty($this->paymentData['pay_method']) ? $this->paymentData['pay_method'] : 'nicepay',
-            'status' => 'pending',
+            'status' => 'pay_pending',
             'bill_fl' => 'n'
         ]);
     }

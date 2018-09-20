@@ -12,7 +12,7 @@ class Main extends CI_Controller
     {
         $this->load->model('Goods', 'goods');
         $parentGoods = $this->goods->getParentGoods();
-        $childGoods = $this->goods->getChildGoods();
+        $childGoods = $this->goods->getChildGoods(['goods_use_fl' => 'y', 'package_fl'=>'n', 'use_fl'=>'y']);
 
         $this->load->view('common/header.html');
         $this->load->view('Main/index.html', ['parentGoods' => $parentGoods, 'childGoods' => $childGoods]);

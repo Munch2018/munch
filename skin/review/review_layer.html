@@ -1,0 +1,95 @@
+<form action="/review/register/" method="post" id="review_layer" name="review_form">
+    <input type="hidden" name="goods_idx"
+           value="<?=!empty($review_data['goods_idx']) ? $review_data['goods_idx'] : ''?>">
+    <input type="hidden" name="review_idx"
+           value="<?=!empty($review_data['review_idx']) ? $review_data['review_idx'] : ''?>">
+    <input type="hidden" name="pet_idx" value="<?=!empty($review_data['pet_idx']) ? $review_data['pet_idx'] : ''?>">
+    <input type="hidden" name="score_level"
+           value="<?=!empty($review_data['score_level']) ? $review_data['score_level'] : ''?>">
+    <div class="dislike_area">
+        <div class="point"></div>
+        <div class="dislike_form">
+            <div style="height:74px !important; display: contents;">
+                <div class="dislike_form_title"><span style="margin: auto;">평가를 먼저 해주세요.</span></div>
+                <div class="star" style="margin: 10px;text-align: center;">
+                    <span class="star_rating">
+                        <span class="rating">
+                            <?php for($i=1;$i<=5;$i++) {?>
+                            <input type="radio" class="rating-input"
+                                   id="rating-input-<?php echo $i?>">
+                                <label for="rating-input-<?php echo $i?>" class="rating-star <?=!empty($review_data['score_level']) && $i<=$review_data['score_level'] ? 'on' : ''?>"
+                                       value="<?php echo $i?>"></label>
+                            <?php } ?>
+                        </span>
+                    </span>
+                </div>
+                <div class="review" style="width: 90%; display: flex;  margin: auto;">
+                    <div class="like  <?php echo (!empty($review_data) && !empty($review_data['like']) && $review_data['like']==='y') ? 'on' : ''?>">
+                        <label for="chk_like" class="comment_like" alert="또 받고싶어요">
+                            <input type="checkbox" name="chk_like" value="y" id="chk_like"
+                                   checked="<?php echo (!empty($review_data) && !empty($review_data['like']) && $review_data['like']==='y') ? 'checked' : ''?>"
+                                   style="z-index: -99; position: absolute;">
+                            <span class="comment_like_heart"></span>
+                            <span>또 받고싶어요</span>
+                        </label>
+                    </div>
+                    <div class="dislike  <?php echo (!empty($review_data) && !empty($review_data['dislike']) && $review_data['dislike']==='y') ? 'on' : ''?>">
+                        <label for="chk_dislike" class="comment_dislike" alert="다신 받기 싫어요">
+                            <input type="checkbox" name="chk_dislike" value="y" id="chk_dislike"
+                                   checked="<?php echo (!empty($review_data) && !empty($review_data['dislike']) && $review_data['dislike']==='y') ? 'checked' : ''?>"
+                                   style="z-index: -99; position: absolute;">
+                            <span class="comment_dislike_heart"></span>
+                            <span>다신 받기 싫어요</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contents">
+        <div class="header">
+            <div class="title">코멘트 쓰기</div>
+            <div class="close">
+                <img src="/img/common/close.png">
+            </div>
+        </div>
+        <div class="body">
+            <div class="review_form">
+                <div>
+                    <img src="<?=!empty($pet['img_src']) ? $pet['img_src'] : ''?>" class="goods_img" alt="이미지"
+                         style="width:135px; height:125px; margin-right:15px;">
+                </div>
+                <div class="review_explain">
+                                <span class="star_rating">
+                                    <span class="rating">
+                                        <?php for($i=1;$i<=5;$i++) {?>
+                                        <input type="radio" class="rating-input"
+                                               id="rating-input-1-<?php echo $i?>">
+                                            <label for="rating-input-1-<?php echo $i?>" class="rating-star <?=!empty($review_data['score_level']) && $i<=$review_data['score_level'] ? 'on' : ''?>"
+                                                   value="<?php echo $i?>"></label>
+                                        <?php } ?>
+                                    </span>
+                                </span>
+                    <span class="explain">알록달록 간식에 대한 생각을 자유롭게 표현해 주세요.</span>
+                    <textarea class="form-control" name="comment"><?=!empty($review_data['comment']) ? $review_data['comment'] : ''?></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <button type="submit" class="btn btn-primary">확인</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    var $ = jQuery.noConflict();
+    var review_layer = $('#review_layer');
+    review_layer.find('label.rating-star').on('click', function () {
+        var score = $(this).attr('value');
+        review_layer.find('input[name=score_level]').val(score);
+
+        review_layer.find('label.rating-star').removeClass('on');
+        $('.rating label[value="' + score + '"]').addClass('on').prevAll('label.rating-star').addClass('on');
+        // $(this).addClass('on').prevAll('label.rating-star').addClass('on');
+    });
+</script>

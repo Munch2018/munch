@@ -12,49 +12,15 @@
                 </div>
                 <div class="wrap-inp">
                     <div class="input-set">
-                        <label>이 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 름</label>
+                        <label>국 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 가</label>
                         <div class="input-box">
-                            <?php echo $this->session->userdata('name')?>
+                            <input type="text" name="nation" class="input-text" value="<?php echo !empty($address[0]['nation']) ? $address[0]['nation'] : '' ?>" required>
                         </div>
                     </div>
-                    <div class="input-set">
-                        <label>이메일주소</label>
-                        <div class="input-box">
-                            <?php echo $this->session->userdata('email')?>
-                        </div>
-                    </div>
-                    <div class="input-set">
-                        <label>전 화 번 호</label>
-                        <div class="input-box">
-                            <label><?php echo $this->session->userdata('telphone')?></label>
-                        </div>
-                    </div>
-
-                </div>
-                <hr class="mid-bar">
-                <div class="tbl-title">
-                    <div style="float: left;"><b>· 배송 정보</b></div>
-                    <div style="float: right;">
-                        <button type="button" class="btn" id="ord_addr_chg">배송지 변경하기</button>
-                    </div>
-                </div>
-                <div class="wrap-inp">
                     <div class="input-set">
                         <label>이 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 름</label>
                         <div class="input-box">
                             <input type="text" name="buyer_name" class="input-text" value="<?php echo $this->session->userdata('name')?>" required>
-                        </div>
-                    </div>
-                    <div class="input-set">
-                        <label>전 화 번 호</label>
-                        <div class="input-box">
-                            <input type="telphone" name="buyer_phone" class="input-text" value="<?php echo $this->session->userdata('telphone')?>" required>
-                        </div>
-                    </div>
-                    <div class="input-set">
-                        <label>국 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 가</label>
-                        <div class="input-box">
-                            <input type="text" name="nation" class="input-text" value="<?php echo !empty($address[0]['nation']) ? $address[0]['nation'] : '' ?>" required>
                         </div>
                     </div>
                     <div id="buyer-addr">
@@ -76,8 +42,29 @@
                                        required>
                             </div>
                         </div>
-
+                        <div class="input-set">
+                            <label>이메일주소</label>
+                            <div class="input-box">
+                                <input type="email" name="buyer_email" class="input-text" value="<?php echo $this->session->userdata('email')?>" required>
+                            </div>
+                        </div>
+                        <div class="input-set">
+                            <label>전 화 번 호</label>
+                            <div class="input-box">
+                                <input type="telphone" name="buyer_phone" class="input-text" value="<?php echo $this->session->userdata('telphone')?>" required>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <hr class="mid-bar">
+                <div class="tbl-title">
+                    <span style="float: left;"><b>· 배송 정보</b></span>
+                </div>
+                <div class="wrap-inp">
+                    <span>
+                        <input type="checkbox" name="ord-info-same" id="ord-info-same"> <label for="ord-info-same">주문자 정보와 다른 주소로 배송하기</label>
+                    </span>
+                    <div id="recipient-addr"></div>
                     <div>
                         주문메모
                         <textarea name="memo" rows=5 placeholder="반려견 이름 표기를 영문으로 하고 싶은 경우, 또는 알러지 등으로 섭취가 불가능한 식재료가 있을 경우에는 반드시 적어주시길 바랍니다."></textarea>

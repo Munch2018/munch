@@ -101,7 +101,8 @@ class Review_model extends CI_Model{
             $this->setWhere($where);
         }
 
-        return $this->db->get('review')->row_array();
+        $result = $this->db->get('review')->row_array();
+        return $result;
     }
 
     /**

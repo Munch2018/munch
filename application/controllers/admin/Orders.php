@@ -19,11 +19,31 @@ class Orders extends CI_Controller
 
     public function index()
     {
+        $status = !empty($_POST['status']) ? $_POST['status'] : 'all';
         $data['order_status'] = $this->common_code->getCode('order_status');
-        $data['orders']= $this->model->getOrders();
+
+        if (!empty($status) && !empty($data['order_status'][$status])) {
+            $data['orders'] = $this->model->getOrders(['status' => $status]);
+        } else {
+            $data['orders'] = $this->model->getOrders();
+        }
+
+        $data['status'] = $status;
         $this->load->view('admin/common/header.html');
         $this->load->view('admin/orders/list.html', $data);
         $this->load->view('admin/common/footer.html');
+    }
+
+    /**
+     * 주문건 상태 변경
+     * @return bool
+     */
+    public function changeStatus()
+    {
+        $params = $_POST;
+        echo print_r($params, 1);
+        exit;
+        return false;
     }
 
     public function popupChildGoods($goods_idx = 0)

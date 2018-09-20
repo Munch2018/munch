@@ -1,40 +1,85 @@
+<style>
+    .table-responsive fieldset {
+        border-radius: 10px;
+        border: 1px solid #DEE2E6;
+        padding: 10px;
+        margin-bottom: 30px;
+        width:100%;
+    }
+
+    .table-responsive legend {
+        width: 150px;
+        font-size: 15px;
+    }
+
+    .btn.on {
+        background: #746AB0;
+        color: #ffffff;
+    }
+</style>
 <div class="table-responsive">
-    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-        <thead>
-        <tr>
-            <th>No.</th>
-            <th>주문일자</th>
-            <th>주문번호</th>
-            <th>주문자</th>
-            <th>반려동물이름</th>
-            <th>주문상품</th>
-            <th>수량(개월)</th>
-            <th>금액</th>
-            <th>배송상태</th>
-            <th>주문상품 수정</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php if(!empty($orders)){?>
-        <?php foreach($orders as $key => $order){?>
-        <tr>
-            <th scope="row"><?php echo $key+1?></th>
-            <td><?php echo $order['reg_dt']?></td>
-            <td><?php echo $order['order_idx']?></td>
-            <td><?php echo $order['name']?></td>
-            <td><?php echo $order['pet_name']?></td>
-            <td><?php echo $order['title']?></td>
-            <td><?php echo $order['subscribe_month']?></td>
-            <td><?php echo number_format($order['total_amount'])?></td>
-            <td><?php echo $order_status[$order['status']]?></td>
-            <td>
-                <button type="button" class="chgChildGoods" data-goods_idx="<?php echo $order['goods_idx']?>">수정</button>
-            </td>
-        </tr>
-        <?php }?>
-        <?php }?>
-        </tbody>
-    </table>
+    <form name="search_form" method="post" action="/admin/orders/changeStatus">
+        <fieldset>
+            <div class="status-area">
+                <?php foreach($order_status as $code => $name){?>
+                <button type="submit" name="status" value="<?= $code;?>"
+                        class="btn <?=($status==$code) ? 'on' : ''?>"><?= $name;?></button>
+                <?php } ?>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>상태 변경</legend>
+            <div>
+                <input type="checkbox" name="all_check" id="all_check"><label for="all_check">Select All</label>
+                <select name="change_status" class="form-control" style="width:200px;display: inline-block;">
+                    <option value="">Status to change</option>
+                    <?php foreach ($order_status as $code => $name) { ?>
+                    <?php if ($status == $code) { continue;} ?>
+                    <option value="<?= $code;?>"><?= $name;?></option>
+                    <?php } ?>
+                </select>
+                <button type="submit" name="change_status" class="btn">변경</button>
+            </div>
+        </fieldset>
+
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>주문일자</th>
+                <th>주문번호</th>
+                <th>주문자</th>
+                <th>반려동물이름</th>
+                <th>주문상품</th>
+                <th>수량(개월)</th>
+                <th>금액</th>
+                <th>배송상태</th>
+                <th>주문상품 수정</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(!empty($orders)){?>
+            <?php foreach($orders as $key => $order){?>
+            <tr>
+                <th scope="row"><input type="checkbox" name="order_idx[]"
+                                       value="<?=$order['order_idx']?>"><?php echo $key+1?></th>
+                <td><?php echo $order['reg_dt']?></td>
+                <td><?php echo $order['order_idx']?></td>
+                <td><?php echo $order['name']?></td>
+                <td><?php echo $order['pet_name']?></td>
+                <td><?php echo $order['title']?></td>
+                <td><?php echo $order['subscribe_month']?></td>
+                <td><?php echo number_format($order['total_amount'])?></td>
+                <td><?php echo $order_status[$order['status']]?></td>
+                <td>
+                    <button type="button" class="btn chgChildGoods" data-goods_idx="<?php echo $order['goods_idx']?>">수정</button>
+                </td>
+            </tr>
+            <?php }?>
+            <?php }?>
+            </tbody>
+        </table>
+    </form>
 </div>
 
 <script type="text/javascript">
@@ -43,5 +88,14 @@
             var goods_idx = $(this).data('goods_idx');
             window.open('/admin/orders/popupChildGoods/' + goods_idx, '', 'width=500,height=800');
         })
+
+        var all_checked = $('#all_check');
+        all_checked.on('click', function () {
+            if (all_checked.prop('checked') === true) {
+                $('input[name="order_idx[]"]').prop('checked', true);
+            } else {
+                $('input[name="order_idx[]"]').prop('checked', false);
+            }
+        });
     })
 </script>

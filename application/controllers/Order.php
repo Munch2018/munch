@@ -58,10 +58,12 @@ class Order extends CI_Controller
         }
 
         redirect('/order/complete?subscribe_idx='.$subscribe_idx);
-    }
+}
 
-    public function complete($subscribe_idx)
+    public function complete()
     {
+        $subscribe_idx = $_GET['subscribe_idx'];
+
         $this->load->model('member_model','member');
         $this->load->model('order_model', 'order');
         $this->load->service('common_code', '', true);
@@ -85,4 +87,18 @@ class Order extends CI_Controller
         $this->load->view('common/footer.html');
     }
 
+    public function popupAddress()
+    {
+        $this->load->model('member_model','member');
+        $member_idx = $this->session->userdata('member_idx');
+        $data['address_list'] = $this->member->getAddress($member_idx);
+
+        if (!empty($data['address_list'])) {
+            foreach ($data['address_list'] as $k => $val) {
+                $data['address_list_json'][$val['address_idx']] = $val;
+            }
+        }
+        $data['address_list_json'] = json_encode($data['address_list_json']);
+        $this->load->view('order/popup-address.html', $data);
+    }
 }
