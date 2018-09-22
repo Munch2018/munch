@@ -1,6 +1,7 @@
 .container {
     background-color: #6B63AD;
 }
+
 .main-do-munch {
     max-width: 1440px;
     margin: 0 auto;
@@ -26,11 +27,13 @@
     box-sizing: border-box;
     line-height: 1.3;
 }
-.main-do-munch .sub-do-munch .txt-area *{
+
+.main-do-munch .sub-do-munch .txt-area * {
     box-sizing: border-box;
     display: block;
 }
-.main-do-munch .sub-do-munch .txt-area hr{
+
+.main-do-munch .sub-do-munch .txt-area hr {
     width: 55px;
     background-color: #ffffff;
     height: 2px;
@@ -59,9 +62,10 @@
 }
 
 .main-do-munch .sub-do-munch .txt-area div:nth-child(3) {
-    width:100%;
+    width: 100%;
     margin: 50px 0px;
 }
+
 .main-do-munch .sub-do-munch .txt-area div:nth-child(4) {
     font-size: 13pt;
     margin-top: 88px;
@@ -88,7 +92,7 @@
 }
 
 .main-guide {
-    height: 1035px;
+    height: 1500px;
     background-color: #FFF8EE;
     width: 100%;
 }
@@ -107,8 +111,27 @@
     width: 860px;
 }
 
+.main-guide .sub-guide .contents .info_img {
+    margin: 80px;
+}
+
+.main-guide .sub-guide .contents .info_img b {
+    padding: 4px;
+}
+
+.main-guide .sub-guide .contents .info_img span {
+    font-weight: bold;
+    display: block;
+    margin: 10px;
+}
+
+.main-guide .sub-guide .contents .info_img img {
+    width: 300px;
+    height: 300px;
+}
+
 .main-guide .sub-guide .contents p:first-child {
-    padding-top: 50px;
+    padding-top: 90px;
 }
 
 .main-guide .sub-guide .contents .big-title {
@@ -118,7 +141,7 @@
 }
 
 .main-guide .sub-guide .contents .small-title {
-    font-weight: 500;
+    font-weight: bold;
     font-size: 25px;
 }
 
@@ -140,7 +163,7 @@
 .main-explanation .sub-explanation .big-title {
     font-size: 52px;
     text-align: center;
-    padding: 77px 0px 58px 0px;
+    padding: 110px 0px 58px 0px;
 }
 
 .main-explanation .sub-explanation .square-box {
@@ -153,7 +176,8 @@
     position: relative;
     z-index: 1;
 }
-.main-explanation .sub-explanation .square-box .square-box-bg{
+
+.main-explanation .sub-explanation .square-box .square-box-bg {
     background: url('/img/main/middle-img2.jpg') center center;
     position: absolute;
     z-index: -1;
@@ -165,6 +189,7 @@
     width: 100%;
     height: 100%;
 }
+
 .main-explanation .sub-explanation .square-box #line-horizon {
     position: relative;
     width: 830px;
@@ -201,7 +226,8 @@
     vertical-align: top;
     padding-right: 3px;
 }
-.main-explanation .sub-explanation .square-box .desc-price{
+
+.main-explanation .sub-explanation .square-box .desc-price {
     color: #FFB900;
     display: inline-block;
 }
@@ -216,9 +242,11 @@
     color: #FFFAF6;
     padding-bottom: 20px;
 }
-.main-explanation .sub-explanation .square-box .desc-price .point{
+
+.main-explanation .sub-explanation .square-box .desc-price .point {
     font-size: 41px;
 }
+
 .main-product-introduction {
     height: 100%;
     background-color: #FFF8EE;
@@ -233,7 +261,7 @@
 
 .main-product-introduction .sub-product-introduction .big-title {
     font-size: 52px;
-    padding: 90px 0px 36px 0px;
+    padding: 110px 0px 60px 0px;
 }
 
 .main-product-introduction .sub-product-introduction .select-pet-area {
@@ -242,7 +270,6 @@
     display: inline-flex;
 }
 
-
 .main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet {
     display: flex;
     align-items: center;
@@ -250,7 +277,7 @@
     width: 270px;
     height: 73px;
     vertical-align: middle;
-    color:#49316F;
+    color: #49316F;
     background-color: #ffffff;
 }
 
@@ -262,12 +289,12 @@
     border-radius: 0px 50px 50px 0px;
 }
 
-.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet.on{
+.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet.on {
     background-color: #746AB0;
-    color:#ffffff;
+    color: #ffffff;
 }
 
-.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet div{
+.main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet div {
     margin: auto;
     display: inline-flex;
     align-items: center;
@@ -276,6 +303,7 @@
 .main-product-introduction .sub-product-introduction .select-pet-area .btn-select-pet img {
     margin-right: 10px;
 }
+
 .main-product-introduction .sub-product-introduction .munch-set-img {
     margin: 0 auto;
     text-align: center;
@@ -346,7 +374,7 @@
     width: 80%;
 }
 
-#left-arrow ,#right-arrow{
+#left-arrow, #right-arrow {
     height: 100%;
     width: 120px;
 }
