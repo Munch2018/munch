@@ -131,7 +131,7 @@ class Review extends CI_Controller
         $params = $this->input->post();
 
         if (empty($member_idx)) {
-            alert("로그인이 필요합니다.");
+            alert("로그아웃 되었습니다. 로그인을 해주세요.");
             return false;
         }
 

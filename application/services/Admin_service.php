@@ -12,7 +12,7 @@ class Admin_service extends MY_Service
     public function checkAdmin()
     {
         if (empty($this->session->userdata('member_idx'))) {
-            alert('로그인을 해주세요.');
+            alert('로그인이 필요한 서비스입니다.');
             redirect('/member/login_form/');
             return false;
         }

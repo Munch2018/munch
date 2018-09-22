@@ -8,6 +8,11 @@ class Subscribe extends CI_Controller
         parent::__construct();
 
         $this->load->model('Subscribe_model', 'subscribe');
+
+        if (empty($this->session->userdata('member_idx'))) {
+            alert('로그인이 필요한 서비스입니다. ', '/member/login_form/');
+            return false;
+        }
     }
 
     public function index()
