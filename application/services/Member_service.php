@@ -23,14 +23,23 @@ class Member_service extends MY_Service
             return false;
         }
 
-        $member_idx = $this->session->userdata('member_idx');
-        if (empty($member_idx)) {
+        $this->load->model('Member_model', 'member');
+        $userData = $this->session->userdata();
+
+        if (empty($userData['member_idx'])) {
             return false;
         }
 
-        $params['member_idx'] = $member_idx;
+        $params['member_idx'] = $userData['member_idx'];
 
-        $this->load->model('Member_model', 'member');
+        //중복체크
+        $address = $this->member->getAddress($params);
+        if (!empty($address)) {
+            return $address[0]['address_idx'];
+        }
+
+        $params['name'] = empty($params['name']) ? $userData['name'] : $params['name'];
+        $params['telphone'] = empty($params['telphone']) ? $userData['telphone'] : $params['telphone'];
 
         return $this->member->insertAddress($params);
     }

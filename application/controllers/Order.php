@@ -28,7 +28,7 @@ class Order extends CI_Controller
         $member_idx = $this->session->userdata('member_idx');
 
         $data = [];
-        $data['address'] = $this->member->getAddress($member_idx);
+        $data['address'] = $this->member->getAddress(['member_idx' => $member_idx]);
         $data['card_info'] = $this->card->getData($member_idx);
         $subscribe_info = $this->subscribe->getSubscribe(['subscribe_idx' => $subscribe_idx]);
         $data['subscribe_info'] = array_shift($subscribe_info);
@@ -76,12 +76,11 @@ class Order extends CI_Controller
             'subscribe_idx' => $subscribe_idx
         ])[0];
 
-
         $data['order_status'] = $this->common_code->getCode('order_status');
         $data['subscribe_status'] = $this->common_code->getCode('subscribe_status');
         $data['subscribe'] = $this->subscribe->fetch_subscribe(['member_idx'=>$member_idx,'subscribe_idx'=>$subscribe_idx], 1, 0);
 
-        $data['address_info'] = $this->member->getAddress($member_idx,$data['order_info']['address_idx'])[0];
+        $data['address_info'] = $this->member->getAddress(['member_idx'=>$member_idx,'address_idx'=>$data['order_info']['address_idx']])[0];
         $this->load->view('common/header.html');
         $this->load->view('Order/complete.html', $data);
         $this->load->view('common/footer.html');
@@ -91,7 +90,7 @@ class Order extends CI_Controller
     {
         $this->load->model('member_model','member');
         $member_idx = $this->session->userdata('member_idx');
-        $data['address_list'] = $this->member->getAddress($member_idx);
+        $data['address_list'] = $this->member->getAddress(['member_idx'=>$member_idx]);
 
         if (!empty($data['address_list'])) {
             foreach ($data['address_list'] as $k => $val) {
@@ -99,6 +98,6 @@ class Order extends CI_Controller
             }
         }
         $data['address_list_json'] = json_encode($data['address_list_json']);
-        $this->load->view('order/popup-address.html', $data);
+        $this->load->view('order/popup-address.phtml', $data);
     }
 }

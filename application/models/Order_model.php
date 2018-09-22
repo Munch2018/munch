@@ -80,32 +80,52 @@ class Order_model extends CI_Model
         $result = $this->db->query($sql, $bind)->result_array();
         //echo $this->db->last_query();
         return $result;
-
     }
 
 
-    public function orders_count($member_idx)
+    public function orders_count($params)
     {
-        $this->db->where('member_idx',$member_idx);
-        return $this->db->count_all("order");
-    }
-
-    public function fetch_orders($member_idx, $limit, $start)
-    {
-        $this->db->limit($limit, $start);
-        $this->db->where('member_idx',$member_idx);
-        $query = $this->db->get('order');
-
-        if ($query->num_rows() > 0) {
-            $data = [];
-            foreach ($query->result() as $row) {
-                $data[] = $row;
-            }
-            return $data;
+        if (empty($params['member_idx'])) {
+            return [];
         }
-        return false;
-    }
 
+        $bind = [];
+        $where = [];
+        $whereStr = '';
+        $bind['use_fl'] = 'y';
+        $bind['member_idx'] = $params['member_idx'];
+
+        if (!empty($params['subscribe_idx'])) {
+            $bind['subscribe_idx'] = $params['subscribe_idx'];
+            $where[] = ' s.subscribe_idx = ? ';
+        }
+
+        if (!empty($where)) {
+            $whereStr = ' AND '.implode(' and ', $where);
+        }
+
+        $sql = " SELECT  o.order_idx, o.reg_dt, o.total_amount, o.last_amount, 
+                          o.goods_name, p.reg_dt, p.status, 
+                          s.subscribe_month, pet.name,
+                          group_concat(od.goods_name) as detail_goods_names ,
+                          GROUP_CONCAT(DISTINCT (ss.address_idx)) AS address_idx
+            FROM
+                subscribe s
+                    JOIN subscribe_schedule ss ON s.subscribe_idx = ss.subscribe_idx
+                    JOIN `order` o ON s.subscribe_idx = o.subscribe_idx and o.subscribe_schedule_idx=ss.subscribe_schedule_idx
+                    JOIN order_detail od ON o.order_idx = od.order_idx 
+                    JOIN payment p ON o.order_idx = p.order_idx
+                    JOIN pet pet ON s.pet_idx = pet.pet_idx AND pet.use_fl='y'
+            WHERE 
+                    s.use_fl = ?
+                    AND o.use_fl = 'y' AND od.use_fl = 'y' AND p.use_fl = 'y'
+                    AND s.member_idx = ?
+                    " . $whereStr
+            . '  GROUP BY o.order_idx ';
+
+        $result = $this->db->query($sql, $bind)->result_array();
+        return count($result);
+    }
 
     /**
      * 결제 시도건이있었는지
@@ -160,26 +180,28 @@ class Order_model extends CI_Model
         }
 
         $sql = " SELECT  o.order_idx, o.reg_dt, o.total_amount, o.last_amount, 
-                          g.title, p.reg_dt, p.status, 
+                          o.goods_name, p.reg_dt, p.status, 
                           s.subscribe_month, pet.name, pet.pet_size,
                           group_concat(od.goods_name) as detail_goods_names ,
                           GROUP_CONCAT(DISTINCT (ss.address_idx)) AS address_idx
             FROM
                 subscribe s
                     JOIN subscribe_schedule ss ON s.subscribe_idx = ss.subscribe_idx
-                    JOIN `order` o ON s.subscribe_idx = o.subscribe_idx
+                    JOIN `order` o ON s.subscribe_idx = o.subscribe_idx AND o.subscribe_schedule_idx = ss.subscribe_schedule_idx
                     JOIN order_detail od ON o.order_idx = od.order_idx 
                     JOIN payment p ON o.order_idx = p.order_idx
-                    JOIN goods g ON g.goods_idx = od.goods_idx
                     JOIN pet pet ON s.pet_idx = pet.pet_idx AND pet.use_fl='y'
             WHERE 
                     s.use_fl = ?
                     AND o.use_fl = 'y' AND od.use_fl = 'y' AND p.use_fl = 'y'
-                    AND g.use_fl = 'y'
                     AND s.member_idx = ?
                     " . $whereStr
+            . ' GROUP BY o.order_idx  '
+            . ' ORDER BY o.order_idx DESC '
             . " limit " . $limit . " offset " . $start;
 
-        return $this->db->query($sql, $bind)->result_array();
+       $result = $this->db->query($sql, $bind)->result_array();
+
+       return $result;
     }
 }

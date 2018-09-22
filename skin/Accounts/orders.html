@@ -5,8 +5,6 @@
     <div class="contents-wrap">
         <?php $this->load->view('common/left-menu.html'); ?>
 
-        <p><?php echo $links; ?></p>
-
         <div class="account-contents">
             <div class="tbls">
                 <div class="orders-tbl">
@@ -26,7 +24,7 @@
                             </tr>
                             <?php foreach($results as $key => $order){?>
                             <tr>
-                                <td><?php echo $order['title']?></td>
+                                <td><?php echo $order['goods_name']?></td>
                                 <td><?php echo substr($order['reg_dt'],0,10)?></td>
                                 <td><?php echo $order_status[$order['status']]?></td>
                                 <td>&#8361; <?php echo number_format($order['total_amount'])?></td>
@@ -36,6 +34,7 @@
                     </div>
                 </div>
             </div>
+            <?php echo $links; ?>
         </div>
     </div>
 </div>

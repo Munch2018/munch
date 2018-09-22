@@ -15,6 +15,9 @@ class Orders extends CI_Controller
         $this->load->model('admin_order_model', 'model');
         $this->load->model('admin_goods_model', 'goods_model');
         $this->load->service('common_code', '', true);
+
+        $this->load->service('admin_service', '', true);
+        $this->admin_service->checkAdmin();
     }
 
     public function index()

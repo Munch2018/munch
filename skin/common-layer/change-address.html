@@ -1,5 +1,9 @@
-<style>
+<style type="text/css">
     #change-address-layer {
+        z-index: 999;
+        display: none;
+        overflow: hidden;
+        box-sizing: border-box;
         font-size: 14px;
         font-weight: bold;
         width: 559px;
@@ -12,13 +16,13 @@
     }
 
     #change-address-layer .title {
+        padding: 12px;
         height: 50px;
         color: #ffffff;
         vertical-align: middle;
         border: 2px solid #ffffff;
         background-color: #746AB0;
         width: 100%;
-
     }
 
     .input-set {
@@ -36,6 +40,10 @@
 
     .title strong, .bottom {
         padding: 10px;
+    }
+
+    #change-address-layer * {
+        box-sizing: border-box;
     }
 
     #change-address-layer .inner .input-set {
@@ -62,13 +70,15 @@
         display: inline-flex;
     }
 
-
 </style>
 <div id="change-address-layer">
     <form action="" name="" id="chg_addr_form">
         <input type="hidden" name="subscribe_idx" value="">
         <div class="title">
-            <strong>주소찾기</strong>
+            <div style="float:left">주소찾기</div>
+            <div class="close" style="float:right">
+                <img src="/img/common/close.png">
+            </div>
         </div>
         <div class="inner">
             <div class="input-set">
@@ -95,7 +105,7 @@
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript">
 
-    var daum =  new daum.Postcode({
+    var daum = new daum.Postcode({
         oncomplete: function (data) {
             $('input[name="zipcode"]').val(data.zonecode);
             $('input[name="addr1st"]').val(data.address);
@@ -109,21 +119,27 @@
         var zipcode = $('input[name="zipcode"]');
         var addr1st = $('input[name="addr1st"]');
         var addr2nd = $('input[name="addr2nd"]');
+        var ajaxProcess = null;
 
         $('.btn-cancel').on('click', function () {
-            $('input[type="text"]').val('');
-            layer.hide();
+            closeLayer();
         })
+
+        layer.find('.close').on('click', function () {
+            closeLayer();
+        });
+
         search_addr_btn.on('click', function () {
             daum.open();
         });
         $('#chg_addr').on('click', function () {
-            if (!validate()) {
+            if (!validate() || !!ajaxProcess) {
                 return false;
             }
-            $.ajax({
+
+            ajaxProcess = $.ajax({
                 method: 'GET',
-                url: 'changeAddress',
+                url: '/Accounts/changeAddress',
                 data: {
                     subscribe_idx: subscribe_idx.val(),
                     zipcode: zipcode.val(),
@@ -131,19 +147,22 @@
                     addr2nd: addr2nd.val(),
                 },
                 dataType: 'json',
-                success: function (data) {
+                complete: function (data) {
                     if (data.responseText === 'success') {
                         alert('주소 변경이 완료되었습니다.');
-                        layer.hide();
                     } else {
                         alert('주소 변경에 실패하였습니다. 잠시 후 재시도해주세요.');
                     }
-                },
-                error: function () {
-                    alert('주소 변경에 실패하였습니다. 잠시 후 재시도해주세요.');
+                    closeLayer();
+                    ajaxProcess = null;
                 }
             });
         });
+
+        var closeLayer = function () {
+            $('#chg_addr_form')[0].reset();
+            layer.hide();
+        }
 
         var validate = function () {
             if (!subscribe_idx.val()) {
@@ -161,6 +180,6 @@
                 return false;
             }
             return true;
-         }
+        }
     })
 </script>

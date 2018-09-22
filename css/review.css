@@ -30,8 +30,8 @@ hr {
 }
 
 .box-img, .box img, .box-selected img {
-    height: auto;
-    width: 100%;
+    width: 210px;
+    height: 135px;
 }
 
 .box .edit_img, .box-selected .edit_img {
@@ -48,12 +48,12 @@ hr {
 }
 
 .pets_info {
+    text-align: center;
     overflow: hidden;
     height: 100%;
     display: block;
     padding: 45px 0 65px 0;
     border-bottom: 2px solid #444444;
-    text-align: left;
 }
 
 .goods_list {

@@ -7,6 +7,10 @@
     height: 100%;
 }
 
+.container a:link, .container a:visited, .container a:hover, .container a:active {
+    color: #454545;
+}
+
 .container hr:first-child {
     width: 20px;
     height: 0px;
@@ -26,6 +30,7 @@
 
 .container .account-lnb .lnb-title {
     background-color: #452A77;
+    border: solid 1px #452A77;
     color: #ffffff;
     height: 110px;
     font-size: 22px;
@@ -46,7 +51,9 @@
     color: #2E2E2E;
     font-size: 15px;
     font-weight: bold;
-    border: solid 1px #CACACA;
+    border-bottom: solid 1px #CACACA;
+    border-left: solid 1px #CACACA;
+    border-right: solid 1px #CACACA;
 }
 
 .container .account-lnb li a {
@@ -151,7 +158,7 @@ table td button {
 table td button.restart-btn {
     border: 1px solid #F24C5E;
     color: #F24C5E;
-    width:100%;
+    width: 100%;
 }
 
 table td button.change-addr-btn {
@@ -313,4 +320,26 @@ table td button.cancel-btn {
     justify-content: center;
     align-items: center;
     font-size: 16px;
+}
+
+.container .pagination {
+    width: 100%;
+    height: 30px;
+    margin: 30px 0;
+    color: #676767;
+}
+
+.container .pagination div {
+    border: solid 1px #676767;
+    min-width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin: 2px;
+    padding-top: 3px;
+    box-sizing: border-box;
+}
+
+.container .pagination .current {
+    background-color: #746AB0;
+    color: #ffffff;
 }

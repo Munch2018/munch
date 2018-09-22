@@ -37,7 +37,7 @@ class Accounts extends CI_Controller
         $this->load->model('order_model', 'order');
         $this->load->model('Subscribe_model', 'subscribe');
 
-        $limit =3;
+        $limit = 3;
         $page = 0;
         $member_idx = $this->session->userdata('member_idx');
         $data['order_status'] = $this->common_code->getCode('order_status');
@@ -60,15 +60,16 @@ class Accounts extends CI_Controller
 
         $config = [];
         $config['base_url'] = base_url() . 'Accounts/orders/page/';
-        $config['total_rows'] = $this->order->orders_count($member_idx);
-        $config['per_page'] = 20;
-        $config['uri_segment'] = 3;
+        $config['total_rows'] = $this->order->orders_count(['member_idx'=>$member_idx]);
+        $config['per_page'] = 10;
+        $config['first_link'] = '&lt;&lt;';
+        $config['last_link'] = '&gt;&gt;';
 
         $this->pagination->initialize($config);
-        $page = ($this->uri->segment(3)) ? ($this->uri->segment(3)) : 0;
+        $page = ($this->uri->segment(4)) ? ($this->uri->segment(4)) : 0;
 
         $data['order_status'] = $this->common_code->getCode('order_status');
-        $data['results'] = $this->order->getOrderData(['member_idx'=>$member_idx], $config['per_page'], $page);
+        $data['results'] = $this->order->getOrderData(['member_idx' => $member_idx], $config['per_page'], $page);
         $data['links'] = $this->pagination->create_links();
         $data['action'] = 'orders';
 
@@ -84,12 +85,13 @@ class Accounts extends CI_Controller
 
         $config = [];
         $config['base_url'] = base_url() . 'Accounts/subscribe/page/';
-        $config['total_rows'] = $this->subscribe->subscribe_count($member_idx);
-        $config['per_page'] = 20;
-        $config['uri_segment'] = 3;
+        $config['total_rows'] = $this->subscribe->subscribe_count(['member_idx'=>$member_idx]);
+        $config['per_page'] = 10;
+        $config['first_link'] = '&lt;&lt;';
+        $config['last_link'] = '&gt;&gt;';
 
         $this->pagination->initialize($config);
-        $page = ($this->uri->segment(3)) ? ($this->uri->segment(3)) : 0;
+        $page = ($this->uri->segment(4)) ? ($this->uri->segment(4)) : 0;
 
         $data['subscribe_status'] = $this->common_code->getCode('subscribe_status');
         $data['results'] = $this->subscribe->fetch_subscribe(['member_idx'=>$member_idx], $config['per_page'], $page);
@@ -138,6 +140,7 @@ class Accounts extends CI_Controller
     public function changeAddress()
     {
         $params = $_GET;
+
         $this->load->service('member_service', '', true);
         $this->load->model('Subscribe_model', 'subscribe');
 
@@ -149,7 +152,7 @@ class Accounts extends CI_Controller
 
         if (empty($address_idx)) {
             echo 'fail';
-            return false;
+            exit;
         }
 
         if ($this->subscribe->updateSubscribeSchedule([
@@ -157,10 +160,11 @@ class Accounts extends CI_Controller
             'subscribe_idx' => $params['subscribe_idx']
         ])) {
             echo 'success';
+            exit;
         } else {
             echo 'fail';
+            exit;
         }
-        return;
     }
 
     public function pauseSubscribe()

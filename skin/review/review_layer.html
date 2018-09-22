@@ -84,6 +84,7 @@
 <script type="text/javascript">
     var $ = jQuery.noConflict();
     var review_layer = $('#review_layer');
+
     review_layer.find('label.rating-star').on('click', function () {
         var score = $(this).attr('value');
         review_layer.find('input[name=score_level]').val(score);
@@ -91,5 +92,13 @@
         review_layer.find('label.rating-star').removeClass('on');
         $('.rating label[value="' + score + '"]').addClass('on').prevAll('label.rating-star').addClass('on');
         // $(this).addClass('on').prevAll('label.rating-star').addClass('on');
+    });
+
+    $('textarea[name="comment"]').on('focus', function () {
+        $('.dislike_area').hide();
+    });
+
+    review_layer.find('.close').on('click', function () {
+        $('#review_frame').html('').hide();
     });
 </script>

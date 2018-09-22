@@ -22,7 +22,7 @@
                             <th>상태</th>
                             <?php foreach($orders as $key => $order){?>
                             <tr>
-                                <td><?php echo $order['title']?></td>
+                                <td><?php echo $order['goods_name']?></td>
                                 <td><?php echo substr($order['reg_dt'],0,10)?></td>
                                 <td><?php echo $order_status[$order['status']]?></td>
                             </tr>

@@ -39,14 +39,15 @@ function goodsViewAction() {
 
 
 function commonShowLayer(layer) {
-    var w = window.outerWidth;
-    var h = window.outerHeight;
+    var w = $(window).width();
+    var h = $(window).height();
+    var offsetY = window.pageYOffset;
 
     var layer_width = layer.width();
     var layer_height = layer.outerHeight();
 
     layer.css({
-        'top': (h - layer_height) / 2,
+        'top': ((h + offsetY) - layer_height) / 2,
         'left': (w - layer_width) / 2
     });
 }

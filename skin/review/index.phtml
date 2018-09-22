@@ -4,27 +4,28 @@
     <hr class="title-line">
     <div class="pets_info">
         <?php if (!empty($pet_list)) : ?>
-        <?php foreach($pet_list as $k => $pet){?>
-        <div class="<?php echo ($pet_idx==$pet['pet_idx']) ? 'box-selected' : 'box'; ?>"
-             data-pet_idx="<?php echo $pet['pet_idx']?>">
-            <div class="edit_img">
-                <a href="/petManage/edit/<?php echo !empty($pet['pet_idx']) ? $pet['pet_idx'] : ''?>"><img class="edit_img_btn" src="/img/common/edit_btn.png"></a>
-            </div>
-            <div class="box-img">
-                <?php if($pet['img_src']){ ?>
-                <img src="<?php echo $pet['img_src']?>">
-                <?php } elseif($pet['pet_type']=='cat') {?>
-                <img src="/img/pet-img/pet-picture1.jpg">
-                <?php } else {?>
-                <img src="/img/pet-img/pet-picture2.jpg">
-                <?php }?>
-            </div>
-            <div class="box-name"><?=$pet['name']?></div>
-        </div>
-        <?php }?>
+            <?php foreach ($pet_list as $k => $pet) { ?>
+                <div class="<?php echo ($pet_idx == $pet['pet_idx']) ? 'box-selected' : 'box'; ?>"
+                     data-pet_idx="<?php echo $pet['pet_idx'] ?>">
+                    <div class="edit_img">
+                        <a href="/petManage/edit/<?php echo !empty($pet['pet_idx']) ? $pet['pet_idx'] : '' ?>"><img
+                                    class="edit_img_btn" src="/img/common/edit_btn.png"></a>
+                    </div>
+                    <div class="box-img">
+                        <?php if ($pet['img_src']) { ?>
+                            <img src="<?php echo $pet['img_src'] ?>">
+                        <?php } elseif ($pet['pet_type'] == 'cat') { ?>
+                            <img src="/img/pet-img/pet-picture1.jpg">
+                        <?php } else { ?>
+                            <img src="/img/pet-img/pet-picture2.jpg">
+                        <?php } ?>
+                    </div>
+                    <div class="box-name"><?= $pet['name'] ?></div>
+                </div>
+            <?php } ?>
         <?php endif; ?>
-        <?php if(empty($pet_list) || count($pet_list)<5){ ?>
-        <a href="/petManage/"><img src="/img/review/add_btn.png" alt="펫 추가"></a>
+        <?php if (empty($pet_list) || count($pet_list) < 5) { ?>
+            <a href="/petManage/"><img src="/img/review/add_btn.png" alt="펫 추가"></a>
         <?php } ?>
     </div>
     <div class="goods_area">

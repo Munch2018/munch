@@ -4,7 +4,6 @@
     <hr class="title-line">
     <div class="contents-wrap">
         <?php $this->load->view('common/left-menu.html'); ?>
-        <p><?php echo $links; ?></p>
         <div class="account-contents">
             <div class="tbls">
                 <div class="orders-tbl">
@@ -50,6 +49,7 @@
                     </div>
                 </div>
             </div>
+            <?php echo $links; ?>
         </div>
     </div>
 </div>
@@ -80,6 +80,7 @@
                 }
             })
         });
+
         $('.cancel-btn').on('click', function () {
             if (!confirm('구독을 취소하시겠습니까?')) {
                 return false;
@@ -138,9 +139,9 @@
             var subscribe_idx = $(this).closest('tr').data('subscribe_idx');
             var layer = $('#change-address-layer');
 
+            layer.show();
             commonShowLayer(layer);
             layer.find('input[name="subscribe_idx"]').val(subscribe_idx);
-            layer.show();
         });
     })
 </script>

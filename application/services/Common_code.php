@@ -13,7 +13,7 @@ class Common_code extends MY_Service
         'pay_pending' => '입금대기',
         'pay_complete' => '결제완료',
         'preparing' => '상품준비중',
-        'ready' => '상품준비완료',
+        'ready' => '상품준비완료(출고중)',
         'shipping' => '배송중',
         'shipped' => '배송완료',
         'return' => '반품',

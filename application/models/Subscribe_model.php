@@ -71,10 +71,38 @@ class Subscribe_model extends CI_Model
         return $this->db->get('subscribe_schedule')->result();
     }
 
-    public function subscribe_count($member_idx)
+    public function subscribe_count($params)
     {
-        $this->db->where('member_idx', $member_idx);
-        return $this->db->count_all("subscribe");
+        $this->db->select(' subscribe.subscribe_idx,
+                        subscribe.subscribe_month,
+                        subscribe.start_date,
+                        subscribe.end_date,
+                        subscribe.goods_idx,
+                        subscribe.buy_count,
+                        subscribe.status,
+                        goods.title,
+                        (subscribe_price.sell_price * subscribe_price.month_count) AS total_amount,
+                        pet.name,
+                        ( select min(subscribe_schedule.schedule_dt)  from subscribe_schedule
+                            LEFT join payment on subscribe_schedule.payment_idx = payment.payment_idx and payment.use_fl=\'y\' and payment.status in (\'\',\'pay_pending\')
+                            where subscribe_schedule.use_fl=\'y\' and subscribe_schedule.subscribe_idx=subscribe.subscribe_idx) 
+                         as schedule_dt
+                        ');
+
+        $this->db->from('subscribe');
+        $this->db->join('pet','subscribe.pet_idx = pet.pet_idx');
+        $this->db->join('goods','subscribe.goods_idx = goods.goods_idx ');
+        $this->db->join('subscribe_price','subscribe.subscribe_month = subscribe_price.month_count AND subscribe_price.use_fl = \'y\'');
+
+        $this->db->where('subscribe.member_idx', $params['member_idx']);
+
+        if (!empty($params['subscribe_idx'])) {
+            $this->db->where('subscribe.subscribe_idx', $params['subscribe_idx']);
+        }
+
+        $this->db->order_by('subscribe.subscribe_idx', 'DESC');
+        $result = $this->db->get()->result_array();
+        return count($result);
     }
 
     public function fetch_subscribe($params, $limit, $start)
@@ -89,8 +117,8 @@ class Subscribe_model extends CI_Model
                         goods.title,
                         (subscribe_price.sell_price * subscribe_price.month_count) AS total_amount,
                         pet.name,
-                        ( select min(subscribe_schedule.schedule_dt)  from subscribe_schedule
-                            LEFT join payment on subscribe_schedule.payment_idx = payment.payment_idx and payment.use_fl=\'y\' and payment.status !=\'complet\'
+                        ( select min(subscribe_schedule.schedule_dt) from subscribe_schedule
+                            LEFT join payment on subscribe_schedule.payment_idx = payment.payment_idx and payment.use_fl=\'y\' and payment.status in (\'\',\'pay_pending\')
                             where subscribe_schedule.use_fl=\'y\' and subscribe_schedule.subscribe_idx=subscribe.subscribe_idx) 
                          as schedule_dt
                         ');
@@ -105,8 +133,9 @@ class Subscribe_model extends CI_Model
 
         if (!empty($params['subscribe_idx'])) {
             $this->db->where('subscribe.subscribe_idx', $params['subscribe_idx']);
-
         }
+
+        $this->db->order_by('subscribe.subscribe_idx', 'DESC');
         $result = $this->db->get()->result_array();
         return $result;
     }
@@ -135,7 +164,8 @@ class Subscribe_model extends CI_Model
     {
         $this->db->set([
             'subscribe_idx' => $params['subscribe_idx'],
-            'sequence'=>$params['sequence'],
+            'sequence' => $params['sequence'],
+            'schedule_dt' => $params['schedule_dt'],
             'use_fl' => 'y',
             'reg_dt' => date('Y-m-d H:i:s'),
             'reg_idx' => $params['member_idx'],

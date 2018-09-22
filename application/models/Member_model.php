@@ -109,18 +109,35 @@ class Member_model extends CI_Model
         return true;
     }
 
-    public function getAddress($member_idx = 0, $address_idx = 0)
+    public function getAddress($params)
     {
+        if (empty($params['member_idx'])) {
+            return false;
+        }
+
+        $member_idx = $params['member_idx'];
+
         $this->db->select('address_idx, zipcode, addr1st, addr2nd, sort, nation, name, telphone');
         $this->db->from('address');
         $this->db->where('member_idx', $member_idx);
         $this->db->where('use_fl', 'y');
-        if(!empty($address_idx)){
-            $this->db->where('address_idx',$address_idx);
+        if(!empty($params['address_idx'])){
+            $this->db->where('address_idx',$params['address_idx']);
+        }
+        if(!empty($params['zipcode'])){
+            $this->db->where('zipcode',$params['zipcode']);
+        }
+        if(!empty($params['addr1st'])){
+            $this->db->where('addr1st',$params['addr1st']);
+        }
+        if(!empty($params['addr2nd'])){
+            $this->db->where('addr2nd',$params['addr2nd']);
         }
         $this->db->order_by('sort', 'ASC');
+        $this->db->order_by('address_idx', 'DESC');
 
-        return $this->db->get()->result_array();
+        $result = $this->db->get()->result_array();
+        return $result;
     }
 
     public function insertAddress($data)

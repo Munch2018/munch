@@ -15,6 +15,9 @@ class Inventory extends CI_Controller
         $this->load->helper(array('form', 'url'));
         $this->load->model('Admin_goods_model', 'goods');
         $this->load->model('Admin_inventory', 'inventory');
+
+        $this->load->service('admin_service', '', true);
+        $this->admin_service->checkAdmin();
     }
 
     public function index()

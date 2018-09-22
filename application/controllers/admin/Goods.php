@@ -14,6 +14,9 @@ class Goods extends CI_Controller
         parent::__construct();
         $this->load->helper(array('form', 'url'));
         $this->load->model('Admin_goods_model', 'model');
+
+        $this->load->service('admin_service', '', true);
+        $this->admin_service->checkAdmin();
     }
 
     public function index($type = 'parent')

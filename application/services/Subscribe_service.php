@@ -30,7 +30,7 @@ class Subscribe_service extends MY_Service
                 'buy_count' => 1
             ]);
 
-            for ($sequence = 1; $sequence <= $params['period']; $sequence++) {
+            for ($sequence = 0; $sequence <= $params['period']; $sequence++) {
                 $this->subscribe_model->insertSubscribeDetail([
                     'subscribe_idx' => $subscribe_idx,
                     'member_idx' => $member_idx,

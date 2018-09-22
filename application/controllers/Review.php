@@ -80,7 +80,7 @@ class Review extends CI_Controller
         ]);
 
         $this->load->view('common/header.html');
-        $this->load->view('review/index.html', $data);
+        $this->load->view('review/index.phtml', $data);
         $this->load->view('common/footer.html');
     }
 

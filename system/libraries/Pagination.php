@@ -86,7 +86,7 @@ class CI_Pagination {
 	 *
 	 * @var	int
 	 */
-	protected $num_links = 2;
+	protected $num_links = 3;
 
 	/**
 	 * Items per page
@@ -116,7 +116,7 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $first_link = '&lsaquo; First';
+	protected $first_link = '&lt;&lt;';
 
 	/**
 	 * Next link
@@ -137,7 +137,7 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $last_link = 'Last &rsaquo;';
+	protected $last_link = '&gt;&gt;';
 
 	/**
 	 * URI Segment
@@ -151,42 +151,42 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $full_tag_open = '';
+	protected $full_tag_open = '<div class=\'pagination\'>';
 
 	/**
 	 * Full tag close
 	 *
 	 * @var	string
 	 */
-	protected $full_tag_close = '';
+	protected $full_tag_close = '</div>';
 
 	/**
 	 * First tag open
 	 *
 	 * @var	string
 	 */
-	protected $first_tag_open = '';
+	protected $first_tag_open = '<div>';
 
 	/**
 	 * First tag close
 	 *
 	 * @var	string
 	 */
-	protected $first_tag_close = '';
+	protected $first_tag_close = '</div>';
 
 	/**
 	 * Last tag open
 	 *
 	 * @var	string
 	 */
-	protected $last_tag_open = '';
+	protected $last_tag_open = '<div>';
 
 	/**
 	 * Last tag close
 	 *
 	 * @var	string
 	 */
-	protected $last_tag_close = '';
+	protected $last_tag_close = '</div>';
 
 	/**
 	 * First URL
@@ -202,56 +202,56 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $cur_tag_open = '<strong>';
+	protected $cur_tag_open = '<div class=\'current\'>';
 
 	/**
 	 * Current tag close
 	 *
 	 * @var	string
 	 */
-	protected $cur_tag_close = '</strong>';
+	protected $cur_tag_close = '</div>';
 
 	/**
 	 * Next tag open
 	 *
 	 * @var	string
 	 */
-	protected $next_tag_open = '';
+	protected $next_tag_open = '<div>';
 
 	/**
 	 * Next tag close
 	 *
 	 * @var	string
 	 */
-	protected $next_tag_close = '';
+	protected $next_tag_close = '</div>';
 
 	/**
 	 * Previous tag open
 	 *
 	 * @var	string
 	 */
-	protected $prev_tag_open = '';
+	protected $prev_tag_open = '<div>';
 
 	/**
 	 * Previous tag close
 	 *
 	 * @var	string
 	 */
-	protected $prev_tag_close = '';
+	protected $prev_tag_close = '</div>';
 
 	/**
 	 * Number tag open
 	 *
 	 * @var	string
 	 */
-	protected $num_tag_open = '';
+	protected $num_tag_open = '<div>';
 
 	/**
 	 * Number tag close
 	 *
 	 * @var	string
 	 */
-	protected $num_tag_close = '';
+	protected $num_tag_close = '</div>';
 
 	/**
 	 * Page query string flag

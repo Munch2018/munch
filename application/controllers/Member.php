@@ -122,7 +122,8 @@ class Member extends CI_Controller
             'member_idx' => $member_info['member_idx'],
             'email' => $member_info ['email'],
             'name' => $member_info['name'],
-            'telphone' => $member_info['telphone']
+            'telphone' => $member_info['telphone'],
+            'is_admin' => $member_info['is_admin']
         );
 
         if ($member_info['is_admin'] === 1) {
@@ -162,6 +163,7 @@ class Member extends CI_Controller
 
             alert("회원 탈퇴 완료하였습니다.", '/');
             $this->session->unset_userdata('email');
+            $this->session->unset_userdata('telphone');
             $this->session->unset_userdata('member_idx');
         } else {
 
