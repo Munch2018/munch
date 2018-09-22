@@ -99,7 +99,7 @@ class Accounts extends CI_Controller
         $data['action'] = 'subscribe';
 
         $this->load->view('common/header.html');
-        $this->load->view('accounts/subscribe.html', $data);
+        $this->load->view('Accounts/subscribe.html', $data);
         $this->load->view('common/footer.html');
     }
 
