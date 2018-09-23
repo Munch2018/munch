@@ -241,16 +241,22 @@ class Member extends CI_Controller
     public function sendEmail($email, $pwd)
     {
         $this->load->library('email');
+
+        $config['protocol'] = 'smtp';
+        $config['mailpath'] = '/usr/sbin/sendmail';
+        $config['charset'] = 'utf-8';
+        $config['wordwrap'] = TRUE;
+
+        $this->email->initialize($config);
+
         $this->email->from('himunch@gmail.com', 'Munch', 'himunch@gmail.com');
         $this->email->to($email);
-        $this->email->subject('비밀번호 변경');
+        $this->email->subject('Munch 비밀번호 변경');
         $html = "<h3>변경된 비밀번호 : " . $pwd . "<h3>
                     <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
         $this->email->message($html);
 
         $result = $this->email->send();
-        echo $this->email->print_debugger();
-        exit;
         return $result;
     }
 
