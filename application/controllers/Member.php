@@ -236,13 +236,10 @@ class Member extends CI_Controller
         } else {
             alert('이메일 전송에 실패했습니다. 페이지를 새로고침 후 재시도해주세요.');
         }
-        echo print_r($params, 1);
-        exit;
     }
 
     public function sendEmail($email, $pwd)
     {
-        echo $email.'/'.$pwd;
         $this->load->library('email');
         $this->email->from('himunch@gmail.com', 'Munch', 'himunch@gmail.com');
         $this->email->to($email);
@@ -252,8 +249,6 @@ class Member extends CI_Controller
         $this->email->message($html);
 
         $result = $this->email->send();
-        echo $result;
-        exit;
         return $result;
     }
 
