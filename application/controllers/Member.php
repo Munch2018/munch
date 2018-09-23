@@ -241,14 +241,10 @@ class Member extends CI_Controller
     public function sendEmail($email, $pwd)
     {
         $this->load->library('email');
-
-        $config['protocol'] = 'smtp';
+        $config['protocol'] = 'sendmail';
         $config['mailpath'] = '/usr/sbin/sendmail';
-        $config['charset'] = 'utf-8';
-        $config['wordwrap'] = TRUE;
 
-        $this->email->initialize($config);
-
+        $this->email->set_newline("\r\n");
         $this->email->from('himunch@gmail.com', 'Munch', 'himunch@gmail.com');
         $this->email->to($email);
         $this->email->subject('Munch 비밀번호 변경');
@@ -257,6 +253,8 @@ class Member extends CI_Controller
         $this->email->message($html);
 
         $result = $this->email->send();
+        echo $this->email->print_debugger();
+exit;
         return $result;
     }
 
