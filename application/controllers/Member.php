@@ -50,7 +50,9 @@ class Member extends CI_Controller
 //        // email && password 체크
 
         $validation_data = array(
-            'email', 'password', 'name'
+            'email',
+            'password',
+            'name'
         );
 
         foreach ($validation_data as $value) {
@@ -71,7 +73,7 @@ class Member extends CI_Controller
                     'name' => $this->input->get_post('name', true),
                     'telphone' => $this->input->get_post('telphone', true),
                     'password' => md5(trim($this->input->get_post('password'))),
-                    'use_fl'    => 'Y'
+                    'use_fl' => 'Y'
                 );
 
                 $this->member->doRegister($join_data);
@@ -100,7 +102,12 @@ class Member extends CI_Controller
             alert("비밀번호를 넣어주세요.");
         }
 
-        $member_info = $this->member->getMember(array('where' => array('email' => $this->input->post('email'), 'use_fl' => 'Y')));
+        $member_info = $this->member->getMember(array(
+            'where' => array(
+                'email' => $this->input->post('email'),
+                'use_fl' => 'Y'
+            )
+        ));
 
         if (empty($member_info)) {
             alert("존재하지 않는 아이디입니다.");
@@ -145,7 +152,7 @@ class Member extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('member_idx');
 
-        alert("로그아웃 하였습니다.",'/');
+        alert("로그아웃 하였습니다.", '/');
     }
 
 
@@ -159,7 +166,12 @@ class Member extends CI_Controller
     {
 
         if ($this->session->userdata('email') != "" && $this->session->userdata('member_idx') != "") {
-            $this->member->doUpdate(array('where' => array('member_idx' => $this->session->userdata('member_idx'), 'email' => $this->session->userdata('email'))), array('use_fl' => 'N', 'del_dt' => date("Y-m-d H:i:s")));
+            $this->member->doUpdate(array(
+                'where' => array(
+                    'member_idx' => $this->session->userdata('member_idx'),
+                    'email' => $this->session->userdata('email')
+                )
+            ), array('use_fl' => 'N', 'del_dt' => date("Y-m-d H:i:s")));
 
             alert("회원 탈퇴 완료하였습니다.", '/');
             $this->session->unset_userdata('email');
@@ -179,6 +191,82 @@ class Member extends CI_Controller
         echo "<pre>";
         print_r($_REQUEST);
         echo "</pre>";
+    }
+
+    public function findPasswordForm()
+    {
+        $this->load->view('member/find-password-form.phtml');
+    }
+
+    public function findPassword()
+    {
+        $params = $this->input->post();
+
+        $member_info = $this->member->getMember([
+            'where' =>
+                ['email' => $params['email'], 'use_fl' => 'Y']
+        ]);
+
+        if (empty($member_info)) {
+            alert('존재하지 않는 이메일입니다.');
+            return false;
+        }
+
+        $email = $member_info['email'];
+        $updatePwd = $this->_GenerateString(10);
+
+        $modifyData['password'] = md5(trim($updatePwd));
+
+        if (!empty($modifyData)) {
+            $modifyData['edit_dt'] = date("Y-m-d H:i:s");
+            $modifyData['edit_idx'] = 0;
+
+            $changed = $this->member->doUpdate([
+                'where' => [
+                    'email' => $email
+                ]
+            ], $modifyData);
+
+            if (!empty($changed) && !empty($this->sendEmail($email,$updatePwd ))) {
+                alert('임시비밀번호가 이메일로 전송되었습니다.');
+            } else {
+                alert('이메일 전송에 실패했습니다. 페이지를 새로고침 후 재시도해주세요.');
+            }
+
+        } else {
+            alert('이메일 전송에 실패했습니다. 페이지를 새로고침 후 재시도해주세요.');
+        }
+        echo print_r($params, 1);
+        exit;
+    }
+
+    public function sendEmail($email, $pwd)
+    {
+        echo $email.'/'.$pwd;
+        $this->load->library('email');
+        $this->email->from('himunch@gmail.com', 'Munch', 'himunch@gmail.com');
+        $this->email->to($email);
+        $this->email->subject('비밀번호 변경');
+        $html = "<h3>변경된 비밀번호 : " . $pwd . "<h3>
+                    <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
+        $this->email->message($html);
+
+        $result = $this->email->send();
+        echo $result;
+        exit;
+        return $result;
+    }
+
+    public function _GenerateString($length) {
+        $characters = "0123456789";
+        $characters .= "abcdefghijklmnopqrstuvwxyz";
+        $characters .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $string_generated = "";
+        $nmr_loops = $length;
+        while ($nmr_loops--) {
+            $string_generated .= $characters[mt_rand(0, strlen($characters))];
+        }
+        return $string_generated;
     }
 
     public function modifyProfile()

@@ -45,7 +45,7 @@
 .main-do-munch .sub-do-munch .txt-area div:first-child {
     font-size: 50pt;
     font-weight: 500;
-    height: 70px;
+    height: 80px;
     display: block;
 }
 
@@ -315,8 +315,9 @@
 }
 
 .main-product-introduction .sub-product-introduction .goods-desc {
-    height: 300px;
+    height: 100%;
     width: 950px;
+    overflow: hidden;
     margin: auto auto 66px auto;
 }
 
@@ -329,7 +330,8 @@
 }
 
 .main-product-introduction .sub-product-introduction .goods-desc ul {
-    height: 248px;
+    height: 100%;
+    overflow: hidden;
     padding-top: 20px;
     width: 925px;
     margin-bottom: 0px;
