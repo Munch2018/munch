@@ -4,7 +4,7 @@ body {
     min-width: 1216px;
     font-family: arial, Malgun Gothic, "맑은 고딕", dotum, '돋움', sans-serif;
     font-size: 20px;
-   /* line-height: 21px; */
+    line-height: 21px;
 }
 
 a {
@@ -96,6 +96,7 @@ a:link, a:visited, a:hover, a:active {
 .container .title:first-child {
     font-weight: bold;
     font-size: 31px;
+    line-height: 30px;
 }
 
 .container hr:first-child, .container hr.title-line {

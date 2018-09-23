@@ -249,6 +249,8 @@ class Member extends CI_Controller
         $this->email->message($html);
 
         $result = $this->email->send();
+        echo $this->email->print_debugger();
+        exit;
         return $result;
     }
 

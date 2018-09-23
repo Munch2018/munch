@@ -1,81 +1,125 @@
 <style type="text/css">
-    div.join_form {position:relative; text-align:center; top:70px; padding-bottom: 70px; margin-bottom:140px;}
-    h2{color:#333333; font-weight:bold;}
-    div.join_form .fix {width:40px; display:inline-block; border: 1px solid #222222;}
-    input[type=text], input[type=password] {margin-bottom:7px; box-sizing: border-box; height:47px; }
-    .join_form .inner {border:1px solid #cccccc; border-radius:8px; padding:51px; width:500px; display:inline-block; margin: 50px 0;}
-    .join_form .inner .checkgroups {margin-top:13px; text-align:left; color:#585858; font-size: 14px;}
-    .btn.btn-primary{width: 100%; height: 55px; background-color: #452b78; border: none; color:#ffffff; margin-top: 21px;}
-    .join_form .sns_group {position:relative; left:6px; margin-top:-30px;}
-    .join_form .sns_group img{margin-right:7px; width:100px;}
+    .container { width: 1200px; min-width: 960px; margin: auto; text-align: center; padding: 50px 0; height: 100%; }
+    .container a:link, .container a:visited, .container a:hover, .container a:active { color: #545454; }
+    .join_form * { box-sizing: border-box; overflow: hidden; }
+    div.join_form {
+        position: relative;
+        text-align: center;
+        padding-bottom: 70px;
+        margin-bottom: 140px;
+    }
+
+    input[type=text], input[type=password] {
+        margin-bottom: 7px;
+        box-sizing: border-box;
+        height: 47px;
+    }
+
+    .join_form .inner {
+        border: 1px solid #cccccc;
+        border-radius: 8px;
+        padding: 51px;
+        width: 500px;
+        display: inline-block;
+        margin: 50px 0;
+    }
+
+    .join_form .inner .checkgroups {
+        margin-top: 13px;
+        text-align: left;
+        color: #585858;
+        font-size: 14px;
+    }
+
+    .btn.btn-primary {
+        width: 100%;
+        height: 55px;
+        background-color: #452b78;
+        border: none;
+        color: #ffffff;
+        margin-top: 21px;
+    }
+
+    .join_form .sns_group {
+        position: relative;
+        left: 6px;
+        margin-top: -30px;
+    }
+
+    .join_form .sns_group img {
+        margin-right: 7px;
+        width: 100px;
+    }
 </style>
-<div class="join_form">
-    <h2>회원가입</h2>
-    <div class="fix"></div>
-    <div>
-        <div class="inner">
-            <form action="join/" method="post">
-                <input type="text" class="form-control" name="email" placeholder="이메일" value="">
-                <input type="text" class="form-control" name="name" placeholder="이름" value="">
-                <input type="text" class="form-control" name="telphone" placeholder="휴대전화번호" value="">
-                <input type="password" class="form-control" name="password" placeholder="비밀번호" value="">
-                <input type="password" class="form-control" name="password_check" placeholder="비밀번호 확인" value="">
+<div class="container">
+    <div class="join_form contents">
+        <div class="title">회원가입</div>
+        <hr class="title-line">
+        <div>
+            <div class="inner">
+                <form action="join/" method="post">
+                    <input type="text" class="form-control" name="email" placeholder="이메일" value="">
+                    <input type="text" class="form-control" name="name" placeholder="이름" value="">
+                    <input type="text" class="form-control" name="telphone" placeholder="휴대전화번호" value="">
+                    <input type="password" class="form-control" name="password" placeholder="비밀번호" value="">
+                    <input type="password" class="form-control" name="password_check" placeholder="비밀번호 확인" value="">
 
-                <div class="checkgroups">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1">이용약관 동의</label>
+                    <div class="checkgroups">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                            <label class="custom-control-label" for="customCheck1">이용약관 동의</label>
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck2">
+                            <label class="custom-control-label" for="customCheck2">개인정보 수집 및 이용에 동의</label>
+                        </div>
                     </div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck2">
-                        <label class="custom-control-label" for="customCheck2">개인정보 수집 및 이용에 동의</label>
-                    </div>
-                </div>
-                <input type="button" class="btn btn-primary submit" value="확인">
-            </form>
-        </div>
+                    <input type="button" class="btn btn-primary submit" value="확인">
+                </form>
+            </div>
 
-        <div class="sns_group">
-            <img src="/img/member/kakao_login.png">
-            <img src="/img/member/facebook_login.png">
-            <img src="/img/member/naver_login.png">
+            <div class="sns_group">
+                <img src="/img/member/kakao_login.png">
+                <img src="/img/member/facebook_login.png">
+                <img src="/img/member/naver_login.png">
+            </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        $(".btn.submit").click(function(e){
-            if ($("input[name=email]").val() == "" ){
+    $(document).ready(function () {
+        $(".btn.submit").click(function (e) {
+            if ($("input[name=email]").val() == "") {
                 alert("이메일을 넣어주세요.");
                 return false;
             }
 
-            if ($("input[name=name]").val() == "" ){
+            if ($("input[name=name]").val() == "") {
                 alert("이름을 넣어주세요.");
                 return false;
             }
 
-            if ($("input[name=telphone]").val() == "" ){
+            if ($("input[name=telphone]").val() == "") {
                 alert("전화번호를 넣어주세요.");
                 return false;
             }
-            if ($("input[name=password]").val() == "" || $("input[name=password_check]").val() == "" ){
+            if ($("input[name=password]").val() == "" || $("input[name=password_check]").val() == "") {
                 alert("비밀번호를 넣어주세요.");
                 return false;
             } else {
-                if($("input[name=password]").val() != $("input[name=password_check]").val()){
+                if ($("input[name=password]").val() != $("input[name=password_check]").val()) {
                     alert("비밀번호가 같아야 합니다.");
                     return false;
                 }
             }
 
-            if ($("#customCheck1").is(":checked") == false){
+            if ($("#customCheck1").is(":checked") == false) {
                 alert("이용약관 동의를 해주세요.")
                 return false;
             }
 
-            if ($("#customCheck2").is(":checked") == false){
+            if ($("#customCheck2").is(":checked") == false) {
                 alert("개인정보 수집 및 이용에 동의를 해주세요.")
                 return false;
             }
