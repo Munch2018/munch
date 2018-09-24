@@ -240,16 +240,39 @@ class Member extends CI_Controller
 
     public function sendEmail($email, $pwd)
     {
-        $this->load->library('email');
-        $config['protocol'] = 'sendmail';
-        $config['mailpath'] = '/usr/sbin/sendmail';
+        $msg = "<h3>변경된 비밀번호 : " . $pwd . "<h3>
+                        <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
 
+        // use wordwrap() if lines are longer than 70 characters
+        $msg = wordwrap($msg, 70);
+        $headers = "From: kangjungmin92@gmail.com" . "\r\n";
+        // send email
+        mail("vldpfhalswjd@naver.com",
+            "test",
+            $msg,
+            $headers);
+
+        exit;
+    }
+
+    public function sendEmail2($email, $pwd)
+    {
+        $this->load->library('email');
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'ssl://smtp.googlemail.com';
+        $config['smtp_user'] = 'kangjungmin92@gmail.com';
+        $config['smtp_pass'] = 'dkfmaekdns147';
+        $config['smtp_port'] = 465;
+        $config['charset'] = 'utf-8';
+        $config['mailtype'] = 'html';
+
+        $this->email->initialize($config);
         $this->email->set_newline("\r\n");
-        $this->email->from('himunch@gmail.com', 'Munch', 'himunch@gmail.com');
+        $this->email->from('kangjungmin92@gmail.com', 'test', 'Test Email');
         $this->email->to($email);
         $this->email->subject('Munch 비밀번호 변경');
         $html = "<h3>변경된 비밀번호 : " . $pwd . "<h3>
-                    <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
+                        <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
         $this->email->message($html);
 
         $result = $this->email->send();
@@ -265,7 +288,7 @@ exit;
         $string_generated = "";
         $nmr_loops = $length;
         while ($nmr_loops--) {
-            $string_generated .= $characters[mt_rand(0, strlen($characters))];
+            $string_generated .= $characters[mt_rand(0, strlen($characters)-1)];
         }
         return $string_generated;
     }
