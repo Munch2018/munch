@@ -23,7 +23,8 @@
                                        value="<?php echo $this->session->userdata('email')?>" disabled>
                             </div>
                             <div>
-                                <label for="telphone" title="전화번호"><span class="require-start">*</span> 전화번호(숫자만 입력해주세요.)</label><br>
+                                <label for="telphone" title="전화번호"><span class="require-start">*</span> 전화번호(숫자만
+                                    입력해주세요.)</label><br>
                                 <input type="telphone" class="input-text" id="telphone" name="telphone"
                                        placeholder="전화번호를 입력해주세요."
                                        value="<?php echo $this->session->userdata('telphone')?>"
@@ -121,12 +122,11 @@
                 return false;
             }
 
-
             if (current_pwd.val().length > 0 &&
                 new_pwd.val().length > 0 && new_pwd.val() === confirm_new_pwd.val()) {
-                confirmCurrentPassword();
-
-                return false;
+                if (!confirmCurrentPassword()) {
+                    return false;
+                }
             }
 
             if (new_pwd.val() !== confirm_new_pwd.val()) {
@@ -140,36 +140,33 @@
         }
 
         var confirmCurrentPassword = function () {
-
             $.ajax({
                 url: '/Accounts/confirmPassword',
                 type: "POST",
                 data: {pwd: current_pwd.val()},
                 dataType: 'json',
                 complete: function (result) {
-                    console.log(result);
-                    if (result.code !== 'success') {
+                    if (!result.responseJSON || result.responseJSON !== 'success') {
                         alert('현재 비밀번호가 일치하지 않습니다.');
                         return false;
                     }
                     return true;
                 }
             });
-
-            return;
+            return true;
         }
-$('#modify-profile').on('submit', function () {
-    if (!checkEmail()) {
-        return false;
-    }
+        $('#modify-profile').on('submit', function () {
+            if (!checkEmail()) {
+                return false;
+            }
 
-    if(!checkPhone()){
-        return false;
-    }
-    if(!checkPassword()){
-        return false;
-    }
-})
+            if (!checkPhone()) {
+                return false;
+            }
+            if (!checkPassword()) {
+                return false;
+            }
+        })
 //
 //         $('#submit_btn').on('click', function () {
 //             $("input").each(function (i) {

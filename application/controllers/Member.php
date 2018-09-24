@@ -251,38 +251,10 @@ class Member extends CI_Controller
             'X-Mailer: PHP/' . phpversion ();
 
         // send email
-        mail($email,
-            "임시 비밀번호입니다.",
+       return mail($email,
+            "Munch의 임시 비밀번호입니다.",
             $msg,
             $headers);
-
-        exit;
-    }
-
-    public function sendEmail2($email, $pwd)
-    {
-        $this->load->library('email');
-        $config['protocol'] = 'smtp';
-        $config['smtp_host'] = 'ssl://smtp.googlemail.com';
-        $config['smtp_user'] = 'kangjungmin92@gmail.com';
-        $config['smtp_pass'] = 'dkfmaekdns147';
-        $config['smtp_port'] = 465;
-        $config['charset'] = 'utf-8';
-        $config['mailtype'] = 'html';
-
-        $this->email->initialize($config);
-        $this->email->set_newline("\r\n");
-        $this->email->from('kangjungmin92@gmail.com', 'test', 'Test Email');
-        $this->email->to($email);
-        $this->email->subject('Munch 비밀번호 변경');
-        $html = "<h3>변경된 비밀번호 : " . $pwd . "<h3>
-                        <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
-        $this->email->message($html);
-
-        $result = $this->email->send();
-        echo $this->email->print_debugger();
-exit;
-        return $result;
     }
 
     public function _GenerateString($length) {
@@ -311,6 +283,9 @@ exit;
         $modifyData = [];
         $modifySessionData = [];
 
+        echo print_r($member_info,1).'\n';
+        echo $pwd.'\n';
+        echo md5(trim($pwd)).'\n';
         if (!empty($pwd) && $member_info['password'] !== md5(trim($pwd))) {
             $modifyData['password'] = md5(trim($pwd));
         }

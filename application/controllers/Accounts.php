@@ -127,11 +127,11 @@ class Accounts extends CI_Controller
         $memberData = $this->member->getMember(['where' => ['member_idx' => $this->session->userdata('member_idx')]]);
 
         if (md5(trim($pwd)) == $memberData['password']) {
-            echo json_encode(['code' => 'success']);
+            echo json_encode('success');
             exit;
         }
 
-        echo json_encode(['code' => 'fail']);
+        echo json_encode('fail');
     }
 
     /**
