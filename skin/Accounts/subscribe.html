@@ -38,8 +38,10 @@
                                         <button type="button" class="change-addr-btn">주소변경</button>
                                         <button type="button" class="pause-btn">일시중지</button>
                                         <button type="button" class="cancel-btn">취소</button>
-                                        <?php } elseif(in_array($data['status'],['pause','cancel'])){?>
+                                        <?php } elseif(in_array($data['status'],['pause'])){ ?>
                                         <button type="button" class="restart-btn">다시시작</button>
+                                        <?php } elseif(in_array($data['status'],['cancel'])){ ?>
+                                        <button type="button" class="resubscribe-btn" data-period="<?=$data['subscribe_month']?>" data-pet_idx="<?=$data['pet_idx']?>">재신청</button>
                                         <?php } ?>
                                     </div>
                                 </td>
@@ -143,5 +145,14 @@
             commonShowLayer(layer);
             layer.find('input[name="subscribe_idx"]').val(subscribe_idx);
         });
+
+        $('.resubscribe-btn').on('click', function () {
+            var pet_idx = $(this).data('pet_idx');
+            var period = $(this).data('period');
+            if (confirm('구독을 재신청하시겠습니까?')) {
+                location.href = '/subscribe/add?pet_idx=' + pet_idx + '&period=' + period;
+            }
+        });
+
     })
 </script>

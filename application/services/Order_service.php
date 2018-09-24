@@ -61,7 +61,15 @@ class Order_service extends MY_Service
             $this->insertOrder();
             $this->insertOrderDetail();
 
-            $this->payment_service->setPaymentData($this->orderData)->add();
+            $payment_idx = $this->payment_service->setPaymentData($this->orderData)->add();
+
+            $this->subscribe->updatePaymentIdxSubscribeSchedule([
+                'sequence' => 0,
+                'payment_idx' => $payment_idx,
+                'schedule_dt' => date('Y-m-d'),
+                'subscribe_idx' => $data['subscribe_idx']
+            ]);
+
             $this->subscribe->db->trans_complete();
 
             return true;
@@ -161,7 +169,7 @@ class Order_service extends MY_Service
 
     private function getNextSubscribeSchedule()
     {
-        return $this->data['subscribe_schedule_idx'] = $this->subscribe->getNextSubscribeSchedule($this->data['subscribe_idx'])[0]->subscribe_schedule_idx;
+        return $this->data['subscribe_schedule_idx'] = $this->subscribe->getNextSubscribeScheduleList($this->data['subscribe_idx'])[0]['subscribe_schedule_idx']->subscribe_schedule_idx;
     }
 
     private function calculatePrice()

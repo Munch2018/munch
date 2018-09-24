@@ -98,6 +98,6 @@ class Order extends CI_Controller
             }
         }
         $data['address_list_json'] = json_encode($data['address_list_json']);
-        $this->load->view('order/popup-address.phtml', $data);
+        $this->load->view('Order/popup-address.phtml', $data);
     }
 }

@@ -161,6 +161,12 @@ table td button.restart-btn {
     width: 100%;
 }
 
+table td button.resubscribe-btn {
+    border: 1px solid #5DA6BE;
+    color: #5DA6BE;
+    width: 100%;
+}
+
 table td button.change-addr-btn {
     border: 1px solid #47357F;
     color: #47357F;

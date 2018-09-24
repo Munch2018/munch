@@ -44,7 +44,7 @@ class Subscribe_model extends CI_Model
         $sql = '
         SELECT 
             s.subscribe_idx, s.subscribe_month, s.goods_idx, s.buy_count,
-            g.title,
+            g.title, s.start_date,
             sp.sell_price, sp.price,
             p.pet_kind, p.pet_size
         FROM
@@ -54,21 +54,38 @@ class Subscribe_model extends CI_Model
             JOIN subscribe_price sp ON s.subscribe_month = sp.month_count AND sp.use_fl = \'y\'
         '.$whereStr;
 
-       return $this->db->query($sql, $bind)->result_array();
+       $result = $this->db->query($sql, $bind)->result_array();
+       //echo $this->db->last_query();
+       return $result ;
     }
 
-    public function getNextSubscribeSchedule($subscribe_idx)
+    /**
+     * 미결제 다음 구독 스케쥴
+     * @param $subscribe_idx
+     * @param int $limit
+     * @return mixed
+     */
+    public function getNextSubscribeScheduleList($subscribe_idx, $limit = 1)
     {
-        $this->db->select('subscribe_schedule_idx');
-        $this->db->where([
-            'subscribe_idx' => $subscribe_idx,
-            'use_fl' => 'y',
-            'payment_idx' => null
-        ]);
-        $this->db->order_by('sequence', 'ASC');
-        $this->db->limit(1);
+        $sql = '
+            SELECT 
+                ss.schedule_dt, ss.subscribe_schedule_idx, ss.sequence
+            FROM
+                subscribe_schedule ss
+                    LEFT JOIN
+                `order` o ON ss.subscribe_schedule_idx = o.subscribe_schedule_idx
+                    AND o.use_fl = \'y\'
+                    LEFT JOIN
+                payment p ON o.order_idx = p.order_idx
+                    AND p.use_fl = \'y\'
+            WHERE
+                ss.subscribe_idx = ?
+                    AND o.order_idx IS NULL
+                    AND p.payment_idx IS NULL
+            ORDER BY ss.schedule_dt ASC, ss.sequence ASC
+            LIMIT '.$limit;
 
-        return $this->db->get('subscribe_schedule')->result();
+        return $this->db->query($sql, [$subscribe_idx])->result_array();
     }
 
     public function subscribe_count($params)
@@ -117,6 +134,7 @@ class Subscribe_model extends CI_Model
                         goods.title,
                         (subscribe_price.sell_price * subscribe_price.month_count) AS total_amount,
                         pet.name,
+                        pet.pet_idx,
                         ( select min(subscribe_schedule.schedule_dt) from subscribe_schedule
                             LEFT join payment on subscribe_schedule.payment_idx = payment.payment_idx and payment.use_fl=\'y\' and payment.status in (\'\',\'pay_pending\')
                             where subscribe_schedule.use_fl=\'y\' and subscribe_schedule.subscribe_idx=subscribe.subscribe_idx) 
@@ -223,7 +241,7 @@ class Subscribe_model extends CI_Model
      */
     public function updateSubscribeSchedule($params = [])
     {
-        if (empty($params) || empty($params['subscribe_idx'])) {
+        if (empty($params) || (empty($params['subscribe_idx']) && empty($params['subscribe_schedule_idx']))) {
             return false;
         }
 
@@ -235,12 +253,49 @@ class Subscribe_model extends CI_Model
         if (!empty($params['address_idx'])) {
             $data['address_idx'] = $params['address_idx'];
         }
+        if (!empty($params['schedule_dt'])) {
+            $data['schedule_dt'] = $params['schedule_dt'];
+        }
 
+        $this->db->where('use_fl', 'y');
+        $this->db->where('payment_idx', null);
+
+        if (!empty($params['subscribe_idx'])) {
+            $this->db->where('subscribe_idx', $params['subscribe_idx']);
+        }
+        if (!empty($params['subscribe_schedule_idx'])) {
+            $this->db->where('subscribe_schedule_idx', $params['subscribe_schedule_idx']);
+        }
+        $result = $this->db->update('subscribe_schedule', $data);
+        //echo $this->db->last_query().'<br><br>';
+        return $result;
+    }
+
+
+    /**
+     * 결제시도된 구독 스케쥴 payment_idx 업데이트
+     * @param array $params
+     * @return bool
+     */
+    public function updatePaymentIdxSubscribeSchedule($params = [])
+    {
+        if (empty($params) || empty($params['subscribe_idx']) || empty($params['payment_idx'])) {
+            return false;
+        }
+
+        $data = [
+            'edit_dt' => date('Y-m-d H:i:s'),
+            'edit_idx' => $this->session->userdata('member_idx')
+        ];
+
+        $data['payment_idx'] = $params['payment_idx'];
+
+        $this->db->where('schedule_dt', ($params['schedule_dt']) ? $params['subscribe_idx'] : date('Y-m-d'));
         $this->db->where('subscribe_idx', $params['subscribe_idx']);
         $this->db->where('use_fl', 'y');
         $this->db->where('payment_idx', null);
 
-       return $this->db->update('subscribe_schedule', $data);
+        return $this->db->update('subscribe_schedule', $data);
     }
 
 }
