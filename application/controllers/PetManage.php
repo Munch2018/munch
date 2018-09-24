@@ -92,7 +92,8 @@ class PetManage extends CI_Controller
         try {
             if (!empty($_FILES['pet_img']['name'])) {
                 $upload_result = $this->upload($_FILES);
-                $params['img_src'] = $upload_result['upload_data']['full_path'];
+                $params['img_src'] = str_replace('/var/www/html/branches/munch', '',
+                    $upload_result['upload_data']['full_path']);
             }
 
             if (!empty($upload_result['error'])) {

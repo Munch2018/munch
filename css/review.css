@@ -30,7 +30,7 @@ hr {
 }
 
 .box-img, .box img, .box-selected img {
-    width: 210px;
+    width: 100%;
     height: 135px;
 }
 
