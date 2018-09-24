@@ -140,6 +140,8 @@
         }
 
         var confirmCurrentPassword = function () {
+            var result = true;
+
             $.ajax({
                 url: '/Accounts/confirmPassword',
                 type: "POST",
@@ -148,12 +150,15 @@
                 complete: function (result) {
                     if (!result.responseJSON || result.responseJSON !== 'success') {
                         alert('현재 비밀번호가 일치하지 않습니다.');
-                        return false;
+                        result = false;
+                        return;
                     }
-                    return true;
+                    result = true;
+                    return ;
                 }
             });
-            return true;
+
+            return result;
         }
         $('#modify-profile').on('submit', function () {
             if (!checkEmail()) {
@@ -167,23 +172,5 @@
                 return false;
             }
         })
-//
-//         $('#submit_btn').on('click', function () {
-//             $("input").each(function (i) {
-//                 var $t = $(this);
-//                 if ($t.prop("required")) {
-//                     if (!jQuery.trim($t.val())) {
-//                         var label = $("label[for='" + $t.attr("id") + "']").attr('title');
-//                         $t.focus();
-//                         alert(label + "은(는) 필수 입력입니다.");
-//                         return false;
-//                     }
-//                 }
-//             });
-//
-// exit;
-//             console.log('Rmx');
-//         })
-
     })
 </script>

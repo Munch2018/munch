@@ -283,9 +283,6 @@ class Member extends CI_Controller
         $modifyData = [];
         $modifySessionData = [];
 
-        echo print_r($member_info,1).'\n';
-        echo $pwd.'\n';
-        echo md5(trim($pwd)).'\n';
         if (!empty($pwd) && $member_info['password'] !== md5(trim($pwd))) {
             $modifyData['password'] = md5(trim($pwd));
         }

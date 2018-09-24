@@ -1,4 +1,4 @@
-<form name="registration-form" id="registration-form" method="post" action="/petManage/register"
+<form name="registration-form" id="registration-form" method="post" action="/PetManage/register"
       enctype='multipart/form-data'>
     <input type="hidden" name="pet_idx" value="<?php echo !empty($pet_info['pet_idx']) ? $pet_info['pet_idx'] :''?>">
     <input type="hidden" name="gender" value="<?php echo !empty($pet_info['gender']) ? $pet_info['gender'] :''?>" required>
@@ -8,7 +8,7 @@
     <div class="desc">
         <div style="float:left">
             <button type="submit" class="btn btn-default submit">등록하기</button>
-            <a href="/petManage/"><button type="button" class="btn btn-default add">추가하기</button></a>
+            <a href="/PetManage/"><button type="button" class="btn btn-default add">추가하기</button></a>
         </div>
         <div style="float:right;margin-top: 19px;">
             <b>최대 5개까지 등록가능</b>
