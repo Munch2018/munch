@@ -6,7 +6,9 @@
             <div class="txt-area">
                 <div>뇸뇸!</div>
                 <div>내 아이의 한 달 간식,<br><span class="point">먼치</span>하세요!</div>
-                <div><hr class=""></div>
+                <div>
+                    <hr class="">
+                </div>
                 <div>내 반려동물을 위한 간식 정기배송 서비스<br>우리 아이들이 잘 먹는 건강한 간식들을 단 한번의 주문으로 매달 편하게 받아보세요.</div>
             </div>
         </div>
@@ -83,43 +85,52 @@
                 <div class="desc-price">
                     12개월 구독 시
                 </div>
-        </div>
+            </div>
     </section>
 
     <section class="main-product-introduction" id="goods">
         <div class="sub-product-introduction">
             <div class="big-title">이 달의 <strong>"먼치세트"</strong></div>
             <div class="select-pet-area">
-                <div class="btn-select-pet dog on"><div><img src="/img/common/dduri_border.png">강아지</div></div>
-                <div class="btn-select-pet cat"><div><img src="/img/common/yeti_border.png">고양이</div></div>
-            </div>
-
-            <?php if(!empty($parentGoods)) { ?>
-            <?php foreach($parentGoods as $pkey => $p_goods) { ?>
-            <div id="munch-set-<?=$p_goods['pet_type']?>" <?php echo ($pkey==0) ? 'style="display:block"' : 'style="display:none"'?>>
-                <div class="munch-set-img"><img src="<?=$p_goods['img_src']?>"></div>
-                <div class="goods-desc">
-                    <ul>
-                        <?php
-                         if(!empty($childGoods)) {
-                             $idx['C'] = 0;
-                             $idx['D'] = 0;
-                             foreach($childGoods as $key => $goods) {
-                                $petType = ($p_goods['pet_type']=='dog') ? 'D':'C';
-                                if($p_goods['pet_type']==$goods['pet_type']){
-                                $idx[$petType]++;
-                                ?>
-                                    <li data-goods_idx="<?=$goods['goods_idx']?>">
-                                        <span><?=$petType.$idx[$petType]?></span><?=$goods['title']?>
-                                    </li>
-                                <?php } ?>
-                            <?php } ?>
-                        <?php } ?>
-                    </ul>
-                    <p id="point">※ 반려동물의 특성에 따라 구성품이 조금 다를 수 있습니다.</p>
+                <div class="btn-select-pet dog on">
+                    <div><img src="/img/common/dduri_border.png">강아지</div>
+                </div>
+                <div class="btn-select-pet cat">
+                    <div><img src="/img/common/yeti_border.png">고양이</div>
                 </div>
             </div>
-            <?php } ?>
+
+            <?php if (!empty($parentGoods)) { ?>
+                <?php foreach ($parentGoods as $pkey => $p_goods) {
+                    $img_src = [];
+                    if (!empty($p_goods['img_src'])) {
+                        $img_src = explode('|', $p_goods['img_src']);
+                    }
+                    ?>
+                    <div id="munch-set-<?= $p_goods['pet_type'] ?>" <?php echo ($pkey == 0) ? 'style="display:block"' : 'style="display:none"' ?>>
+                        <div class="munch-set-img"><img src="<?= $img_src[0] ?>"></div>
+                        <div class="goods-desc">
+                            <ul>
+                                <?php
+                                if (!empty($childGoods)) {
+                                    $idx['C'] = 0;
+                                    $idx['D'] = 0;
+                                    foreach ($childGoods as $key => $goods) {
+                                        $petType = ($p_goods['pet_type'] == 'dog') ? 'D' : 'C';
+                                        if ($p_goods['pet_type'] == $goods['pet_type']) {
+                                            $idx[$petType]++;
+                                            ?>
+                                            <li data-goods_idx="<?= $goods['goods_idx'] ?>">
+                                                <span><?= $petType . $idx[$petType] ?></span><?= $goods['title'] ?>
+                                            </li>
+                                        <?php } ?>
+                                    <?php } ?>
+                                <?php } ?>
+                            </ul>
+                            <p id="point">※ 반려동물의 특성에 따라 구성품이 조금 다를 수 있습니다.</p>
+                        </div>
+                    </div>
+                <?php } ?>
             <?php } ?>
         </div>
     </section>

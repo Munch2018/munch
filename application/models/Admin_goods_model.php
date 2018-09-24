@@ -70,7 +70,8 @@ class Admin_goods_model extends CI_Model
             . $whereStr
             . ' GROUP BY g.goods_idx ';
 
-        return $this->db->query($sql, $bind)->result_array();
+        $result = $this->db->query($sql, $bind)->result_array();
+        return $result;
     }
 
     public function getChildGoods($params = [])

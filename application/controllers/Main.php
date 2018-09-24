@@ -15,7 +15,7 @@ class Main extends CI_Controller
         $childGoods = $this->goods->getChildGoods(['goods_use_fl' => 'y', 'package_fl'=>'n', 'use_fl'=>'y']);
 
         $this->load->view('common/header.html');
-        $this->load->view('Main/index.html', ['parentGoods' => $parentGoods, 'childGoods' => $childGoods]);
+        $this->load->view('Main/index.phtml', ['parentGoods' => $parentGoods, 'childGoods' => $childGoods]);
         $this->load->view('common/footer.html');
     }
 
