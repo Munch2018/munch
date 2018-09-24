@@ -18,7 +18,7 @@
     }
 </style>
 <div class="table-responsive">
-    <form name="search_form" method="post" action="/admin/orders/changeStatus">
+    <form method="get" action="/admin/orders/">
         <fieldset>
             <div class="status-area">
                 <?php foreach($order_status as $code => $name){?>
@@ -27,6 +27,8 @@
                 <?php } ?>
             </div>
         </fieldset>
+    </form>
+    <form name="search_form" method="post" action="/admin/orders/changeStatus">
         <fieldset>
             <legend>상태 변경</legend>
             <div>
@@ -38,7 +40,7 @@
                     <option value="<?= $code;?>"><?= $name;?></option>
                     <?php } ?>
                 </select>
-                <button type="submit" name="change_status" class="btn">변경</button>
+                <button type="submit" name="change_status_btn" class="btn">변경</button>
             </div>
         </fieldset>
 
@@ -61,8 +63,8 @@
             <?php if(!empty($orders)){?>
             <?php foreach($orders as $key => $order){?>
             <tr>
-                <th scope="row"><input type="checkbox" name="order_idx[]"
-                                       value="<?=$order['order_idx']?>"><?php echo $key+1?></th>
+                <th scope="row"><input type="checkbox" name="payment_idx[]"
+                                       value="<?=$order['payment_idx']?>"><?php echo $key+1?></th>
                 <td><?php echo $order['reg_dt']?></td>
                 <td><?php echo $order['order_idx']?></td>
                 <td><?php echo $order['name']?></td>
@@ -72,7 +74,11 @@
                 <td><?php echo number_format($order['total_amount'])?></td>
                 <td><?php echo $order_status[$order['status']]?></td>
                 <td>
-                    <button type="button" class="btn chgChildGoods" data-goods_idx="<?php echo $order['goods_idx']?>">수정</button>
+                    <?php if(empty($order['shipping_idx'])){?>
+                    <button type="button" class="btn chgChildGoods" data-order_idx="<?php echo $order['order_idx']?>">
+                        수정
+                    </button>
+                    <?php }?>
                 </td>
             </tr>
             <?php }?>
@@ -85,16 +91,16 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('.chgChildGoods').on('click', function () {
-            var goods_idx = $(this).data('goods_idx');
-            window.open('/admin/orders/popupChildGoods/' + goods_idx, '', 'width=500,height=800');
+            var order_idx = $(this).data('order_idx');
+            window.open('/admin/orders/popupChangeChildGoods/' + order_idx, '', 'width=500,height=800');
         })
 
         var all_checked = $('#all_check');
         all_checked.on('click', function () {
             if (all_checked.prop('checked') === true) {
-                $('input[name="order_idx[]"]').prop('checked', true);
+                $('input[name="payment_idx[]"]').prop('checked', true);
             } else {
-                $('input[name="order_idx[]"]').prop('checked', false);
+                $('input[name="payment_idx[]"]').prop('checked', false);
             }
         });
     })

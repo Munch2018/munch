@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>구성상품 변경</title>
+    <style type="text/css">
+        body {
+            color: #353535;
+            line-height: 34px;
+        }
+        .btn{
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+
+        fieldset {
+            border: solid 1px #CACACA;
+            border-radius: 7px;
+        }
+
+        legend {
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #efefef;
+            border: solid 1px #efefef;
+        }
+
+        .current table {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<fieldset>
+    <legend>현재 구성 상품</legend>
+    <div class="table-responsive current">
+        <table width="100%">
+            <col width="80%">
+            <col width="20%">
+            <?php if (!empty($currentOrderDetail)) { ?>
+                <?php foreach ($currentOrderDetail as $key => $goods) { ?>
+                    <tr>
+                        <td><?php echo $goods['title'] ?></td>
+                        <td>\<?php echo number_format($goods['price']) ?></td>
+                    </tr>
+                <?php } ?>
+            <?php } ?>
+        </table>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>변경할 구성 상품</legend>
+    <div class="table-responsive">
+        <form action="/admin/orders/changeChildGoods" method="post" id="chgChildGoodsForm">
+            <input type="hidden" name="order_idx" value="<?php echo $order_idx?>">
+            <table width="100%">
+                <col width="80%">
+                <col width="20%">
+                <?php if (!empty($allChildGoods)) { ?>
+                    <?php foreach ($allChildGoods as $key => $goods) { ?>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="new_goods_idx[]" id="goods_<?php echo $goods['goods_idx'] ?>"
+                                       value="<?php echo $goods['goods_idx'] ?>">
+                                <label for="goods_<?php echo $goods['goods_idx'] ?>"><?php echo $goods['title'] ?></label>
+                            </td>
+                            <td>\<?php echo number_format($goods['price']) ?></td>
+                        </tr>
+                    <?php } ?>
+                <?php } ?>
+            </table>
+            <button type="button" class="btn" id="selected">변경</button>
+            <button type="reset" class="btn">초기화</button>
+        </form>
+    </div>
+</fieldset>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#selected').on('click', function () {
+            if (!confirm('정말 상품을 변경하시겠습니까?')) {
+                return false;
+            }
+
+            $('#chgChildGoodsForm').submit();
+        })
+    })
+</script>
+
+</body>
+</html>

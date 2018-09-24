@@ -81,7 +81,7 @@ class Admin_goods_model extends CI_Model
         $whereStr = " WHERE g.package_fl != 'y' ";
 
         if (!empty($params['goods_idx'])) {
-            $where[] = ' g.goods_idx = ? ';
+            $where[] = !is_array($params['goods_idx']) ? ' g.goods_idx = ? ' : ' g.goods_idx in ? ';
             $bind['goods_idx'] = $params['goods_idx'];
         }
         if (!empty($params['parent_idx'])) {
