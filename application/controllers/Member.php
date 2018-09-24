@@ -240,20 +240,21 @@ class Member extends CI_Controller
 
     public function sendEmail($email, $pwd)
     {
+        $from = 'munch.hello@gmail.com';
         $msg = "<h3>변경된 비밀번호 : " . $pwd . "<h3>
                         <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
 
         // use wordwrap() if lines are longer than 70 characters
         $msg = wordwrap($msg, 70,"\r\n");
 
-        $headers = 'From: kangjungmin92@gmail.com' . "\r\n" .
+        $headers = 'From: '.$from . "\r\n" .
             'X-Mailer: PHP/' . phpversion ();
 
         // send email
-        mail("kangjungmin92@gmail.com",
-            "test",
+        mail($email,
+            "임시 비밀번호입니다.",
             $msg,
-            $headers,'-fkangjungmin92@gmail.com');
+            $headers);
 
         exit;
     }
