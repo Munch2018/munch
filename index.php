@@ -64,8 +64,6 @@
  * By default development will show errors but testing and live will hide them.
  */
 session_start();
-$this->load->library('session');
-
 switch (ENVIRONMENT)
 {
 	case 'development':
