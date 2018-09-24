@@ -244,13 +244,16 @@ class Member extends CI_Controller
                         <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
 
         // use wordwrap() if lines are longer than 70 characters
-        $msg = wordwrap($msg, 70);
-        $headers = "From: kangjungmin92@gmail.com" . "\r\n";
+        $msg = wordwrap($msg, 70,"\r\n");
+
+        $headers = 'From: kangjungmin92@gmail.com' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion ();
+
         // send email
-        mail("vldpfhalswjd@naver.com",
+        mail("kangjungmin92@gmail.com",
             "test",
             $msg,
-            $headers);
+            $headers,'-fkangjungmin92@gmail.com');
 
         exit;
     }
