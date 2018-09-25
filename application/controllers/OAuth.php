@@ -211,18 +211,21 @@ exit;
             'password' => '',
             'use_fl' => 'Y'
         );
+        echo print_r($join_data,1).' 111<br><br>';
 
         try {
             $this->member_model->db->trans_begin();
             $member_idx = $this->member_model->doRegister($join_data);
-
+            echo print_r($member_idx,1).' 3333333<br><br>';
             if (!empty($member_idx)) {
                 $join_sns_data['member_idx'] = $member_idx;
                 $join_sns_data['token'] = $member_info['token'];
                 $join_sns_data['type'] = $member_info['type'];
                 $join_sns_data['use_fl'] = 'y';
+                echo print_r($join_sns_data,1).' 2222<br><br>';
 
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
+
                     $this->login($join_data + $join_sns_data);
                     return true;
                 }
