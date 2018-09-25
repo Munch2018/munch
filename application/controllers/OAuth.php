@@ -160,7 +160,6 @@ class OAuth extends CI_Controller
         }
     }
 
-
     public function kakaoLogin()
     {
         $restAPIKey = self::KAKAO_CLIENT_ID; //본인의 REST API KEY를 입력해주세요
@@ -206,18 +205,26 @@ class OAuth extends CI_Controller
             'use_fl' => 'Y'
         );
 
-        $member_idx = $this->member_model->doRegister($join_data);
 
-        if (!empty($member_idx)) {
-            $join_sns_data['member_idx'] = $member_idx;
-            $join_sns_data['email'] = $member_info['email'];
-            $join_sns_data['token'] = $member_info['token'];
-            $join_sns_data['type'] = $member_info['type'];
+        try {
+            $this->member_model->db->trans_begin();
+            $member_idx = $this->member_model->doRegister($join_data);
 
-            if ($this->auth_model->insertMemberSns($join_sns_data)) {
-                $this->login($join_data + $join_sns_data);
-                return true;
+            if (!empty($member_idx)) {
+                $join_sns_data['member_idx'] = $member_idx;
+                $join_sns_data['email'] = $member_info['email'];
+                $join_sns_data['token'] = $member_info['token'];
+                $join_sns_data['type'] = $member_info['type'];
+
+                if ($this->auth_model->insertMemberSns($join_sns_data)) {
+                    $this->login($join_data + $join_sns_data);
+                    return true;
+                }
             }
+
+            $this->member_model->db->trans_complete();
+        } catch (Exception $e) {
+            $this->member_model->db->trans_rollback();
         }
 
         return false;
