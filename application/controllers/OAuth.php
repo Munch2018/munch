@@ -65,13 +65,6 @@ class OAuth extends CI_Controller
         redirect($apiURL);
     }
 
-    public function facebookLogin()
-    {
-        echo print_r($_POST, 1);
-        echo print_r($_GET, 1);
-        exit;
-    }
-
     public function kakao()
     {
         if (empty($_GET['code'])) {
@@ -162,6 +155,7 @@ class OAuth extends CI_Controller
                     'name' => !empty($name) ? $name : 'kakao',
                     'token' => $responseArr['access_token']
                 ])) {
+                    exit;
                     alert('로그인에 실패하였습니다.3', '', 1);
                     return false;
                 }
@@ -195,6 +189,9 @@ class OAuth extends CI_Controller
 
         $this->session->set_userdata($session_data);
 
+        echo print_r($session_data,1).' join 1<br><br>';
+        echo print_r($member_info,1).' join 2<br><br>';
+exit;
         echo "<script type='text/javascript'>  opener.location.href = '/'; ; self.close(); </script>";
         exit;
     }
@@ -213,11 +210,12 @@ class OAuth extends CI_Controller
             'password' => '',
             'use_fl' => 'Y'
         );
-
+echo print_r($join_data,1).' join 2<br><br>';
 
         try {
             $this->member_model->db->trans_begin();
             $member_idx = $this->member_model->doRegister($join_data);
+            echo $member_idx.'///<br><br>';
 
             if (!empty($member_idx)) {
                 $join_sns_data['member_idx'] = $member_idx;
@@ -225,6 +223,7 @@ class OAuth extends CI_Controller
                 $join_sns_data['type'] = $member_info['type'];
                 $join_sns_data['use_fl'] = 'y';
 
+                echo print_r($join_sns_data,1).' join 1<br><br>';
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
                     $this->login($join_data + $join_sns_data);
                     return true;
