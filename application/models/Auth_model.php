@@ -72,15 +72,6 @@ class Auth_model extends CI_Model
     {
         $data['use_fl'] = 'y';
         $data['reg_dt'] = date("Y-m-d H:i:s");
-        $this->db->trans_begin();
-        $this->db->insert('member_sns', $data);
-
-        if ($this->db->trans_status() === false) {
-            $this->db->trans_rollback();
-        } else {
-            $this->db->trans_complete();
-        }
-
-        return;
+        return $this->db->insert('member_sns', $data);
     }
 }

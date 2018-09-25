@@ -227,6 +227,10 @@ exit;
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
                     $this->login($join_data);
                     return true;
+                } else {
+                    $this->member_model->db->trans_rollback();
+                    alert('로그인에 실패하였습니다.', '', 1);
+                    return false;
                 }
             }
 
