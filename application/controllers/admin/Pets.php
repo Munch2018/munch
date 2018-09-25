@@ -13,7 +13,7 @@ class Pets extends CI_Controller
         parent::__construct();
         $this->load->helper(array('form', 'url'));
         $this->load->model('Admin_pet_model', 'model');
-        $this->load->service('common_code', '', true);
+        $this->load->service('common_code_service', '', true);
 
         $this->load->service('admin_service', '', true);
         $this->admin_service->checkAdmin();

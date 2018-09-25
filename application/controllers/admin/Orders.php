@@ -14,7 +14,7 @@ class Orders extends CI_Controller
         $this->load->helper(array('form', 'url'));
         $this->load->model('admin_order_model', 'model');
         $this->load->model('admin_goods_model', 'goods_model');
-        $this->load->service('common_code', '', true);
+        $this->load->service('common_code_service', '', true);
 
         $this->load->service('admin_service', '', true);
         $this->admin_service->checkAdmin();
@@ -23,7 +23,7 @@ class Orders extends CI_Controller
     public function index()
     {
         $status = !empty($_GET['status']) ? $_GET['status'] : 'all';
-        $data['order_status'] = $this->common_code->getCode('order_status');
+        $data['order_status'] = $this->common_code_service->getCode('order_status');
 
         if (!empty($status) && !empty($data['order_status'][$status])) {
             $data['orders'] = $this->model->getOrders(['status' => $status]);
@@ -44,7 +44,7 @@ class Orders extends CI_Controller
     public function changeStatus()
     {
         $params = $this->input->post();
-        $order_status = $this->common_code->getCode('order_status');
+        $order_status = $this->common_code_service->getCode('order_status');
 
         if (empty($params['change_status'])) {
             alert('변경할 상태를 선택해주세요.');

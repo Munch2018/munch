@@ -85,7 +85,8 @@ class Subscribe_model extends CI_Model
             ORDER BY ss.schedule_dt ASC, ss.sequence ASC
             LIMIT '.$limit;
 
-        return $this->db->query($sql, [$subscribe_idx])->result_array();
+        $result = $this->db->query($sql, [$subscribe_idx])->result_array();
+        return $result;
     }
 
     public function subscribe_count($params)
@@ -298,4 +299,34 @@ class Subscribe_model extends CI_Model
         return $this->db->update('subscribe_schedule', $data);
     }
 
+
+    /**
+     * 마지막으로 결제된  구독 스케쥴
+     * @param $subscribe_idx
+     * @return mixed
+     */
+    public function getLastPaymentSubscribeSchedule($subscribe_idx)
+    {
+        $sql = '
+           SELECT 
+                ss.schedule_dt, ss.subscribe_schedule_idx, ss.sequence
+            FROM
+                subscribe_schedule ss
+                    JOIN
+                `order` o ON ss.subscribe_schedule_idx = o.subscribe_schedule_idx
+                    AND o.use_fl = \'y\'
+                    JOIN
+                payment p ON o.order_idx = p.order_idx
+                    AND p.use_fl = \'y\'
+                    AND p.status NOT IN (\'\' , \'return\', \'cancel\', \'pay_pending\')
+            WHERE
+                ss.subscribe_idx = ?
+                    AND o.order_idx > 0
+                    AND p.payment_idx > 0
+            ORDER BY ss.schedule_dt DESC , ss.sequence DESC
+            LIMIT 1';
+
+        $result = $this->db->query($sql, [$subscribe_idx])->row_array();
+        return  $result ;
+    }
 }

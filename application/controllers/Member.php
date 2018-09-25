@@ -152,7 +152,7 @@ class Member extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('member_idx');
 
-        alert("로그아웃 하였습니다.", '/');
+        alert("로그아웃 되었습니다.", '/');
     }
 
 

@@ -23,7 +23,7 @@ $(function () {
             })
 
             $('#ord_addr_chg').on('click', function () {
-                window.open('/order/popupAddress', '', 'width=500,height=800');
+                window.open('/order/popupAddress', '', 'width=500,height=400');
             })
         },
 

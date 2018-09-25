@@ -158,6 +158,13 @@ class Order_model extends CI_Model
         return $result[0]->cnt > 0;
     }
 
+    /**
+     * 주문건 정보
+     * @param $params
+     * @param int $limit
+     * @param int $start
+     * @return array
+     */
     public function getOrderData($params, $limit = 20, $start = 0)
     {
         if (empty($params['member_idx'])) {
@@ -181,7 +188,7 @@ class Order_model extends CI_Model
 
         $sql = " SELECT  o.order_idx, o.reg_dt, o.total_amount, o.last_amount, 
                           o.goods_name, p.reg_dt, p.status, 
-                          s.subscribe_month, pet.name, pet.pet_size,
+                          s.subscribe_month, pet.name, pet.pet_kind, pet.pet_type,
                           group_concat(od.goods_name) as detail_goods_names ,
                           GROUP_CONCAT(DISTINCT (ss.address_idx)) AS address_idx
             FROM
@@ -201,7 +208,7 @@ class Order_model extends CI_Model
             . " limit " . $limit . " offset " . $start;
 
        $result = $this->db->query($sql, $bind)->result_array();
-
+       //echo $this->db->last_query();
        return $result;
     }
 }

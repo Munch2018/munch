@@ -169,7 +169,7 @@ class Order_service extends MY_Service
 
     private function getNextSubscribeSchedule()
     {
-        return $this->data['subscribe_schedule_idx'] = $this->subscribe->getNextSubscribeScheduleList($this->data['subscribe_idx'])[0]['subscribe_schedule_idx']->subscribe_schedule_idx;
+        return $this->data['subscribe_schedule_idx'] = $this->subscribe->getNextSubscribeScheduleList($this->data['subscribe_idx'])[0]['subscribe_schedule_idx'];
     }
 
     private function calculatePrice()

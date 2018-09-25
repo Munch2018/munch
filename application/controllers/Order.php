@@ -57,8 +57,8 @@ class Order extends CI_Controller
             return false;
         }
 
-        redirect('/order/complete?subscribe_idx='.$subscribe_idx);
-}
+        redirect('/order/complete?subscribe_idx=' . $subscribe_idx);
+    }
 
     public function complete()
     {
@@ -66,7 +66,7 @@ class Order extends CI_Controller
 
         $this->load->model('member_model','member');
         $this->load->model('order_model', 'order');
-        $this->load->service('common_code', '', true);
+        $this->load->service('common_code_service', '', true);
         $this->load->model('Subscribe_model', 'subscribe');
 
         $data = [];
@@ -76,8 +76,10 @@ class Order extends CI_Controller
             'subscribe_idx' => $subscribe_idx
         ])[0];
 
-        $data['order_status'] = $this->common_code->getCode('order_status');
-        $data['subscribe_status'] = $this->common_code->getCode('subscribe_status');
+        $data['dog_kind'] = $this->common_code_service->getCode('dog_kind');
+        $data['cat_kind'] = $this->common_code_service->getCode('cat_kind');
+        $data['order_status'] = $this->common_code_service->getCode('order_status');
+        $data['subscribe_status'] = $this->common_code_service->getCode('subscribe_status');
         $data['subscribe'] = $this->subscribe->fetch_subscribe(['member_idx'=>$member_idx,'subscribe_idx'=>$subscribe_idx], 1, 0);
 
         $data['address_info'] = $this->member->getAddress(['member_idx'=>$member_idx,'address_idx'=>$data['order_info']['address_idx']])[0];
@@ -86,12 +88,41 @@ class Order extends CI_Controller
         $this->load->view('common/footer.html');
     }
 
+    public function subscribe_complete()
+    {
+        $subscribe_idx = $_GET['subscribe_idx'];
+
+        $this->load->model('member_model','member');
+        $this->load->model('order_model', 'order');
+        $this->load->service('common_code_service', '', true);
+        $this->load->model('Subscribe_model', 'subscribe');
+
+        $data = [];
+        $member_idx = $this->session->userdata('member_idx');
+        $data['order_info_list'] = $this->order->getOrderData([
+            'member_idx' => $member_idx,
+            'subscribe_idx' => $subscribe_idx
+        ]);
+        $data['order_info'] = $data['order_info_list'][0];
+        $data['dog_kind'] = $this->common_code_service->getCode('dog_kind');
+        $data['cat_kind'] = $this->common_code_service->getCode('cat_kind');
+        $data['order_status'] = $this->common_code_service->getCode('order_status');
+        $data['subscribe_status'] = $this->common_code_service->getCode('subscribe_status');
+        $data['subscribe'] = $this->subscribe->fetch_subscribe(['member_idx'=>$member_idx,'subscribe_idx'=>$subscribe_idx], 1, 0);
+        $data['subscribe'] = array_shift($data['subscribe']);
+        $data['last_pay_subscribe'] = $this->subscribe->getLastPaymentSubscribeSchedule(['subscribe_idx' => $subscribe_idx]);
+
+        $this->load->view('common/header.html');
+        $this->load->view('Order/subscribe_complete.phtml', $data);
+        $this->load->view('common/footer.html');
+    }
     public function popupAddress()
     {
         $this->load->model('member_model','member');
         $member_idx = $this->session->userdata('member_idx');
         $data['address_list'] = $this->member->getAddress(['member_idx'=>$member_idx]);
 
+        $data['address_list_json'] = [];
         if (!empty($data['address_list'])) {
             foreach ($data['address_list'] as $k => $val) {
                 $data['address_list_json'][$val['address_idx']] = $val;

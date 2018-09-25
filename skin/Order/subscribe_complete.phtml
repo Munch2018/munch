@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="/css/subscribe_complete.css">
+<div class="container">
+    <div class="title">구독 주문서</div>
+    <hr class="title-line">
+    <div class="contents">
+        <div class="ord-relation">
+            <div class="tbl-title">
+                <span style="float: left;"><b>·구독 상세</b></span>
+            </div>
+            <div class="ord-detail">
+                <div class="prd"><b>상태 : </b><?php echo $subscribe_status[$subscribe['status']] ?></div>
+                <div class="prd"><b>시작일 : </b><?php echo $subscribe['start_date'] ?></div>
+                <div class="prd"><b>마지막 지불 일자
+                        : </b><?php echo !empty($last_pay_subscribe['schedule_dt']) ? $last_pay_subscribe['schedule_dt'] : '' ?>
+                </div>
+                <div class="prd"><b>종료일 : </b><?php echo $subscribe['end_date'] ?></div>
+                <div class="prd"><b>작업 : </b></div>
+            </div>
+        </div>
+
+        <div class="top-ord-detail">
+            <div class="tbl-title">
+                <span style="float: left;"><b>·정기결제권 합계</b></span>
+            </div>
+            <?php if (!empty($order_info)) { ?>
+                <div class="ord-detail">
+                    <div class="prd"><b>상품</b></div>
+                    <div class="tot"><b>총계</b></div>
+                </div>
+                <div class="ord-detail">
+                    <div class="prd">
+                        <span class="point">먼치세트 정기 배송 - <?php echo date('Y년 m월') ?> 시작</span>X1<br>
+                        반려견 품종
+                        : <?php echo ($order_info['pet_type'] === 'dog') ? $dog_kind[$order_info['pet_kind']] : $cat_kind[$order_info['pet_kind']] ?>
+                        <br>
+                        구독 기간 : <?php echo $order_info['subscribe_month'] ?>개월<br>
+                    </div>
+                    <div class="tot">&#8361; <?php echo number_format($order_info['last_amount']) ?>원</div>
+                </div>
+            <?php } ?>
+        </div>
+
+        <div class="tot-price-detail">
+            <div class="">
+                <span>합계 : </span><strong>&#8361; <?php echo number_format($order_info['last_amount']) ?>원</strong><br>
+                <span>배송 : </span><strong>무료배송</strong><br>
+                <span>결제방법 : </span><strong>KCP 정기결제</strong><br>
+                <span>총계 : </span><strong class="point">&#8361; <?php echo number_format($order_info['last_amount']) ?>
+                    원</strong><br>
+            </div>
+        </div>
+
+        <div class="ord-relation">
+            <div class="tbl-title">
+                <span style="float: left;"><b>·관련 주문</b></span>
+            </div>
+            <?php if (!empty($order_info_list)) { ?>
+                <div class="ord-detail">
+                    <table>
+                        <tr>
+                            <th>주문</th>
+                            <th>날짜</th>
+                            <th>상태</th>
+                            <th>총합</th>
+                        </tr>
+                        <?php foreach ($order_info_list as $k => $data) { ?>
+                            <tr>
+                                <td class="point">#<?php echo $data['order_idx'] ?></td>
+                                <td><?php echo substr($data['reg_dt'],0,10) ?></td>
+                                <td><?php echo $order_status[$data['status']] ?></td>
+                                <td>&#8361; <?php echo number_format($order_info['last_amount']) ?></td>
+                            </tr>
+                        <?php } ?>
+                    </table>
+                    <button type="button" class="btn-purple-square">다시 주문하기</button>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>

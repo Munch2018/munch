@@ -13,7 +13,7 @@ class Accounts extends CI_Controller
         parent::__construct();
         $this->load->helper('url');
         $this->load->library('pagination');
-        $this->load->service('common_code', '', true);
+        $this->load->service('common_code_service', '', true);
 
         $this->checkLogin();
     }
@@ -40,10 +40,10 @@ class Accounts extends CI_Controller
         $limit = 3;
         $page = 0;
         $member_idx = $this->session->userdata('member_idx');
-        $data['order_status'] = $this->common_code->getCode('order_status');
+        $data['order_status'] = $this->Common_code_service->getCode('order_status');
         $data['orders'] = $this->order->getOrderData(['member_idx' => $member_idx], $limit, $page);
 
-        $data['subscribe_status'] = $this->common_code->getCode('subscribe_status');
+        $data['subscribe_status'] = $this->Common_code_service->getCode('subscribe_status');
         $data['subscribes'] = $this->subscribe->fetch_subscribe(['member_idx'=>$member_idx], $limit, $page);
 
         $data['action'] = 'dashboard';
@@ -68,7 +68,7 @@ class Accounts extends CI_Controller
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(4)) ? ($this->uri->segment(4)) : 0;
 
-        $data['order_status'] = $this->common_code->getCode('order_status');
+        $data['order_status'] = $this->Common_code_service->getCode('order_status');
         $data['results'] = $this->order->getOrderData(['member_idx' => $member_idx], $config['per_page'], $page);
         $data['links'] = $this->pagination->create_links();
         $data['action'] = 'orders';
@@ -93,7 +93,7 @@ class Accounts extends CI_Controller
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(4)) ? ($this->uri->segment(4)) : 0;
 
-        $data['subscribe_status'] = $this->common_code->getCode('subscribe_status');
+        $data['subscribe_status'] = $this->Common_code_service->getCode('subscribe_status');
         $data['results'] = $this->subscribe->fetch_subscribe(['member_idx'=>$member_idx], $config['per_page'], $page);
         $data['links'] = $this->pagination->create_links();
         $data['action'] = 'subscribe';
