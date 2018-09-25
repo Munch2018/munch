@@ -225,8 +225,7 @@ exit;
                 echo print_r($join_sns_data,1).' 2222<br><br>';
 
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
-
-                    $this->login($join_data + $join_sns_data);
+                    $this->login($join_data);
                     return true;
                 }
             }
