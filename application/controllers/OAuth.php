@@ -184,9 +184,8 @@ class OAuth extends CI_Controller
             'is_admin' => !empty($member_info['is_admin']) ? $member_info['is_admin'] : 0
         );
         echo print_r($session_data,1).' join 1<br><br>';
-        if ($member_info['is_admin'] === 1) {
+        if (!empty($member_info['is_admin']) && $member_info['is_admin'] === 1) {
             $session_data['is_admin'] = true;
-            $this->load->vars(array('IS_ADMIN', true));
         }
 
         $this->session->set_userdata($session_data);
@@ -216,7 +215,7 @@ exit;
         try {
             $this->member_model->db->trans_begin();
             $member_idx = $this->member_model->doRegister($join_data);
-            echo print_r($member_idx,1).' 3333333<br><br>';
+
             if (!empty($member_idx)) {
                 $join_sns_data['member_idx'] = $member_idx;
                 $join_sns_data['token'] = $member_info['token'];
@@ -225,6 +224,7 @@ exit;
                 echo print_r($join_sns_data,1).' 2222<br><br>';
 
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
+                    $join_data['member_idx'] = $member_idx;
                     $this->login($join_data);
                     return true;
                 } else {
@@ -241,5 +241,4 @@ exit;
 
         return false;
     }
-
 }
