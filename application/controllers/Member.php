@@ -273,6 +273,8 @@ class Member extends CI_Controller
 
     public function modifyProfile()
     {
+        echo print_r($this->input->post(),1);
+        exit;
         $pwd = $this->input->post('new-pwd');
         $name = $this->input->post('name');
         $telphone = $this->input->post('telphone');
@@ -292,7 +294,7 @@ class Member extends CI_Controller
             $modifyData['name'] = $name;
             $modifySessionData['name'] = $name;
         }
-        if (!empty($telphone) && $member_info['telphone'] !== $telphone) {
+        if (!empty($telphone) && ($member_info['telphone'] !== $telphone)) {
             $modifyData['telphone'] = str_replace('-', '', trim($telphone));
             $modifySessionData['telphone'] = $modifyData['telphone'];
         }

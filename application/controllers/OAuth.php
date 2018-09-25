@@ -9,7 +9,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class OAuth extends CI_Controller
 {
-
     const KAKAO_CLIENT_ID = '10937aa222a35af6980c19eb574b9def';
     const KAKAO_CLIENT_RETURN = "http://munchmunch.kr/OAuth/kakao";
 
@@ -20,12 +19,6 @@ class OAuth extends CI_Controller
         $this->load->model('Auth_model', 'auth_model');
         $this->load->model('Member_model', 'member_model');
     }
-
-    public function index()
-    {
-
-    }
-
 
     public function snsLogin()
     {
@@ -50,9 +43,7 @@ class OAuth extends CI_Controller
 
     public function naver()
     {
-        echo print_r($_POST, 1);
-        echo print_r($_GET, 1);
-        exit;
+
     }
 
     public function naverLogin()
@@ -127,11 +118,6 @@ class OAuth extends CI_Controller
                 'token' => $responseArr['access_token']
             ]);
 
-            echo print_r($me_responseArr,1).'<br><br>';
-            echo print_r($responseArr,1).'<br><br>';
-            echo print_r($alreadyData,1).'<br><br>';
-
-
             //회원정보가 있다면
             if (!empty($alreadyData['member_sns_idx'])) {
                 if ($this->auth_model->updateToken([
@@ -140,7 +126,7 @@ class OAuth extends CI_Controller
                 ])) {
                     $this->login($alreadyData);
                 } else {
-                    alert('로그인에 실패하였습니다.1', '', 1);
+                    alert('로그인에 실패하였습니다.', '', 1);
                     return false;
                 }
             } else {
@@ -155,8 +141,7 @@ class OAuth extends CI_Controller
                     'name' => !empty($name) ? $name : 'kakao',
                     'token' => $responseArr['access_token']
                 ])) {
-                    exit;
-                    alert('로그인에 실패하였습니다.3', '', 1);
+                    alert('로그인에 실패하였습니다.', '', 1);
                     return false;
                 }
             }
@@ -174,8 +159,6 @@ class OAuth extends CI_Controller
 
     public function login($member_info)
     {
-        echo print_r($member_info,1).' join 2<br><br>';
-
         $session_data = array(
             'member_idx' => $member_info['member_idx'],
             'email' => $member_info ['email'],
@@ -183,15 +166,13 @@ class OAuth extends CI_Controller
             'telphone' => !empty($member_info['telphone']) ? $member_info['telphone'] : '',
             'is_admin' => !empty($member_info['is_admin']) ? $member_info['is_admin'] : 0
         );
-        echo print_r($session_data,1).' join 1<br><br>';
+
         if (!empty($member_info['is_admin']) && $member_info['is_admin'] === 1) {
             $session_data['is_admin'] = true;
         }
 
         $this->session->set_userdata($session_data);
 
-        echo 'ccccccccc';
-exit;
         echo "<script type='text/javascript'>  opener.location.href = '/'; ; self.close(); </script>";
         exit;
     }
@@ -210,7 +191,6 @@ exit;
             'password' => '',
             'use_fl' => 'Y'
         );
-        echo print_r($join_data,1).' 111<br><br>';
 
         try {
             $this->member_model->db->trans_begin();
@@ -221,7 +201,6 @@ exit;
                 $join_sns_data['token'] = $member_info['token'];
                 $join_sns_data['type'] = $member_info['type'];
                 $join_sns_data['use_fl'] = 'y';
-                echo print_r($join_sns_data,1).' 2222<br><br>';
 
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
                     $join_data['member_idx'] = $member_idx;

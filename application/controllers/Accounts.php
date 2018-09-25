@@ -167,6 +167,10 @@ class Accounts extends CI_Controller
         }
     }
 
+    /**
+     * 구독 중지
+     * @return bool
+     */
     public function pauseSubscribe()
     {
         $subscribe_idx = $_GET['subscribe_idx'];
@@ -186,6 +190,10 @@ class Accounts extends CI_Controller
         }
     }
 
+    /**
+     * 구독 취소
+     * @return bool
+     */
     public function cancelSubscribe()
     {
         $subscribe_idx = $_GET['subscribe_idx'];
@@ -205,6 +213,10 @@ class Accounts extends CI_Controller
         }
     }
 
+    /**
+     * 구독 재시작
+     * @return bool
+     */
     public function restartSubscribe()
     {
         $subscribe_idx = $_GET['subscribe_idx'];
