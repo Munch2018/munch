@@ -129,7 +129,11 @@ class OAuth extends CI_Controller
             $email = $me_responseArr['kakao_account']['email'];
 
             $alreadyData = $this->auth_model->getMemberSns(['type' => 'kakao', 'email' => $email]);
+            echo print_r($me_responseArr,1).'<br><br>';
+            echo print_r($responseArr,1).'<br><br>';
+            echo print_r($alreadyData,1).'<br><br>';
 
+exit;
             //회원정보가 있다면
             if (!empty($alreadyData['member_sns_idx'])) {
                 if ($this->auth_model->updateToken([
@@ -138,7 +142,7 @@ class OAuth extends CI_Controller
                 ])) {
                     $this->login($alreadyData);
                 } else {
-                    alert('로그인에 실패하였습니다.', '', 1);
+                    alert('로그인에 실패하였습니다.1', '', 1);
                     return false;
                 }
             } else {
@@ -153,7 +157,7 @@ class OAuth extends CI_Controller
                     'name' => !empty($name) ? $name : 'kakao',
                     'token' => $responseArr['access_token']
                 ])) {
-                    alert('로그인에 실패하였습니다.', '', 1);
+                    alert('로그인에 실패하였습니다.3', '', 1);
                     return false;
                 }
             }
@@ -193,7 +197,7 @@ class OAuth extends CI_Controller
     public function join($member_info)
     {
         if (empty($member_info['email'])) {
-            alert('로그인에 실패하였습니다.', '', 1);
+            alert('로그인에 실패하였습니다.2', '', 1);
             return false;
         }
 
@@ -214,6 +218,7 @@ class OAuth extends CI_Controller
                 $join_sns_data['member_idx'] = $member_idx;
                 $join_sns_data['token'] = $member_info['token'];
                 $join_sns_data['type'] = $member_info['type'];
+                $join_sns_data['use_fl'] = 'y';
 
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
                     $this->login($join_data + $join_sns_data);

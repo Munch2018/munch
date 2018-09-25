@@ -13,6 +13,15 @@ class Auth_model extends CI_Model
         parent::__construct();
     }
 
+    public function updateToken($params)
+    {
+        if (empty($params['token']) || empty($params['member_sns_idx'])) {
+            return false;
+        }
+        $this->db->set('token', $params['token']);
+        $this->db->where('member_sns_idx', $params['member_sns_idx']);
+        return $this->db->update('member_sns');
+    }
 
     public function getMemberSns($params)
     {
@@ -35,7 +44,7 @@ class Auth_model extends CI_Model
         }
 
         if (!empty($where)) {
-            $whereStr = ' AND '.implode(' and ', $where);
+            $whereStr = ' AND ' . implode(' and ', $where);
         }
 
         $sql = '
