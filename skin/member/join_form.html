@@ -41,7 +41,6 @@
     }
 
     .join_form .sns_group {
-        position: relative;
         left: 6px;
         margin-top: -30px;
     }
@@ -77,18 +76,18 @@
                     <input type="button" class="btn btn-primary submit" value="확인">
                 </form>
             </div>
-
-            <div class="sns_group">
-                <img src="/img/member/kakao_login.png">
-                <img src="/img/member/facebook_login.png">
-                <img src="/img/member/naver_login.png">
-            </div>
+            <?php $this->load->view('/member/sns_login_form.phtml'); ?>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('.sns_login').on('click', function () {
+            var sns = $(this).data('sns');
+            window.open('/OAuth/snsLogin?sns=' + sns, '', 'width=500,height=400');
+        });
+
         $(".btn.submit").click(function (e) {
             if ($("input[name=email]").val() == "") {
                 alert("이메일을 넣어주세요.");

@@ -1,34 +1,4 @@
 
-<script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '892784224261148',
-            cookie     : true,
-            xfbml      : true,
-            version    : '3.1'
-        });
-
-        FB.AppEvents.logPageView();
-    };
-
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
-    function checkLoginState() {
-        FB.getLoginStatus(function (response) {
-            statusChangeCallback(response);
-        });
-    }
-
-    function statusChangeCallback(response) {
-        console.log(response);
-    }
-</script>
 <style type="text/css">
     .container { width: 1200px; min-width: 960px; margin: auto; text-align: center; padding: 70px 0; height: 100%; }
     .container a:link, .container a:visited, .container a:hover, .container a:active { color: #545454; }
@@ -40,7 +10,7 @@
     .login_form div span:first-child{float:left;font-weight:bold;}
     .login_form div span:nth-child(2){float:right;font-weight:bold; color:#452b78;}
     .login_form #find_passwd { cursor: pointer; }
-    .login_form .sns_group {position:relative; left:6px; top:10px;}
+    .login_form .sns_group {left:6px; top:10px;}
     .login_form .sns_group img{margin-right:7px;}
     .sns_group img {cursor:pointer;}
 </style>
@@ -62,24 +32,7 @@
                 <span><a href="/member/join_form">회원가입</a></span>
             </div>
         </div>
-
-        <div class="sns_group">
-            <img src="/img/member/kakao_login.png">
-            <?php /*
-                <img src="/img/member/facebook_login.png">
-            */ ?>
-
-            <div><fb:login-button
-                    scope="public_profile,email"
-                    onlogin="checkLoginState();">
-            </div>
-            </fb:login-button>
-            <div class="fb-login-button" data-width="160" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false"
-                 data-auto-logout-link="true" data-use-continue-as="false"></div>
-            <div id="fb-root"></div>
-
-            <img src="/img/member/naver_login.png">
-        </div>
+        <?php $this->load->view('/member/sns_login_form.phtml'); ?>
     </div>
 </div>
 </div>
@@ -102,5 +55,11 @@
        $('#find_passwd').on('click',function () {
           window.open('/member/findPasswordForm', 'findPasswordForm', 'width=440,height=230,menubar=no,location=no,resizable=no,scrollbars=no,status=no');
        });
+
+        $('.sns_login').on('click', function () {
+            var sns = $(this).data('sns');
+            window.open('/OAuth/snsLogin?sns=' + sns, '', 'width=500,height=400');
+        });
+
     });
 </script>
