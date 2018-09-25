@@ -13,6 +13,7 @@ class OAuth extends CI_Controller
     const KAKAO_CLIENT_ID = '10937aa222a35af6980c19eb574b9def';
     const KAKAO_CLIENT_RETURN = "http://munchmunch.kr/OAuth/kakao";
 
+
     public function __construct()
     {
         parent::__construct();
@@ -80,7 +81,7 @@ class OAuth extends CI_Controller
         //사용자 토큰 받기
         $code = $_GET["code"];
         $params = sprintf('grant_type=authorization_code&client_id=%s&redirect_uri=%s&code=%s', self::KAKAO_CLIENT_ID,
-            self::KAKAO_CALLBACK_URL, $code);
+            self::KAKAO_CLIENT_RETURN, $code);
 
         $TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
         $opts = array(
