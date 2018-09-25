@@ -30,13 +30,38 @@ class Member_model extends CI_Model
      * */
     public function getMember($where = array())
     {
+        //member_idx없이 조회 -> sns 고객 제외
+        if (empty($where['member_idx'])) {
+            return $this->getMemberNotSns($where);
+        }
+
         if (!empty($where)) {
             $this->setWhere($where);
         }
 
         return $this->db->get('member')->row_array();
+    }
 
+    /**
+     * sns로그인이 아닌 일반회원
+     * @param $where
+     * @return mixed
+     */
+    public function getMemberNotSns($where)
+    {
+        $this->db->select('*');
+        $this->db->from('member');
+        $this->db->join('member_sns', 'member.member_idx = member_sns.member_idx', 'LEFT');
+        $this->db->where('member_sns.member_sns_idx is null');
 
+        if (!empty($where['where']['use_fl'])) {
+            $this->db->where('member.use_fl', $where['where']['use_fl']);
+        }
+        if (!empty($where['where']['email'])) {
+            $this->db->where('member.email', $where['where']['email']);
+        }
+
+        return $this->db->get()->row_array();
     }
 
     /**
@@ -114,17 +139,17 @@ class Member_model extends CI_Model
         $this->db->from('address');
         $this->db->where('member_idx', $member_idx);
         $this->db->where('use_fl', 'y');
-        if(!empty($params['address_idx'])){
-            $this->db->where('address_idx',$params['address_idx']);
+        if (!empty($params['address_idx'])) {
+            $this->db->where('address_idx', $params['address_idx']);
         }
-        if(!empty($params['zipcode'])){
-            $this->db->where('zipcode',$params['zipcode']);
+        if (!empty($params['zipcode'])) {
+            $this->db->where('zipcode', $params['zipcode']);
         }
-        if(!empty($params['addr1st'])){
-            $this->db->where('addr1st',$params['addr1st']);
+        if (!empty($params['addr1st'])) {
+            $this->db->where('addr1st', $params['addr1st']);
         }
-        if(!empty($params['addr2nd'])){
-            $this->db->where('addr2nd',$params['addr2nd']);
+        if (!empty($params['addr2nd'])) {
+            $this->db->where('addr2nd', $params['addr2nd']);
         }
         $this->db->order_by('sort', 'ASC');
         $this->db->order_by('address_idx', 'DESC');

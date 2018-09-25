@@ -281,7 +281,11 @@ class Member extends CI_Controller
 
         $member_info = $this->member->getMember([
             'where' =>
-                ['email' => $this->session->userdata('email'), 'use_fl' => 'Y']
+                [
+                    'email' => $this->session->userdata('email'),
+                    'use_fl' => 'Y',
+                    'member_idx' => $this->session->userdate('member_idx')
+                ]
         ]);
 
         $modifyData = [];
