@@ -175,7 +175,7 @@ class Board extends CI_Controller
             foreach (explode(' | ', $data['board_info']['board_type']) as $value) {
 
                 //board_type 에서 카테고리는 무조건 하나라고 생각하자
-                $code_info = $this->Common_code_service->getCode(array('where' => array('code_common_idx' => $value, 'use_fl' => 'y', 'code_common_group_idx' => 4)));
+                $code_info = $this->common_code_service->getCode(array('where' => array('code_common_idx' => $value, 'use_fl' => 'y', 'code_common_group_idx' => 4)));
                 if (!empty($code_info)) {
                     $data['code_info'] = $code_info;
                     break;
