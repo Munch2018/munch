@@ -250,6 +250,7 @@
 .main-product-introduction {
     height: 100%;
     background-color: #FFF8EE;
+    padding-bottom:70px;
 }
 
 .main-product-introduction .sub-product-introduction {
@@ -318,7 +319,6 @@
     height: 100%;
     width: 950px;
     overflow: hidden;
-    margin: auto auto 66px auto;
 }
 
 .main-product-introduction .sub-product-introduction .goods-desc #point {

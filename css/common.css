@@ -22,7 +22,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .gnb li {
-    display: grid;
+    display: flex;
     padding-left: 10px;
     align-items: center;
     font-weight: bold;
@@ -337,7 +337,7 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
 }
 
 #main_floating .inner ul li {
-    display: grid;
+    display: flex;
     padding-left: 50px;
     align-items: center;
     vertical-align: middle;
@@ -346,7 +346,7 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
 }
 
 #main_floating .inner .btn-purple-round {
-    display: inline-block;
-    float: right;
+    margin:auto;
+    height:70px;
     padding: 25px 50px;
 }
