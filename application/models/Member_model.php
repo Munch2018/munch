@@ -85,6 +85,7 @@ class Member_model extends CI_Model
             $this->db->trans_rollback();
         } else {
             $this->db->trans_complete();
+            return $this->db->insert_id();
         }
 
         return;

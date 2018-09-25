@@ -208,8 +208,8 @@ class OAuth extends CI_Controller
 
         $member_idx = $this->member_model->doRegister($join_data);
 
-        if (empty($member_idx)) {
-            $join_sns_data['member_info'] = $member_info;
+        if (!empty($member_idx)) {
+            $join_sns_data['member_idx'] = $member_idx;
             $join_sns_data['email'] = $member_info['email'];
             $join_sns_data['token'] = $member_info['token'];
             $join_sns_data['type'] = $member_info['type'];
