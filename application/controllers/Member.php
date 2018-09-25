@@ -149,8 +149,10 @@ class Member extends CI_Controller
      */
     public function logout()
     {
-        $this->session->unset_userdata('email');
-        $this->session->unset_userdata('member_idx');
+        $session = $this->session->all_userdata();
+        foreach ($session as $key => $val) {
+            $this->session->unset_userdata($key);
+        }
 
         alert("로그아웃 되었습니다.", '/');
     }

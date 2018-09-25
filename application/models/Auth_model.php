@@ -39,7 +39,14 @@ class Auth_model extends CI_Model
             $bind['email'] = $params['email'];
             $where[] = ' m.email = ? ';
         }
-
+        if (!empty($params['member_sns_idx'])) {
+            $bind['member_sns_idx'] = $params['member_sns_idx'];
+            $where[] = ' ms.member_sns_idx = ? ';
+        }
+        if (!empty($params['token'])) {
+            $bind['token'] = $params['token'];
+            $where[] = ' ms.token = ? ';
+        }
         if (!empty($params['type'])) {
             $bind['type'] = $params['type'];
             $where[] = ' ms.type = ? ';
@@ -53,7 +60,7 @@ class Auth_model extends CI_Model
             SELECT ms.member_sns_idx, m.member_idx, m.email, m.telphone, m.name, m.is_admin
              FROM
                 member m JOIN
-                member_sns ms ON m.member_idx = ms.member_sns_idx
+                member_sns ms ON m.member_idx = ms.member_idx
             WHERE
                 m.use_fl = \'y\' AND ms.use_fl = \'y\'
                     ' . $whereStr;
