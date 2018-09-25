@@ -273,8 +273,6 @@ class Member extends CI_Controller
 
     public function modifyProfile()
     {
-        echo print_r($this->input->post(),1);
-        exit;
         $pwd = $this->input->post('new-pwd');
         $name = $this->input->post('name');
         $telphone = $this->input->post('telphone');

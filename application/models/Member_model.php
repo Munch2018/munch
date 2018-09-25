@@ -49,7 +49,7 @@ class Member_model extends CI_Model
      */
     public function getMemberNotSns($where)
     {
-        $this->db->select('*');
+        $this->db->select('member.*');
         $this->db->from('member');
         $this->db->join('member_sns', 'member.member_idx = member_sns.member_idx', 'LEFT');
         $this->db->where('member_sns.member_sns_idx is null');
