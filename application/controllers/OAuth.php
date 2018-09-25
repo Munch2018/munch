@@ -128,16 +128,21 @@ class OAuth extends CI_Controller
         if (!empty($me_responseArr['kakao_account']['email'])) {
             $email = $me_responseArr['kakao_account']['email'];
 
-            $alreadyData = $this->auth_model->getMemberSns(['type' => 'kakao', 'email' => $email]);
+            $alreadyData = $this->auth_model->getMemberSns([
+                'type' => 'kakao',
+                'email' => $email,
+                'token' => $responseArr['access_token']
+            ]);
+
             echo print_r($me_responseArr,1).'<br><br>';
             echo print_r($responseArr,1).'<br><br>';
             echo print_r($alreadyData,1).'<br><br>';
 
-exit;
+
             //회원정보가 있다면
             if (!empty($alreadyData['member_sns_idx'])) {
                 if ($this->auth_model->updateToken([
-                    'token' => $responseArr['access_token'],
+                    'token' => $responseArr['refresh_token'],
                     'member_sns_idx' => $alreadyData['member_sns_idx']
                 ])) {
                     $this->login($alreadyData);

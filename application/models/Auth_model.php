@@ -18,6 +18,8 @@ class Auth_model extends CI_Model
         if (empty($params['token']) || empty($params['member_sns_idx'])) {
             return false;
         }
+
+        $this->db->set('edit_dt', date('Y-m-d H:i:s'));
         $this->db->set('token', $params['token']);
         $this->db->where('member_sns_idx', $params['member_sns_idx']);
         return $this->db->update('member_sns');
@@ -61,6 +63,7 @@ class Auth_model extends CI_Model
 
     public function insertMemberSns($data = [])
     {
+        $data['use_fl'] = 'y';
         $data['reg_dt'] = date("Y-m-d H:i:s");
         $this->db->trans_begin();
         $this->db->insert('member_sns', $data);
