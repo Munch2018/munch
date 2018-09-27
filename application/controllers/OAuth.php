@@ -306,8 +306,8 @@ echo '//'.$member_idx.'<br><br>';
                 echo 'cc' . print_r($join_sns_data, 1) . '<br><br>';
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
                     $join_data['member_idx'] = $member_idx;
-                    $this->login($join_data);
                     $this->member_model->db->trans_complete();
+                    $this->login($join_data);
                 } else {
                     $this->member_model->db->trans_rollback();
                     alert('로그인에 실패하였습니다.', '', 1);
