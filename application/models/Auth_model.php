@@ -21,6 +21,7 @@ class Auth_model extends CI_Model
 
         $this->db->set('edit_dt', date('Y-m-d H:i:s'));
         $this->db->set('token', $params['token']);
+        $this->db->set('refresh_token', $params['refresh_token']);
         $this->db->where('member_sns_idx', $params['member_sns_idx']);
         return $this->db->update('member_sns');
     }
@@ -47,6 +48,10 @@ class Auth_model extends CI_Model
             $bind['token'] = $params['token'];
             $where[] = ' ms.token = ? ';
         }
+        if (!empty($params['refresh_token'])) {
+            $bind['refresh_token'] = $params['refresh_token'];
+            $where[] = ' ms.refresh_token = ? ';
+        }
         if (!empty($params['type'])) {
             $bind['type'] = $params['type'];
             $where[] = ' ms.type = ? ';
@@ -66,7 +71,7 @@ class Auth_model extends CI_Model
                     ' . $whereStr;
 
         $result = $this->db->query($sql, $bind)->row_array();
-        echo $this->last_query().'<br><br>';
+        echo $this->db->last_query().'<br><br>';
         echo print_r($result,1).'<br><br>';
         return $result;
     }

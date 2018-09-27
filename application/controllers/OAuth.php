@@ -299,6 +299,7 @@ echo print_r($me_responseArr,1).'<br><br>';
             if (!empty($member_idx)) {
                 $join_sns_data['member_idx'] = $member_idx;
                 $join_sns_data['token'] = $member_info['token'];
+                $join_sns_data['refresh_token'] = $member_info['refresh_token'];
                 $join_sns_data['type'] = $member_info['type'];
                 $join_sns_data['use_fl'] = 'y';
 
