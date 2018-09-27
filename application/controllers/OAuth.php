@@ -78,7 +78,7 @@ class OAuth extends CI_Controller
 
         $responseArr = json_decode($response, true);
 
-        echo print_r($responseArr,1);exit;
+        echo print_r($responseArr,1).'<br><br>';
 
         $_SESSION['naver_access_token'] = $responseArr['access_token'];
         $_SESSION['naver_refresh_token'] = $responseArr['refresh_token'];
@@ -101,7 +101,7 @@ class OAuth extends CI_Controller
         curl_close($me_ch);
 
         $me_responseArr = json_decode($me_response, true);
-
+echo print_r($me_responseArr,1).'<br><br>';
         if (!empty($me_responseArr['response']['email'])) {
             $email = $me_responseArr['response']['email'];
 

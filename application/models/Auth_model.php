@@ -65,7 +65,10 @@ class Auth_model extends CI_Model
                 m.use_fl = \'y\' AND ms.use_fl = \'y\'
                     ' . $whereStr;
 
-        return $this->db->query($sql, $bind)->row_array();
+        $result = $this->db->query($sql, $bind)->row_array();
+        echo $this->last_query().'<br><br>';
+        echo print_r($result,1).'<br><br>';
+        return $result;
     }
 
     public function insertMemberSns($data = [])
