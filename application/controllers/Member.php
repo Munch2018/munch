@@ -296,7 +296,7 @@ class Member extends CI_Controller
             $modifyData['name'] = $name;
             $modifySessionData['name'] = $name;
         }
-        if (!empty($telphone) && ($member_info['telphone'] !== $telphone)) {
+        if (!empty($telphone) && ($member_info['telphone'] !== $telphone || empty($member_info['telphone']))) {
             $modifyData['telphone'] = str_replace('-', '', trim($telphone));
             $modifySessionData['telphone'] = $modifyData['telphone'];
         }
