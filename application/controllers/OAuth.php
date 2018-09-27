@@ -110,7 +110,7 @@ echo print_r($me_responseArr,1).'<br><br>';
                 'email' => $email,
                 'token' => $responseArr['access_token'],
             ]);
-echo 'nn'.print_r($alreadyData,1).'<br><br>';
+
             //회원정보가 있다면
             if (!empty($alreadyData['member_sns_idx'])) {
                 if ($this->auth_model->updateToken([
@@ -126,7 +126,7 @@ echo 'nn'.print_r($alreadyData,1).'<br><br>';
             } else {
                 // properties 항목은 카카오 회원이 설정한 경우만 넘겨 받습니다.
                 $email = $me_responseArr['response']['email']; // 이메일
-                $name = $me_responseArr['response']['nickname']; // 닉네임
+                $name = $me_responseArr['response']['name']; // 닉네임
 
                 // 멤버 DB에 토큰과 회원정보를 넣고 로그인
                 if (!$this->join([
@@ -307,7 +307,6 @@ echo '//'.$member_idx.'<br><br>';
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
                     $join_data['member_idx'] = $member_idx;
                     $this->login($join_data);
-                    return true;
                 } else {
                     $this->member_model->db->trans_rollback();
                     alert('로그인에 실패하였습니다.', '', 1);
