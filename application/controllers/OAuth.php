@@ -270,9 +270,10 @@ echo print_r($alreadyData,1);exit;
         if (!empty($member_info['is_admin']) && $member_info['is_admin'] === 1) {
             $session_data['is_admin'] = true;
         }
-
+echo 'gggggggg'.print_r($session_data,1).'<br><br>';
         $this->session->set_userdata($session_data);
-
+echo 'ccccccccccccccccccc';
+        exit;
         echo "<script type='text/javascript'>  opener.location.href = '/'; ; self.close(); </script>";
         exit;
     }
@@ -295,14 +296,14 @@ echo print_r($alreadyData,1);exit;
         try {
             $this->member_model->db->trans_begin();
             $member_idx = $this->member_model->doRegister($join_data);
-
+echo '//'.$member_idx.'<br><br>';
             if (!empty($member_idx)) {
                 $join_sns_data['member_idx'] = $member_idx;
                 $join_sns_data['token'] = $member_info['token'];
                 $join_sns_data['refresh_token'] = $member_info['refresh_token'];
                 $join_sns_data['type'] = $member_info['type'];
                 $join_sns_data['use_fl'] = 'y';
-
+                echo 'cc'.print_r($join_sns_data,1).'<br><br>';
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
                     $join_data['member_idx'] = $member_idx;
                     $this->login($join_data);
