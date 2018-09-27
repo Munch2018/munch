@@ -110,7 +110,7 @@ echo print_r($me_responseArr,1).'<br><br>';
                 'email' => $email,
                 'token' => $responseArr['access_token'],
             ]);
-echo print_r($alreadyData,1);exit;
+echo 'nn'.print_r($alreadyData,1).'<br><br>';
             //회원정보가 있다면
             if (!empty($alreadyData['member_sns_idx'])) {
                 if ($this->auth_model->updateToken([
