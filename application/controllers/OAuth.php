@@ -56,7 +56,7 @@ class OAuth extends CI_Controller
         $state = $_GET["state"];
         $redirectURI = urlencode(self::NAVER_CLIENT_RETURN); // 현재 Callback Url 입력
 
-        $url = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=".$client_id."&client_secret=".$client_secret."&redirect_uri=".$redirectURI."&code=".$code."&state=".$state;
+        $url = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=" . $client_id . "&client_secret=" . $client_secret . "&redirect_uri=" . $redirectURI . "&code=" . $code . "&state=" . $state;
         $is_post = false;
 
         $ch = curl_init();
@@ -65,9 +65,9 @@ class OAuth extends CI_Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $headers = array();
-        $response = curl_exec ($ch);
+        $response = curl_exec($ch);
         $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        echo "status_code:".$status_code;
+        echo "status_code:" . $status_code;
 
         curl_close($ch);
 
@@ -93,13 +93,12 @@ class OAuth extends CI_Controller
         curl_setopt($me_ch, CURLOPT_POST, $me_is_post);
         curl_setopt($me_ch, CURLOPT_HTTPHEADER, $me_headers);
         curl_setopt($me_ch, CURLOPT_RETURNTRANSFER, true);
-        $me_response = curl_exec ($me_ch);
+        $me_response = curl_exec($me_ch);
         $me_status_code = curl_getinfo($me_ch, CURLINFO_HTTP_CODE);
-        curl_close ($me_ch);
+        curl_close($me_ch);
 
         $me_responseArr = json_decode($me_response, true);
-echo print_r($me_responseArr,1);
-exit;
+
         if (!empty($responseArr['response']['email'])) {
             $email = $responseArr['response']['email'];
 
