@@ -282,7 +282,7 @@ class Member extends CI_Controller
                 [
                     'email' => $this->session->userdata('email'),
                     'use_fl' => 'Y',
-                    'member_idx' => $this->session->userdate('member_idx')
+                    'member_idx' => $this->session->userdata('member_idx')
                 ]
         ]);
 
