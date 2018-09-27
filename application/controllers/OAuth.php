@@ -77,6 +77,9 @@ class OAuth extends CI_Controller
         }
 
         $responseArr = json_decode($response, true);
+
+        echo print_r($responseArr,1);exit;
+
         $_SESSION['naver_access_token'] = $responseArr['access_token'];
         $_SESSION['naver_refresh_token'] = $responseArr['refresh_token'];
         $_SESSION['naver_refresh_token_expires_in'] = $responseArr['expires_in'];
