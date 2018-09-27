@@ -303,18 +303,19 @@ echo '//'.$member_idx.'<br><br>';
                 $join_sns_data['refresh_token'] = $member_info['refresh_token'];
                 $join_sns_data['type'] = $member_info['type'];
                 $join_sns_data['use_fl'] = 'y';
-                echo 'cc'.print_r($join_sns_data,1).'<br><br>';
+                echo 'cc' . print_r($join_sns_data, 1) . '<br><br>';
                 if ($this->auth_model->insertMemberSns($join_sns_data)) {
                     $join_data['member_idx'] = $member_idx;
                     $this->login($join_data);
+                    $this->member_model->db->trans_complete();
                 } else {
                     $this->member_model->db->trans_rollback();
                     alert('로그인에 실패하였습니다.', '', 1);
                     return false;
                 }
+            } else {
+                $this->member_model->db->trans_rollback();
             }
-
-            $this->member_model->db->trans_complete();
         } catch (Exception $e) {
             $this->member_model->db->trans_rollback();
         }
