@@ -99,8 +99,8 @@ class OAuth extends CI_Controller
 
         $me_responseArr = json_decode($me_response, true);
 
-        if (!empty($responseArr['response']['email'])) {
-            $email = $responseArr['response']['email'];
+        if (!empty($me_responseArr['response']['email'])) {
+            $email = $me_responseArr['response']['email'];
 
             $alreadyData = $this->auth_model->getMemberSns([
                 'type' => 'naver',
