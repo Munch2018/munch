@@ -79,7 +79,7 @@ class Member extends CI_Controller
                 $this->member->doRegister($join_data);
             }
 
-            alert("회원가입 완료되었습니다.");
+            alert("회원가입 완료되었습니다.", '/member/login_form/');
         }
     }
 

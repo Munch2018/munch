@@ -2,7 +2,7 @@ body {
     margin: 0px;
     /*min-width:960px;*/
     min-width: 1216px;
-    font-family: arial, Malgun Gothic, "맑은 고딕", dotum, '돋움', sans-serif;
+    font-family: 'Noto Sans KR', arial, Malgun Gothic, "맑은 고딕", dotum, '돋움', sans-serif;
     font-size: 20px;
     line-height: 21px;
 }
@@ -16,7 +16,8 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .gnb {
-    background-image: url("../img/common/gnb-background.jpg");
+    background-color: rgba(0, 0, 0, 0.77);
+    color: #ffffff;
     width: 100%;
     position: relative;
 }
@@ -25,10 +26,12 @@ a:link, a:visited, a:hover, a:active {
     display: flex;
     padding-left: 10px;
     align-items: center;
-    font-weight: bold;
     color: #FFFEFC;
 }
 
+.gnb li a:hover {
+    text-decoration: underline;
+}
 .gnb .gnb-inner {
     margin: 0 auto;
     max-width: 1210px;
@@ -341,8 +344,11 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
     padding-left: 50px;
     align-items: center;
     vertical-align: middle;
-    font-weight: bold;
     cursor: pointer;
+}
+
+#main_floating .inner ul li a:hover {
+    text-decoration: underline;
 }
 
 #main_floating .inner .btn-purple-round {

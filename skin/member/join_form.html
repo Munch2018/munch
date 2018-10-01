@@ -1,7 +1,22 @@
 <style type="text/css">
-    .container { width: 1200px; min-width: 960px; margin: auto; text-align: center; padding: 70px 0; height: 100%; }
-    .container a:link, .container a:visited, .container a:hover, .container a:active { color: #545454; }
-    .join_form * { box-sizing: border-box; overflow: hidden; }
+    .container {
+        width: 1200px;
+        min-width: 960px;
+        margin: auto;
+        text-align: center;
+        padding: 70px 0;
+        height: 100%;
+    }
+
+    .container a:link, .container a:visited, .container a:hover, .container a:active {
+        color: #545454;
+    }
+
+    .join_form * {
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
     div.join_form {
         position: relative;
         text-align: center;
@@ -42,12 +57,11 @@
 
     .join_form .sns_group {
         left: 6px;
-        margin-top: -30px;
+        top: 10px;
     }
 
     .join_form .sns_group img {
         margin-right: 7px;
-        width: 100px;
     }
 </style>
 <div class="container">
@@ -59,9 +73,9 @@
                 <form action="join/" method="post">
                     <input type="text" class="form-control" name="email" placeholder="이메일" value="">
                     <input type="text" class="form-control" name="name" placeholder="이름" value="">
-                    <input type="text" class="form-control" name="telphone" placeholder="휴대전화번호" value="">
-                    <input type="password" class="form-control" name="password" placeholder="비밀번호" value="">
-                    <input type="password" class="form-control" name="password_check" placeholder="비밀번호 확인" value="">
+                    <input type="text" class="form-control" name="telphone" placeholder="휴대전화번호 (숫자만 입력해주세요.)" value="">
+                    <input type="password" class="form-control" name="password" placeholder="비밀번호" value="" maxlength="16">
+                    <input type="password" class="form-control" name="password_check" placeholder="비밀번호 확인" value="" maxlength="16">
 
                     <div class="checkgroups">
                         <div class="custom-control custom-checkbox">
@@ -88,33 +102,56 @@
             window.open('/OAuth/snsLogin?sns=' + sns, '', 'width=500,height=400');
         });
 
+        /**
+         * 휴대전화 하이푼 제거
+         */
+        var telphone = $('input[name="telphone"]');
+        telphone.on('keyup', function () {
+            var num = telphone.val().replace(/[^0-9]/g, '');
+            telphone.val(num);
+        });
+
         $(".btn.submit").click(function (e) {
-            if ($("input[name=email]").val() == "") {
-                alert("이메일을 넣어주세요.");
+            var emailInput = $("input[name=email]");
+            if (emailInput.val() == "") {
+                alert("이메일을 입력해주세요.");
+                return false;
+            }
+
+            if (!checkEmail(emailInput)) {
                 return false;
             }
 
             if ($("input[name=name]").val() == "") {
-                alert("이름을 넣어주세요.");
+                alert("이름을 입력해주세요.");
                 return false;
             }
 
-            if ($("input[name=telphone]").val() == "") {
-                alert("전화번호를 넣어주세요.");
+            if (telphone.val() == "") {
+                alert("전화번호를 입력해주세요.");
                 return false;
             }
-            if ($("input[name=password]").val() == "" || $("input[name=password_check]").val() == "") {
-                alert("비밀번호를 넣어주세요.");
+
+            if (!checkTelphone(telphone)) {
+                return false;
+            }
+
+            var password = $("input[name=password]");
+            if (password.val() == "" || $("input[name=password_check]").val() == "") {
+                alert("비밀번호를 입력해주세요.");
                 return false;
             } else {
                 if ($("input[name=password]").val() != $("input[name=password_check]").val()) {
-                    alert("비밀번호가 같아야 합니다.");
+                    alert("비밀번호가 같지 않습니다.");
                     return false;
                 }
             }
+            if (!checkPasswd(password.val())) {
+                return false;
+            }
 
             if ($("#customCheck1").is(":checked") == false) {
-                alert("이용약관 동의를 해주세요.")
+                alert("이용약관에 동의를 해주세요.")
                 return false;
             }
 
@@ -125,5 +162,48 @@
 
             $("form").submit();
         });
+
+        var checkEmail = function (email) {
+            var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            if (email.val().length > 0 && !re.test(email.val())) {
+                alert('입력된 이메일 형식이 유효하지 않습니다.');
+                email.focus();
+                return false;
+            }
+            return true;
+        };
+
+        var checkTelphone = function (telphone) {
+            var telphoneVal = telphone.val();
+            if (telphoneVal.length !== 11 && telphoneVal.length !== 10) {
+                alert("유효하지 않은 전화번호 입니다.");
+                telphone.val("");
+                telphone.focus();
+                return false;
+            }
+
+            // 유효성 체크
+            var regExp_ctn = /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/;
+            if (!regExp_ctn.test(telphoneVal)) {
+                alert("유효하지 않은 전화번호 입니다.");
+                telphone.val("");
+                telphone.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        var checkPasswd = function (password) {
+            if (password.length < 8) {
+                alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
+                return false;
+            }
+            if (!password.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~,-])|([!,@,#,$,%,^,&,*,?,_,~,-].*[a-zA-Z0-9])/)) {
+                alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
+                return false;
+            }
+            return true;
+        }
     });
 </script>

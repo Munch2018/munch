@@ -29,11 +29,8 @@ function goodsViewAction() {
     var goods_view = getCookie('goods_view');
 
     if (goods_view == 'y') {
-        $('html, body').animate({
-            scrollTop: $('#goods').offset().top
-        }, 500, function () {
-            setCookie('goods_view', 'n', 1);
-        });
+        $('html, body').scrollTop($('#goods').offset().top);
+        setCookie('goods_view', 'n', 1);
     }
 }
 

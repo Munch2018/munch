@@ -53,11 +53,9 @@ jQuery(document).ready(function () {
 
     periodBox.on('click', function () {
         onClickBox($(this), periodBox);
-        nextBtn.click();
     });
     petImgBox.on('click', function () {
         onClickBox($(this), petImgBox);
-        nextBtn.click();
     });
 
     /**
@@ -72,7 +70,7 @@ jQuery(document).ready(function () {
      */
     nextBtn.on('click', function () {
         var selectedTab = $('.tab-menu').find('li.selected');
-        if (selectedTab.data('contents') === 'pay-info') {
+        if (selectedTab.data('contents') === 'set-period') {
             var pet_idx = getBoxSelected('select-pet').data('pet_idx');
             var period = getBoxSelected('set-period').data('period');
 
@@ -88,8 +86,9 @@ jQuery(document).ready(function () {
             }
 
             location.href = '/subscribe/add?pet_idx=' + pet_idx + '&period=' + period;
+        } else {
+            changeMenuBar(selectedTab.next('li'));
         }
-        changeMenuBar(selectedTab.next('li'));
     });
 
     var getBoxSelected = function (type) {
