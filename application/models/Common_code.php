@@ -21,7 +21,7 @@ class Common_code extends CI_Model
      */
     public function get_codes($code_common_group_idx)
     {
-        $sql = "SELECT  code, name " . PHP_EOL
+        $sql = "SELECT  code, name, name_extra " . PHP_EOL
             . " FROM code_common " . PHP_EOL
             . " WHERE code_common_group_idx = ? AND use_fl = 'y' ORDER BY code_common_idx ASC";
 

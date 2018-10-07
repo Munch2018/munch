@@ -112,6 +112,7 @@ hr {
     background-color: #ffffff;
     color: #828282;
     border-radius: 4px;
+    margin-bottom: 4px;
 }
 
 .registration-form .birth {
@@ -169,6 +170,7 @@ hr {
 }
 
 .detail_info .more_kind {
+    display: inline;
     width: 100%;
     text-align: center;
 }
@@ -180,8 +182,6 @@ hr {
     font-size: 15px;
     font-weight: 700;
     background-color: #ffffff;
-    border: 1px solid #5A5A5A;
-    margin-top: 18px;
     text-align: center;
 }
 

@@ -19,6 +19,7 @@ class PetManage extends CI_Controller
 
         $this->checkLogin();
         $this->load->model('Pet_manage', 'petmanage');
+        $this->load->service('Common_code_service', 'code_service');
     }
 
     public function checkLogin()
@@ -37,10 +38,9 @@ class PetManage extends CI_Controller
             return false;
         }
 
-        $this->load->model('Common_code', 'commonCode');
-        $data['dog_kind'] = $this->commonCode->get_codes('1');
-        $data['cat_kind'] = $this->commonCode->get_codes('2');
-        $data['character'] = $this->commonCode->get_codes('3');
+        $data['dog_kind'] = $this->code_service->getCode('dog_kind');
+        $data['cat_kind'] =  $this->code_service->getCode('cat_kind');
+        $data['character'] = $this->code_service->getCode('character');
 
         $this->load->view('common/header.html');
         $this->load->view('PetManage/index.html', $data);
@@ -53,11 +53,11 @@ class PetManage extends CI_Controller
             redirect('/review');
         }
 
-        $this->load->model('Common_code', 'commonCode');
         $this->load->model('Pet_manage', 'model');
-        $data['dog_kind'] = $this->commonCode->get_codes('1');
-        $data['cat_kind'] = $this->commonCode->get_codes('2');
-        $data['character'] = $this->commonCode->get_codes('3');
+
+        $data['dog_kind'] = $this->code_service->getCode('dog_kind');
+        $data['cat_kind'] =  $this->code_service->getCode('cat_kind');
+        $data['character'] = $this->code_service->getCode('character');
 
         $data['pet_info'] = $this->model->getPets($this->session->userdata('member_idx'), $pet_idx);
         $data['pet_info'] = array_shift($data['pet_info']);
@@ -177,5 +177,44 @@ class PetManage extends CI_Controller
         }
 
         return $insertData;
+    }
+
+
+    public function getBreedsCode()
+    {
+        $params = $_GET;
+        $pet_type = !empty($params['pet_type']) ? $params['pet_type'] : 'dog';
+        $option =  !empty($params['option']) ? $params['option'] : '';
+        $all_codes = [];
+
+        switch ($pet_type) {
+            case 'dog' :
+                $all_codes = $this->code_service->getBreedsCode('dog_breeds', $option);
+                break;
+            case 'cat' :
+                $all_codes = $this->code_service->getBreedsCode('cat_breeds',$option);
+                break;
+        }
+
+        if (empty($all_codes)) {
+            echo json_encode('');
+            exit;
+        }
+
+        $html = '';
+        if (empty($option)) {
+            foreach ($all_codes as $option_div => $codes) {
+                foreach ($codes as $val) {
+                    $html .= '<span class="list" data-value="' . $val['code'] . '">' . $val['name'] . '<strong>' . $val['name_extra'] . '</strong></span>';
+                }
+            }
+        } else {
+            foreach ($all_codes as $code => $val) {
+                $html .= '<span class="list" data-value="' . $val['code'] . '">' . $val['name'] . '<strong>' . $val['name_extra'] . '</strong></span>';
+            }
+        }
+
+        echo json_encode($html);
+        exit;
     }
 }

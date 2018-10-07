@@ -1,0 +1,196 @@
+<style type="text/css">
+    #find_pet_type_layer * {
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    #find_pet_type_layer {
+        display: none;
+        width: 400px;
+        height: 500px;
+        position: absolute;
+        z-index: 999;
+        background-color: #ffffff;
+        top: 100px;
+        left: 100px;
+        border: solid 1px #CACAC8;
+    }
+
+    #find_pet_type_layer .inner {
+        background-color: #ffffff;
+        width: 100%;
+        height: 100%;
+    }
+
+    #find_pet_type_layer .layer_header {
+        height: 53px;
+        width: 100%;
+        background-color: #746AB0;
+        color: #ffffff;
+    }
+
+    #find_pet_type_layer .layer_search {
+        height: 80px;
+        width: 100%;
+    }
+
+    #find_pet_type_layer .layer_search .button_group {
+        padding: 20px;
+    }
+
+    #find_pet_type_layer .layer_body {
+        overflow-y: auto;
+        border-top: solid 1px #CACAC8;
+        height: 300px;
+        width: 100%;
+    }
+
+    #find_pet_type_layer .layer_footer {
+        border-top: solid 1px #CACAC8;
+        height: 65px;
+        width: 100%;
+        display: flex;
+    }
+
+    #find_pet_type_layer .layer_footer .select_btn {
+        background-color: #746AB0;
+        margin: auto;
+        border: none;
+    }
+
+    #find_pet_type_layer button {
+        border-radius: 4px;
+        color: #ffffff;
+        width: 85px;
+        height: 37px;
+    }
+
+    #find_pet_type_layer .search_btn {
+        border: solid 1px #666666;
+        font-color: 16px;
+        background-color: #ffffff;
+        color: #444444;
+    }
+
+    #find_pet_type_layer .search_btn.selected {
+        background-color: #444444;
+        color: #ffffff;
+    }
+
+    #find_pet_type_layer .layer_body .breeds_contents {
+        padding: 15px 0;
+    }
+
+    #find_pet_type_layer .layer_body .breeds_contents .list {
+        display: block;
+        text-indent: 15px;
+        font-size: 15px;
+    }
+
+    #find_pet_type_layer .layer_body .breeds_contents .list.selected {
+        background-color: #C8BFE7;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    #find_pet_type_layer .layer_body .breeds_contents .list:hover {
+        background-color: #efefef;
+    }
+
+    #dimmed {
+        display: block;
+        z-index: -99;
+    }
+</style>
+<div id="find_pet_type_layer">
+    <div class="inner">
+        <div class="layer_header">
+            <div style="float: left;padding:15px;">품종 찾기</div>
+            <div style="float: right;padding:15px;" id="layer_close"><img src="/img/common/close.png"></div>
+        </div>
+        <div class="layer_search">
+            <div class="button_group">
+                <button class="search_btn selected" type="button" value="">전체</button>
+                <button class="search_btn" type="button" value="1">ㄱ~ㄹ</button>
+                <button class="search_btn" type="button" value="2">ㅁ~ㅇ</button>
+                <button class="search_btn" type="button" value="3">ㅈ~ㅎ</button>
+            </div>
+        </div>
+        <div class="layer_body">
+            <div class="breeds_contents">
+                <span class="list"><strong>로딩중입니다...</strong></span>
+            </div>
+        </div>
+        <div class="layer_footer">
+            <button type="botton" class="apply_btn select_btn">선택적용</button>
+        </div>
+    </div>
+    <div id="dimmed"></div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var ajaxProcess = null;
+        var find_pet_type_layer = $('#find_pet_type_layer');
+        var breeds_contents_area = $('.layer_body .breeds_contents');
+
+        var listClick = function () {
+            var breeds_list = $('.layer_body .breeds_contents .list');
+            breeds_list.on('click', function () {
+                breeds_contents_area.find('.selected').removeClass('selected');
+                $(this).addClass('selected');
+            });
+        }
+
+        $('.layer_footer .apply_btn').on('click', function () {
+            var apply_area = $('.detail_info.type .selected_type');
+            var apply_btn = breeds_contents_area.find('.list.selected');
+            var apply_input =  $('#registration-form input[name="kind"]');
+
+            if (apply_btn.length > 0) {
+                apply_input.val(apply_btn.data('code'));
+                apply_area.html('<button type="button" value="' + apply_btn.data('code') + '" class="selected">' + apply_btn.html() + '</button>');
+            } else {
+                apply_input.val('');
+                apply_area.html('');
+            }
+            $('#layer_close').click();
+        });
+
+        var getCode = function (option) {
+            if (!!ajaxProcess) return false;
+            var pet_type = $('.basic-input .pet_type button.selected').val() || '';
+
+            ajaxProcess = $.ajax({
+                method: 'GET',
+                url: '/PetManage/getBreedsCode',
+                data: {
+                    pet_type: pet_type || '',
+                    option: option
+                },
+                dataType: 'json',
+                complete: function (data) {
+                    if (data.statusText === 'OK') {
+                        breeds_contents_area.html(data.responseJSON);
+                        listClick();
+                    }
+                    ajaxProcess = null;
+                }
+            });
+        }
+
+        $('.search_btn').on('click', function () {
+            var elt = $(this);
+            var value = elt.val();
+            $('.search_btn.selected').removeClass('selected');
+            elt.addClass('selected');
+
+            getCode(value);
+        });
+
+        $('#layer_close').on('click', function () {
+            find_pet_type_layer.hide();
+            $('#dimmed').hide();
+            $('body').css('overflow','');
+        });
+    })
+</script>

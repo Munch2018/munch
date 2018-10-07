@@ -69,32 +69,15 @@
                 </div>
             </div>
         </div>
-        <div class="detail_info dog type" style="display: <?php echo !empty($pet_info['pet_type']) && $pet_info['pet_type']=='cat' ? 'none' :'block'?>;">
+        <div class="detail_info type">
             <div class="detail_title">
                 <span class="txt">·품종</span>
-            </div>
-            <div class="detail-content">
-                <?php foreach($dog_kind as $key => $code){?>
-                <button type="button" value="<?php echo $code['code']?>"
-                        class="<?=(!empty($pet_info['pet_type']) && $pet_info['pet_type']=='dog' && !empty($pet_info['pet_kind_array']) && in_array($code['code'], $pet_info['pet_kind_array'])) ? 'selected' : '' ?>"><?php echo $code['name']?></button>
-                <?php }?>
                 <div class="more_kind">
-                    <input type="button" value="더 많은 품종보기 >">
+                    <input type="button" value= "선택하기 >">
                 </div>
             </div>
-        </div>
-        <div class="detail_info cat type" style="display: <?php echo !empty($pet_info['pet_type']) && $pet_info['pet_type']=='cat' ? 'block' :'none'?>;">
-            <div class="detail_title">
-                <span class="txt">·품종</span>
-            </div>
             <div class="detail-content">
-                <?php foreach($cat_kind as $key => $code){?>
-                <button type="button" value="<?php echo $code['code']?>"
-                        class="<?=(!empty($pet_info['pet_type']) && $pet_info['pet_type']=='cat' && !empty($pet_info['pet_kind_array']) && in_array($code['code'], $pet_info['pet_kind_array'])) ? 'selected' : '' ?>"><?php echo $code['name']?></button>
-                <?php }?>
-                <div class="more_kind">
-                    <input type="button" value="더 많은 품종보기 >">
-                </div>
+                <div class="selected_type"> </div>
             </div>
         </div>
         <div class="detail_info character">
@@ -103,9 +86,9 @@
                 <span class="small_txt">(최대 3개 선택 가능)</span>
             </div>
             <div class="detail-content">
-                <?php foreach($character as $key => $code) { ?>
-                <button type="button" value="<?php echo $code['code']?>" class="<?=!empty($pet_info['character_array']) && in_array($code['code'], $pet_info['character_array']) ? 'selected' : '' ?>">
-                    <?php echo $code['name']?></button>
+                <?php foreach($character as $key => $name) { ?>
+                <button type="button" value="<?php echo $key?>" class="<?=!empty($pet_info['character_array']) && in_array($key, $pet_info['character_array']) ? 'selected' : '' ?>">
+                    <?php echo $name?></button>
                 <?php }?>
             </div>
         </div>
@@ -134,11 +117,8 @@
         var regForm = $("#registration-form");
         var genderBtn = $('.input-set.gender');
         var petTypeBtn = $('.input-set.pet_type');
-        var dogArea = $('.detail_info.dog');
-        var dogTypeArea = $('.detail_info.dog.type');
-        var catArea = $('.detail_info.cat');
-        var catTypeArea = $('.detail_info.cat.type');
         var characterArea = $('.detail_info.character');
+        var find_pet_type_layer = $('#find_pet_type_layer');
 
         var btnClickEvent = function (elt, elements, inputName, max) {
             var selected = elements.find('.selected');
@@ -173,22 +153,7 @@
         });
 
         petTypeBtn.find('button').on('click', function () {
-            if ($(this).val() === 'dog') {
-                dogArea.show();
-                catArea.hide();
-            } else {
-                dogArea.hide();
-                catArea.show();
-            }
-
             btnClickEvent($(this), petTypeBtn, 'pet_type', 1);
-        });
-
-        dogTypeArea.find('button').on('click', function () {
-            btnClickEvent($(this), dogTypeArea, 'kind', 1);
-        });
-        catTypeArea.find('button').on('click', function () {
-            btnClickEvent($(this), catTypeArea, 'kind', 1);
         });
 
         characterArea.find('button').on('click', function () {
@@ -196,15 +161,13 @@
         });
 
         $('.more_kind input[type=button]').on('click', function () {
-            if ($(this).hasClass('on')) {
-                $('.detail_info.cat button:gt(22)').hide();
-                $('.detail_info.dog button:gt(22)').hide();
-                $('.more_kind').find('input[type="button"]').removeClass('on').val('더 많은 품종보기 >');
-            } else {
-                $('.detail_info.cat button:gt(22)').show();
-                $('.detail_info.dog button:gt(22)').show();
-                $('.more_kind').find('input[type="button"]').addClass('on').val('가리기 >');
-            }
+            commonShowLayer(find_pet_type_layer);
+
+            find_pet_type_layer.find('.search_btn.selected').click();
+            find_pet_type_layer.show();
+
+            $('body').css('overflow','hidden');
+            $('#dimmed').show();
         });
 
         var year = $('#birth_year');
@@ -233,8 +196,6 @@
         $('#reset').on('click', function () {
             genderBtn.find('button.selected').click();
             petTypeBtn.find('button.selected').click();
-            dogArea.find('button.selected').click();
-            catArea.find('button.selected').click();
             characterArea.find('button.selected').click();
 
             regForm.find('input').val('');
