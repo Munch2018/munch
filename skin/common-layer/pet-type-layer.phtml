@@ -147,8 +147,8 @@
             var apply_input =  $('#registration-form input[name="kind"]');
 
             if (apply_btn.length > 0) {
-                apply_input.val(apply_btn.data('code'));
-                apply_area.html('<button type="button" value="' + apply_btn.data('code') + '" class="selected">' + apply_btn.html() + '</button>');
+                apply_input.val(apply_btn.data('value'));
+                apply_area.html('<button type="button" value="' + apply_btn.data('value') + '" class="selected">' + apply_btn.html() + '</button>');
             } else {
                 apply_input.val('');
                 apply_area.html('');

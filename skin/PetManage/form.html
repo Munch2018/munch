@@ -77,7 +77,13 @@
                 </div>
             </div>
             <div class="detail-content">
-                <div class="selected_type"> </div>
+                <div class="selected_type">
+                    <?php if(!empty($pet_info['pet_kind_array'])){?>
+                    <?php foreach($pet_info['pet_kind_array'] as $idx => $key){?>
+                    <button type="button" value="<?php echo $key?>" class="selected"><?php echo  $pet_kind[$pet_info['pet_type']][$key]; ?></button>
+                    <?php } ?>
+                    <?php } ?>
+                </div>
             </div>
         </div>
         <div class="detail_info character">

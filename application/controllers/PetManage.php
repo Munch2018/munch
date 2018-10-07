@@ -55,8 +55,8 @@ class PetManage extends CI_Controller
 
         $this->load->model('Pet_manage', 'model');
 
-        $data['dog_kind'] = $this->code_service->getCode('dog_kind');
-        $data['cat_kind'] =  $this->code_service->getCode('cat_kind');
+        $data['pet_kind']['dog'] = $this->code_service->getCode('dog_kind');
+        $data['pet_kind']['cat'] =  $this->code_service->getCode('cat_kind');
         $data['character'] = $this->code_service->getCode('character');
 
         $data['pet_info'] = $this->model->getPets($this->session->userdata('member_idx'), $pet_idx);
