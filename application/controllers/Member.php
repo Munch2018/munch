@@ -247,10 +247,14 @@ class Member extends CI_Controller
                         <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
 
         // use wordwrap() if lines are longer than 70 characters
-        $msg = wordwrap($msg, 70,"\r\n");
+        $msg = wordwrap($msg, 70, "\r\n");
 
-        $headers = 'From: '.$from . "\r\n" .
-            'X-Mailer: PHP/' . phpversion ();
+        // Always set content-type when sending HTML email
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+        // More headers
+        $headers .= 'From: ' . $from . "\r\n";
 
         // send email
        return mail($email,
