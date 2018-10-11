@@ -110,7 +110,7 @@ class Member extends CI_Controller
         ));
 
         if (empty($member_info)) {
-            alert("존재하지 않는 아이디입니다.");
+            alert("존재하지 않는 정보입니다.");
         }
 
         //아이디랑 비밀번호 같은지 체크해보기
@@ -185,16 +185,6 @@ class Member extends CI_Controller
         }
     }
 
-    public function sns_login()
-    {
-        // appId : 438891256593073
-        // secret code : ef6b8a68f92cdc32ba00ca3b0f8dd7c8
-
-        echo "<pre>";
-        print_r($_REQUEST);
-        echo "</pre>";
-    }
-
     public function findPasswordForm()
     {
         $this->load->view('member/find-password-form.phtml');
@@ -206,7 +196,7 @@ class Member extends CI_Controller
 
         $member_info = $this->member->getMember([
             'where' =>
-                ['email' => $params['email'], 'use_fl' => 'Y']
+                ['name' => $params['name'], 'email' => $params['email'], 'use_fl' => 'Y']
         ]);
 
         if (empty($member_info)) {
@@ -215,9 +205,10 @@ class Member extends CI_Controller
         }
 
         $email = $member_info['email'];
-        $updatePwd = $this->_GenerateString(10);
+        $name = $member_info['name'];
+        $updatePwdAuth = $this->_GenerateString(10);
 
-        $modifyData['password'] = md5(trim($updatePwd));
+        $modifyData['find_pwd_auth_number'] = md5(trim($updatePwdAuth));
 
         if (!empty($modifyData)) {
             $modifyData['edit_dt'] = date("Y-m-d H:i:s");
@@ -225,12 +216,13 @@ class Member extends CI_Controller
 
             $changed = $this->member->doUpdate([
                 'where' => [
-                    'email' => $email
+                    'email' => $email,
+                    'name' => $name
                 ]
             ], $modifyData);
 
-            if (!empty($changed) && !empty($this->sendEmail($email,$updatePwd ))) {
-                alert('임시비밀번호가 이메일로 전송되었습니다.');
+            if (!empty($changed) && !empty($this->sendEmail($email,$updatePwdAuth ))) {
+                alert('인증번호가 이메일로 전송되었습니다.');
             } else {
                 alert('이메일 전송에 실패했습니다. 페이지를 새로고침 후 재시도해주세요.');
             }
@@ -240,11 +232,23 @@ class Member extends CI_Controller
         }
     }
 
+    public function pwdFindAuthForm()
+    {
+        $params = $_POST;
+
+echo print_r($params,1);
+    }
+
     public function sendEmail($email, $pwd)
     {
         $from = 'munch.hello@gmail.com';
-        $msg = "<h3>변경된 비밀번호 : " . $pwd . "<h3>
-                        <h3><a href='http://munchmunch.kr/member/login_form/' target='_blank' >로그인 하기</a></h3>";
+        $msg = "<h3>이메일 인증을 위해 아래 버튼링크를 클릭해주세요.</h3>";
+
+        $msg .= "<form action='http://munchmunch.kr/member/pwdFindAuthForm/' method='post'>";
+        $msg .= "<input type='hidden' name='email' value='" . $email . "'>";
+        $msg .= "<input type='hidden' name='auth' value='" . $pwd . "'>";
+        $msg .= "<button type='submit' value='이메일 인증 하기'>";
+        $msg .= "</form>";
 
         // use wordwrap() if lines are longer than 70 characters
         $msg = wordwrap($msg, 70, "\r\n");
@@ -258,7 +262,7 @@ class Member extends CI_Controller
 
         // send email
        return mail($email,
-            "Munch의 임시 비밀번호입니다.",
+            "Munch의 인증번호입니다.",
             $msg,
             $headers);
     }
@@ -293,9 +297,10 @@ class Member extends CI_Controller
         $modifyData = [];
         $modifySessionData = [];
 
-        if (!empty($pwd) && $member_info['password'] !== md5(trim($pwd))) {
+        if (!empty($pwd) && ($member_info['password'] !== md5(trim($pwd)) || empty($member_info['password']))) {
             $modifyData['password'] = md5(trim($pwd));
         }
+
         if (!empty($name) && $member_info['name'] !== $name) {
             $modifyData['name'] = $name;
             $modifySessionData['name'] = $name;
