@@ -30,10 +30,10 @@ class Member_model extends CI_Model
      * */
     public function getMember($where = array())
     {
-        //member_idx없이 조회 -> sns 고객 제외
-        if (empty($where['member_idx'])) {
-            return $this->getMemberNotSns($where);
-        }
+//        //member_idx없이 조회 -> sns 고객 제외
+//        if (empty($where['member_idx'])) {
+//            return $this->getMemberNotSns($where);
+//        }
 
         if (!empty($where)) {
             $this->setWhere($where);

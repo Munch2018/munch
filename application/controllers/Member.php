@@ -124,7 +124,11 @@ class Member extends CI_Controller
         // autoload.php 에서 세션은 항상 사용한다고 처리함
         // 세션에서 일단 사용할 값은 member_idx , email 로 저장하고 나중에 추가로
         //설정할지말지 선택한다.
+        $this->setSession($member_info);
+    }
 
+    public function setSession($member_info)
+    {
         $session_data = array(
             'member_idx' => $member_info['member_idx'],
             'email' => $member_info ['email'],
@@ -139,8 +143,6 @@ class Member extends CI_Controller
         }
 
         $this->session->set_userdata($session_data);
-
-//        redirect(SITE_DOMAIN);
         redirect('/');
     }
 
@@ -200,7 +202,7 @@ class Member extends CI_Controller
         ]);
 
         if (empty($member_info)) {
-            alert('존재하지 않는 이메일입니다.');
+            alert('존재하지 않는 정보입니다.');
             return false;
         }
 
@@ -209,6 +211,7 @@ class Member extends CI_Controller
         $updatePwdAuth = $this->_GenerateString(10);
 
         $modifyData['find_pwd_auth_number'] = md5(trim($updatePwdAuth));
+        $modifyData['find_pwd_auth_expire_dt'] = date('Y-m-d H:i:s', strtotime("+1 day"));
 
         if (!empty($modifyData)) {
             $modifyData['edit_dt'] = date("Y-m-d H:i:s");
@@ -221,7 +224,7 @@ class Member extends CI_Controller
                 ]
             ], $modifyData);
 
-            if (!empty($changed) && !empty($this->sendEmail($email,$updatePwdAuth ))) {
+            if (!empty($changed) && !empty($this->sendEmail($email, $updatePwdAuth))) {
                 alert('인증번호가 이메일로 전송되었습니다.');
             } else {
                 alert('이메일 전송에 실패했습니다. 페이지를 새로고침 후 재시도해주세요.');
@@ -232,12 +235,6 @@ class Member extends CI_Controller
         }
     }
 
-    public function pwdFindAuthForm()
-    {
-        $params = $_POST;
-
-echo print_r($params,1);
-    }
 
     public function sendEmail($email, $pwd)
     {
@@ -247,7 +244,7 @@ echo print_r($params,1);
         $msg .= "<form action='http://munchmunch.kr/member/pwdFindAuthForm/' method='post'>";
         $msg .= "<input type='hidden' name='email' value='" . $email . "'>";
         $msg .= "<input type='hidden' name='auth' value='" . $pwd . "'>";
-        $msg .= "<button type='submit' value='이메일 인증 하기'>";
+        $msg .= "<button type='submit' value='이메일 인증 하기'>이메일 인증 하기</button>";
         $msg .= "</form>";
 
         // use wordwrap() if lines are longer than 70 characters
@@ -261,20 +258,21 @@ echo print_r($params,1);
         $headers .= 'From: ' . $from . "\r\n";
 
         // send email
-       return mail($email,
+        return mail($email,
             "Munch의 인증번호입니다.",
             $msg,
             $headers);
     }
 
-    public function _GenerateString($length) {
+    public function _GenerateString($length)
+    {
         $characters = "0123456789";
         $characters .= "abcdefghijklmnopqrstuvwxyz";
         $characters .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $string_generated = "";
         $nmr_loops = $length;
         while ($nmr_loops--) {
-            $string_generated .= $characters[mt_rand(0, strlen($characters)-1)];
+            $string_generated .= $characters[mt_rand(0, strlen($characters) - 1)];
         }
         return $string_generated;
     }
@@ -338,4 +336,85 @@ echo print_r($params,1);
         redirect('/accounts/profile');
     }
 
+    public function pwdFindAuthForm()
+    {
+        $params = $_POST;
+
+        if (empty($params['email']) || empty($params['auth'])) {
+            alert('인증요청이 정상적이지 않습니다. 인증을 새로 요청해주세요.');
+            redirect('/member/login_form/');
+            return false;
+        }
+
+        $member_info = $this->member->getMember([
+            'where' => [
+                'find_pwd_auth_number' => md5(trim($params['auth'])),
+                'email' => $params['email'],
+                'use_fl' => 'Y'
+            ]
+        ]);
+
+        if (empty($member_info)) {
+            alert('존재하지 않는 정보입니다. 인증을 새로 요청해주세요.');
+            redirect('/member/login_form/');
+            return false;
+        }
+
+        if (!empty($member_info['find_pwd_auth_expire_dt']) && $member_info['find_pwd_auth_expire_dt'] < date('Y-m-d H:i:s')) {
+            alert('이메일 인증번호가 만기되었습니다. 인증을 새로 요청해주세요.');
+            redirect('/member/login_form/');
+            return false;
+        }
+
+        $data['find_pwd_auth_number'] = $params['auth'];
+        $data['email'] = $params['email'];
+
+        $this->load->view('common/header.html');
+        $this->load->view('member/find_pwd_auth_form.phtml', $data);
+        $this->load->view('common/footer.html');
+    }
+
+    public function changePassword()
+    {
+        $auth = $this->input->post('find_pwd_auth_number');
+        $pwd = $this->input->post('password');
+        $email = $this->input->post('email');
+
+        if (empty($pwd) || empty($auth) || empty($email)) {
+            alert('요청된 값이 정상적이지 않습니다.');
+            return false;
+        }
+
+        $member_info = $this->member->getMember([
+            'where' => [
+                'find_pwd_auth_number' => md5(trim($auth)),
+                'email' => $email,
+                'use_fl' => 'Y'
+            ]
+        ]);
+
+        if (!empty($pwd)) {
+            $modifyData['password'] = md5(trim($pwd));
+        }
+
+        $changed = $this->member->doUpdate([
+            'where' => [
+                'member_idx' => $member_info['member_idx'],
+                'email' => $member_info['email']
+            ]
+        ], [
+            'password' => md5(trim($pwd)),
+            'edit_dt' => date("Y-m-d H:i:s")
+        ]);
+
+        if (!empty($changed)) {
+            alert('비밀번호가 정상적으로 저장되었습니다.');
+            $this->setSession($member_info);
+
+            redirect('/');
+
+        } else {
+            alert('비밀번호 변경에 실패하였습니다. 잠시 후 재시도해주세요.');
+        }
+    }
 }

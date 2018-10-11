@@ -102,24 +102,29 @@ class OAuth extends CI_Controller
         if (!empty($me_responseArr['response']['email'])) {
             $email = $me_responseArr['response']['email'];
 
-            $alreadyData = $this->auth_model->getMemberSns([
-                'type' => 'naver',
-                'email' => $email,
-                'token' => $responseArr['access_token'],
-            ]);
+            $alreadyData = $this->auth_model->getMemberSns(['email' => $email]);
 
             //회원정보가 있다면
-            if (!empty($alreadyData['member_sns_idx'])) {
-                if ($this->auth_model->updateToken([
-                    'token' => $responseArr['access_token'],
-                    'refresh_token' => $responseArr['refresh_token'],
-                    'member_sns_idx' => $alreadyData['member_sns_idx']
-                ])) {
-                    $this->login($alreadyData);
+            if (!empty($alreadyData['member_sns_idx']) && $alreadyData['sns_type'] == 'naver') {
+                if ($alreadyData['refresh_token'] == $responseArr['refresh_token']) {
+                    if ($this->auth_model->updateToken([
+                        'token' => $responseArr['access_token'],
+                        'refresh_token' => $responseArr['refresh_token'],
+                        'member_sns_idx' => $alreadyData['member_sns_idx']
+                    ])) {
+                        $this->login($alreadyData);
+                    } else {
+                        alert('로그인에 실패하였습니다.', '', 1);
+                        return false;
+                    }
                 } else {
-                    alert('로그인에 실패하였습니다.', '', 1);
-                    return false;
+                    /**
+                     * @todo 토큰 갱신 업데이트
+                     */
                 }
+            } elseif (!empty($alreadyData)) {
+                alert('해당 이메일은 이미 사용되고 있습니다.', '', 1);
+                return false;
             } else {
                 // properties 항목은 카카오 회원이 설정한 경우만 넘겨 받습니다.
                 $email = $me_responseArr['response']['email']; // 이메일
@@ -138,7 +143,6 @@ class OAuth extends CI_Controller
                 }
             }
         }
-
     }
 
     public function naverLogin()
@@ -207,25 +211,35 @@ class OAuth extends CI_Controller
         if (!empty($me_responseArr['kakao_account']['email'])) {
             $email = $me_responseArr['kakao_account']['email'];
 
-            $alreadyData = $this->auth_model->getMemberSns([
-                'type' => 'kakao',
-                'email' => $email,
-                'token' => $responseArr['access_token'],
-            ]);
+            $alreadyData = $this->auth_model->getMemberSns(['email' => $email]);
 
             //회원정보가 있다면
-            if (!empty($alreadyData['member_sns_idx'])) {
-                if ($this->auth_model->updateToken([
-                    'token' => $responseArr['access_token'],
-                    'refresh_token' => $responseArr['refresh_token'],
-                    'member_sns_idx' => $alreadyData['member_sns_idx']
-                ])) {
-                    $this->login($alreadyData);
+            if (!empty($alreadyData['member_sns_idx']) && $alreadyData['sns_type'] == 'kakao') {
+                if ($alreadyData['refresh_token'] == $responseArr['refresh_token']) {
+                    if ($this->auth_model->updateToken([
+                        'token' => $responseArr['access_token'],
+                        'refresh_token' => $responseArr['refresh_token'],
+                        'member_sns_idx' => $alreadyData['member_sns_idx']
+                    ])) {
+                        $this->login($alreadyData);
+                    } else {
+                        alert('로그인에 실패하였습니다.', '', 1);
+                        return false;
+                    }
                 } else {
-                    alert('로그인에 실패하였습니다.', '', 1);
+                    /**
+                     * @todo 토큰 갱신 업데이트
+                     */
+                }
+            } elseif (!empty($alreadyData)) {
+                alert('해당 이메일은 이미 사용되고 있습니다.', '', 1);
+                return false;
+            } else {
+                if (empty($me_responseArr['kakao_account']['email'])) {
+                    alert('로그인에 실패하였습니다. 소셜로그인에 이메일을 입력해주시기 바랍니다.', '', 1);
                     return false;
                 }
-            } else {
+
                 // properties 항목은 카카오 회원이 설정한 경우만 넘겨 받습니다.
                 $email = $me_responseArr['kakao_account']['email']; // 이메일
                 $name = $me_responseArr['properties']['nickname']; // 닉네임

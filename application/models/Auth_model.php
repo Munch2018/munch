@@ -30,7 +30,7 @@ class Auth_model extends CI_Model
 
     public function getMemberSns($params)
     {
-        if (empty($params) || empty($params['email']) || empty($params['type'])) {
+        if (empty($params) || empty($params['email'])) {
             return false;
         }
 
@@ -64,17 +64,18 @@ class Auth_model extends CI_Model
         }
 
         $sql = '
-            SELECT ms.member_sns_idx, m.member_idx, m.email, m.telphone, m.name, m.is_admin
+            SELECT ms.member_sns_idx, ms.refresh_token, ms.type as sns_type, ms.token, ms.use_fl as sns_use_fl,
+                m.member_idx, m.email, m.telphone, m.name, m.is_admin
              FROM
-                member m JOIN
+                member m LEFT JOIN
                 member_sns ms ON m.member_idx = ms.member_idx
             WHERE
-                m.use_fl = \'y\' AND ms.use_fl = \'y\'
+                m.use_fl = \'y\'
                     ' . $whereStr;
 
         $result = $this->db->query($sql, $bind)->row_array();
-        echo $this->db->last_query().'<br><br>';
-        echo print_r($result,1).'<br><br>';
+//        echo $this->db->last_query().'<br><br>';
+//        echo print_r($result,1).'<br><br>';
         return $result;
     }
 

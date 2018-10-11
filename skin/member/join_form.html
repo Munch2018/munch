@@ -141,7 +141,7 @@
                 alert("비밀번호를 입력해주세요.");
                 return false;
             } else {
-                if ($("input[name=password]").val() != $("input[name=password_check]").val()) {
+                if (password.val() != $("input[name=password_check]").val()) {
                     alert("비밀번호가 같지 않습니다.");
                     return false;
                 }
