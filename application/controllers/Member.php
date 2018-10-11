@@ -65,7 +65,7 @@ class Member extends CI_Controller
             //중복된 아이디 있는지 체크
             if (!empty($this->member->getMember(array('where' => array('email' => $this->input->get_post('email')))))) {
                 // 중복된 아이디 있음
-                alert("중복된 아이디가 있습니다.");
+                alert("해당 이메일은 이미 사용되고 있습니다.");
             } else {
 
                 $join_data = array(
@@ -79,7 +79,7 @@ class Member extends CI_Controller
                 $this->member->doRegister($join_data);
             }
 
-            alert("회원가입 완료되었습니다.", '/member/login_form/');
+            alert("회원가입이 완료되었습니다.", '/member/login_form/');
         }
     }
 
@@ -156,7 +156,7 @@ class Member extends CI_Controller
             $this->session->unset_userdata($key);
         }
 
-        alert("로그아웃 되었습니다.", '/');
+        alert("로그아웃 되었습니다.", '/member/login_form');
     }
 
 
@@ -198,7 +198,8 @@ class Member extends CI_Controller
 
         $member_info = $this->member->getMember([
             'where' =>
-                ['name' => $params['name'], 'email' => $params['email'], 'use_fl' => 'Y']
+                ['name' => $params['name'], 'email' => $params['email']]
+            //, 'use_fl' => 'Y'
         ]);
 
         if (empty($member_info)) {
@@ -277,6 +278,9 @@ class Member extends CI_Controller
         return $string_generated;
     }
 
+    /**
+     * 프로필수정
+     */
     public function modifyProfile()
     {
         $pwd = $this->input->post('new-pwd');
@@ -287,7 +291,7 @@ class Member extends CI_Controller
             'where' =>
                 [
                     'email' => $this->session->userdata('email'),
-                    'use_fl' => 'Y',
+                    //'use_fl' => 'Y',
                     'member_idx' => $this->session->userdata('member_idx')
                 ]
         ]);
