@@ -151,7 +151,8 @@ class Goods extends CI_Controller
                     $this->model->deleteImg($goods_idx);
                     $this->model->addImg([
                         'goods_idx' => $goods_idx,
-                        'img_src' => $upload_result['upload_data']['full_path'],
+                        'img_src' => str_replace('/var/www/html/branches/munch', '',
+                            $upload_result['upload_data']['full_path']),
                         'use_fl' => 'y'
                     ]);
                 }
