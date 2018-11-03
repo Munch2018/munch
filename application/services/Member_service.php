@@ -24,7 +24,7 @@ class Member_service extends MY_Service
         }
 
         $this->load->model('Member_model', 'member');
-        $userData = $this->session->userdata();
+        $userData = $this->session->get_userdata();
 
         if (empty($userData['member_idx'])) {
             return false;

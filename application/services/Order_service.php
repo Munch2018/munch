@@ -94,7 +94,7 @@ class Order_service extends MY_Service
     private function addAddress($data)
     {
         return $this->member_service->addAddress([
-            'nation' => $data['nation'],
+            'nation' => !empty($data['nation']) ? $data['nation'] : '',
             'zipcode' => $data['zipcode'],
             'addr1st' => $data['addr1st'],
             'addr2nd' => $data['addr2nd']
