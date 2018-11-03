@@ -138,7 +138,7 @@ class Orders extends CI_Controller
             alert('정상적으로 상품을 변경하였습니다.','',1);
             return true;
         } catch (Exception $e) {
-            $this->model->db->rollback();
+            $this->model->db->trans_rollback();
             alert('상품 변경에 실패하였습니다.');
             return false;
         }

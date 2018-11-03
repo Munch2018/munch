@@ -58,8 +58,8 @@ class Order_service extends MY_Service
                 'subscribe_idx' => $data['subscribe_idx']
             ]);
 
-            if(!$this->insertOrder() || $this->insertOrderDetail()){
-                $this->subscribe->db->rollback();
+            if (!$this->insertOrder() || $this->insertOrderDetail()) {
+                $this->subscribe->db->trans_rollback();
                 return false;
             }
 
@@ -72,10 +72,10 @@ class Order_service extends MY_Service
                 'subscribe_idx' => $data['subscribe_idx']
             ]);
 
-            $this->subscribe->db->trans_complete();
+            $this->subscribe->db->trans_commit();
             return true;
         } catch (Exception $e) {
-            $this->subscribe->db->rollback();
+            $this->subscribe->db->trans_rollback();
             return false;
         }
 
