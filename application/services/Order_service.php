@@ -59,7 +59,7 @@ class Order_service extends MY_Service
             ]);
 
             if(!$this->insertOrder() || $this->insertOrderDetail()){
-                $this->model->db->rollback();
+                $this->subscribe->db->rollback();
                 return false;
             }
 
@@ -75,7 +75,7 @@ class Order_service extends MY_Service
             $this->subscribe->db->trans_complete();
             return true;
         } catch (Exception $e) {
-            $this->model->db->rollback();
+            $this->subscribe->db->rollback();
             return false;
         }
 
