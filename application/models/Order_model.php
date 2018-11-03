@@ -208,7 +208,7 @@ class Order_model extends CI_Model
             . " limit " . $limit . " offset " . $start;
 
        $result = $this->db->query($sql, $bind)->result_array();
-       //echo $this->db->last_query();
+       echo $this->db->last_query();
        return $result;
     }
 }

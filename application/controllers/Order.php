@@ -104,6 +104,8 @@ class Order extends CI_Controller
         ]);
 
         if (empty($order_info)) {
+            echo print_r($order_info,1);
+            exit;
             alert('결제 시도에 실패하였습니다. 결제를 재시도해주세요.');
             redirect('Order/index/' . $subscribe_idx);
         }
