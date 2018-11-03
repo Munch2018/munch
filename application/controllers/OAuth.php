@@ -18,6 +18,8 @@ class OAuth extends CI_Controller
     const NAVER_CLIENT_RETURN = "http://munchmunch.kr/OAuth/naver";
     const NAVER_CLIENT_ME_RETURN = "https://openapi.naver.com/v1/nid/me";
 
+    const FB_APP_ID = '272310950292907';
+    const FB_SECRET_KEY = '275e5c46d4a3bfffe4a65fd1629eba62';
 
     public function __construct()
     {
@@ -257,6 +259,37 @@ class OAuth extends CI_Controller
                 }
             }
         }
+    }
+
+    public function facebookLogin()
+    {
+        $params = [
+            'app_id' => self::FB_APP_ID, // Replace {app-id} with your app id
+            'app_secret' => self::FB_SECRET_KEY,
+            'default_graph_version' => 'v2.8',
+            'permissions' => [
+                'email'
+            ]
+        ];
+
+        $loginUrl = redirect('https://example.com/fb-callback.php?'.http_build_query($params));
+
+        echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+    }
+
+    public function facebook()
+    {
+
+    }
+
+    public function cancelFacebook()
+    {
+
+    }
+
+    public function deleteFacebook()
+    {
+
     }
 
     public function kakaoLogin()

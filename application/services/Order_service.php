@@ -58,8 +58,10 @@ class Order_service extends MY_Service
                 'subscribe_idx' => $data['subscribe_idx']
             ]);
 
-            $this->insertOrder();
-            $this->insertOrderDetail();
+            if(!$this->insertOrder() || $this->insertOrderDetail()){
+                $this->model->db->rollback();
+                return false;
+            }
 
             $payment_idx = $this->payment_service->setPaymentData($this->orderData)->add();
 
@@ -71,12 +73,13 @@ class Order_service extends MY_Service
             ]);
 
             $this->subscribe->db->trans_complete();
-
             return true;
         } catch (Exception $e) {
             $this->model->db->rollback();
             return false;
         }
+
+        exit;
     }
 
     private function getChildGoods($goods_idx)
@@ -118,6 +121,7 @@ class Order_service extends MY_Service
         $this->orderData = $insert;
         $this->orderData['order_idx'] = $this->order->insertOrder($insert);
 
+        return $this->orderData['order_idx'];
     }
 
     /**
@@ -135,7 +139,9 @@ class Order_service extends MY_Service
 //                $this->order->insertOrderDetail($insert);
 //            }
 //        }
+        log_message('debug', var_export($this->subscribeData,1));
 
+        $is_success = true;
         if (!empty($this->subscribeData)) {
             $childGoods = $this->getChildGoods($this->subscribeData['goods_idx']);
             if (!empty($childGoods)) {
@@ -144,16 +150,19 @@ class Order_service extends MY_Service
                     $insert['goods_idx'] = $goods['goods_idx'];
                     $insert['goods_name'] = $goods['title'];
                     $insert['order_idx'] = $this->orderData['order_idx'];
-                    $this->order->insertOrderDetail($insert);
+                    if(!$this->order->insertOrderDetail($insert)){
+                        $is_success = false;
+                    }
                 }
             } else {
                 $insert['member_idx'] = $this->member_idx;
                 $insert['goods_idx'] = $this->subscribeData['goods_idx'];
                 $insert['goods_name'] = $this->orderData['goods_name'];
                 $insert['order_idx'] = $this->orderData['order_idx'];
-                $this->order->insertOrderDetail($insert);
+                $is_success = $this->order->insertOrderDetail($insert);
             }
         }
+        return $is_success;
     }
 
     private function getSubscribeData()

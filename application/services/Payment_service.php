@@ -46,4 +46,9 @@ class Payment_service extends MY_Service
             'bill_fl' => 'n'
         ]);
     }
+
+    public function requestPayment()
+    {
+
+    }
 }

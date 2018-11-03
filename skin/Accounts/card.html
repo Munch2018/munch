@@ -19,7 +19,7 @@
                         </li>
                     </ul>
                 </div>
-                <?php if(empty($this->cardInfo)){ ?>
+                <?php if(empty($card_info)){ ?>
                 <div class="input-set">
                     <label>카드종류</label><br>
                     <input type="radio" value="person" id="ownership_type_person" name="ownership_type" checked><label
@@ -58,15 +58,11 @@
                     </div>
                 </div>
                 <?php } else {?>
-                <div class="using-card">
-                    <b>사용중인 카드 정보</b>
-                    <br>
-
-                </div>
+                <?php $this->load->view('Order/card-info.html');?>
                 <?php } ?>
             </div>
             <div class="save-card">
-                <?php if(empty($this->cardInfo)){ ?>
+                <?php if(empty($card_info)){ ?>
                 <button type="submit" id="submit_btn" class="btn">등록하기</button>
                 <?php } else { ?>
                 <button type="submit" id="chg_btn" class="btn">카드변경</button>

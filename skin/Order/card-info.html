@@ -1,0 +1,7 @@
+<?php if(!empty($card_info)){?>
+<div class="using_card">
+    <b>사용중인 카드 정보</b>
+    <br><span><?=$card_info['card_name']?> (****-****-****-<?=$card_info['card_last_num']?>)</span>
+</div>
+<button type="button" class="btn-purple-square" id="changeCard">카드변경</button>
+<?php }?>

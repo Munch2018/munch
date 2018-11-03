@@ -1,0 +1,33 @@
+<form method="post">
+    <div class="wrap-inp last card-info">
+        <div class="ipt-wrap">
+            <label>카드번호</label><br>
+            <input type="text" class="input-text short" name="card_num[]" maxlength="4" value=""> -
+            <input type="text" class="input-text short" name="card_num[]" maxlength="4" value=""> -
+            <input type="text" class="input-text short" name="card_num[]" maxlength="4" value=""> -
+            <input type="text" class="input-text short" name="card_num[]" maxlength="4" value="">
+        </div>
+        <div class="ipt-wrap">
+            <label>유효기간</label><br>
+            <select class="select" name="validity_month" id="validity_month">
+                <?php for($month=1;$month<=12;$month++){echo '<option value="' . sprintf("%02d", $month) . '">'.sprintf("%02d", $month).'</option>';} ?>
+            </select>
+            /
+            <select class="select" name="validity_year" id="validity_year">
+                <?php $year = date('Y');
+                for($y = $year;$y<=$year+5;$y++){echo '<option value="' . $y . '">'.$y.'</option>';}?>
+            </select>
+        </div>
+        <div class="ipt-wrap">
+            <label>카드 비밀번호 앞 두자리 XX</label><br>
+            <input type="text" value="" maxlength="2" class="input-text mid-short" id="pwd_2digit" name="pwd_2digit">
+        </div>
+        <div class="ipt-wrap">
+            <label>법정 생년월일 (주민번호 앞 6자리)</label><br>
+            <input type="text" value="" maxlength="6" class="input-text mid-short" id="birthday" name="birthday">
+        </div>
+    </div>
+    <div>
+        <button type="button" id="register-card">등록하기</button>
+    </div>
+</form>

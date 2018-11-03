@@ -4,6 +4,8 @@
     <hr class="title-line">
     <div class="contents">
         <form action="/order/add" id="orderForm" method="post">
+            <input type="hidden" name="member_idx" id="member_idx" value="<?php echo $this->session->userdata('member_idx') ?>">
+            <input type="hidden" name="customer_uid" id="customer_uid" value="<?php echo (!empty($card_info['customer_uid'])) ? $card_info['customer_uid'] : '' ?>">
             <input type="hidden" name="address_idx" value="<?php echo !empty($address[0]['address_idx']) ? $address[0]['address_idx'] : ''; ?>">
             <input type="hidden" name="subscribe_idx" value="<?php echo $subscribe_info['subscribe_idx']; ?>">
             <div class="ord-left brd">
@@ -149,61 +151,30 @@
                             </li>
                         </ul>
                     </div>
-                    <hr class="mid-bar">
-                    <?php if(!empty($card_info)) { ?>
-                    <div class="using-card">
-                        <b>사용중인 카드 정보</b>
-                        <br>
+                    <hr class="mid-bar card_form">
 
+                    <div id="card_info_form">
+                        <?php if(!empty($card_info)) { ?>
+                        <?php $this->load->view('Order/card-info.html');?>
+                        <?php } ?>
                     </div>
-                    <button type="button" class="btn-purple-square">카드변경</button>
-                    <?php } else { ?>
-                    <div class="wrap-inp last card-info">
-                        <div class="ipt-wrap">
-                            <label>카드종류</label><br>
-                            <input type="radio" value="person" id="ownership_type_person" name="ownership_type" checked><label
-                                class="check-text" for="ownership_type_person">개인카드</label>
-                            <input type="radio" value="company" id="ownership_type_company" name="ownership_type"><label
-                                class="check-text" for="ownership_type_company">기업카드</label>
-                        </div>
-                        <div class="ipt-wrap">
-                            <label>카드번호</label><br>
-                            <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
-                            <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
-                            <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
-                            <input type="text" class="input-text short" name="card_num[]" maxlength="4">
-                        </div>
-                        <div class="ipt-wrap">
-                            <label>유효기간</label><br>
-                            <select class="select" name="validity_month">
-                                <?php for($month=1;$month<=12;$month++){echo '<option>'.sprintf("%02d", $month)
-                                .'</option>';} ?>
-                            </select>
-                            /
-                            <select class="select" name="validity_year">
-                                <?php $year = date('Y');
-                                    for($y = $year;$y<=$year+5;$y++){echo '<option>'.$y.'</option>';}?>
-                            </select>
-                        </div>
-                        <div class="ipt-wrap">
-                            <label>카드소유자명</label><br>
-                            <input type="text" value="" maxlength="50" class="input-text mid-short" name="owner_name">
-                        </div>
-                        <div class="ipt-wrap">
-                            <label>법정 생년월일 (주민번호 앞 6자리)</label><br>
-                            <input type="text" value="" maxlength="6" class="input-text mid-short" name="birthday">
-                        </div>
+                    <div id="register_card_form">
+                        <?php if(empty($card_info)) { ?>
+                        <?php $this->load->view('Order/card-form.html');?>
+                        <?php } ?>
                     </div>
-                    <?php }?>
+
                 </div>
+                <?php if(!empty($card_info)) { ?>
                 <div>
                     <button type="button" id="doPay">결제하기</button>
                 </div>
+                <?php } ?>
             </div>
         </form>
     </div>
 </div>
 
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
-
-<script src="/js/orderHandler.js"></script>
+<script src="/js/orderHandler.js?v="></script>
+<script src="/js/registerCard.js"></script>

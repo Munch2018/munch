@@ -105,8 +105,12 @@ class Accounts extends CI_Controller
 
     public function card()
     {
+        $this->load->model('Card_model', 'card_model');
+        $member_idx = $this->session->userdata('member_idx');
+        $data['card_info'] = $this->card_model->getData($member_idx);
+        $data['action'] = 'card';
         $this->load->view('common/header.html');
-        $this->load->view('Accounts/card.html', ['action' => 'card']);
+        $this->load->view('Accounts/card.html', $data);
         $this->load->view('common/footer.html');
     }
 

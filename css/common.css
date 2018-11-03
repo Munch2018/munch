@@ -290,7 +290,7 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
 
 #main_floating {
     position: fixed;
-    height: 100px;
+    height: 80px;
     width: 100%;
     display: block;
     bottom: 0px;
