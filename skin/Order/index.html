@@ -166,11 +166,9 @@
                     </div>
 
                 </div>
-                <?php if(!empty($card_info)) { ?>
                 <div>
-                    <button type="button" id="doPay">결제하기</button>
+                    <button type="button" id="doPay" style="display: <?php echo !empty($card_info) ? 'block' : 'none'?>">결제하기</button>
                 </div>
-                <?php } ?>
             </div>
         </form>
     </div>

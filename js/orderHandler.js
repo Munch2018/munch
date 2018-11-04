@@ -79,9 +79,9 @@ $(function () {
                 type: "POST",
                 data: {
                     customer_uid : $('#customer_uid').val(),
-                    merchant_uid: "order_monthly_0001", // 새로 생성한 결제(재결제)용 주문 번호
-                    amount: 8900,
-                    name: "월간 이용권 정기결제"
+                    merchant_uid: '', // 새로 생성한 결제(재결제)용 주문 번호
+                    amount: '',
+                    name: ''
                 },
                 async: true,
                 dataType: 'json',

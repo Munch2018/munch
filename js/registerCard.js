@@ -37,6 +37,7 @@ $(function () {
                         changeCard();
                     })
 
+                    $('#doPay').show();
                 } else if (data.message) {
                     alert(data.message);
                 }
@@ -138,6 +139,7 @@ $(function () {
             dataType: 'json',
             complete: function (contents) {
                 if (!!contents.responseText) {
+                    $('#doPay').hide();
                     $('#customer_uid').val('');
                     $('#register_card_form').html(contents.responseText);
                     $('#card_info_form').html('');
