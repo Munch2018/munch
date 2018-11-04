@@ -18,6 +18,7 @@
                                 <col width="25%">
                             </colgroup>
                             <tr>
+                                <th>No.</th>
                                 <th>주문</th>
                                 <th>아이</th>
                                 <th>상태</th>
@@ -27,6 +28,7 @@
                             </tr>
                             <?php foreach($results as $key => $data){?>
                             <tr data-subscribe_idx="<?php echo $data['subscribe_idx']?>">
+                                <td><?php echo $data['subscribe_idx']?></td>
                                 <td><?php echo $data['title']?></td>
                                 <td><?php echo $data['name']?></td>
                                 <td><?php echo $subscribe_status[$data['status']]?></td>

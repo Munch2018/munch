@@ -84,7 +84,9 @@ class Order extends CI_Controller
 
         try {
             $this->load->service('order_service', '', true);
-            $this->order_service->add($params);
+            if ($this->order_service->add($params)) {
+                alert('결제가 완료되었습니다.');
+            }
         } catch (Exception $e) {
             alert('주문에 실패하였습니다. 재시도해주세요.');
             log_message('debug',$e->getMessage());
@@ -126,6 +128,9 @@ class Order extends CI_Controller
             'member_idx' => $member_idx,
             'address_idx' => $data['order_info']['address_idx']
         ])[0];
+
+       $data['next_subscribe_data'] = $this->subscribe->getNextSubscribeScheduleList($subscribe_idx)[0];
+
         $this->load->view('common/header.html');
         $this->load->view('Order/complete.html', $data);
         $this->load->view('common/footer.html');

@@ -19,8 +19,8 @@
                 <div class="prd">
                     <span class="point">먼치세트 정기 배송 - <?php echo date('Y년 m월')?> 시작</span>X1<br>
                     반려견 품종 : <?php echo ($order_info['pet_type']==='dog') ? $dog_kind[$order_info['pet_kind']] : $cat_kind[$order_info['pet_kind']]  ?><br>
-                    구독 기간 :<?php echo $order_info['subscribe_month']?>개월<br>
-                    CJ대한통운 (<span class="point">1111111</span>, 배달완료)
+                    구독 기간 : <?php echo $order_info['subscribe_month']?>개월<br>
+                    CJ대한통운 (<span class="point">1111111</span>, 결제완료)
                 </div>
                 <div class="tot">&#8361; <?php echo number_format($order_info['last_amount'])?>원</div>
             </div>
@@ -53,7 +53,7 @@
                           <tr>
                               <td class="point">#<?php echo $data['subscribe_idx']?></td>
                               <td><?php echo $subscribe_status[$data['status']]?></td>
-                              <td>-</td>
+                              <td><?php echo $next_subscribe_data['schedule_dt']?></td>
                               <td>&#8361; <?php echo number_format($order_info['last_amount'])?></td>
                               <td><a href="/Order/subscriptionComplete?subscribe_idx=<?php echo $data['subscribe_idx']?>">
                                   <button type="button" class="btn">보기</button></a></td>

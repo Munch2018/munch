@@ -137,10 +137,13 @@ class Subscribe_model extends CI_Model
                         (subscribe_price.sell_price * subscribe_price.month_count) AS total_amount,
                         pet.name,
                         pet.pet_idx,
-                        ( select min(subscribe_schedule.schedule_dt) from subscribe_schedule
-                            LEFT join payment on subscribe_schedule.payment_idx = payment.payment_idx and payment.use_fl=\'y\' and payment.status in (\'\',\'pay_pending\')
-                            where subscribe_schedule.use_fl=\'y\' and subscribe_schedule.subscribe_idx=subscribe.subscribe_idx) 
-                         as schedule_dt
+                        ( SELECT  MIN(subscribe_schedule.schedule_dt)
+                        FROM subscribe_schedule
+                                LEFT JOIN `order` o ON subscribe_schedule.subscribe_schedule_idx = o.subscribe_schedule_idx AND o.use_fl = \'y\'
+                                LEFT JOIN payment ON subscribe_schedule.payment_idx = payment.payment_idx AND payment.use_fl = \'y\'
+                        WHERE
+                            ((payment.payment_idx IS NULL AND o.order_idx IS NULL) OR payment.status IN (\'pay_fail\' , \'pay_pending\'))
+                                AND subscribe_schedule.use_fl = \'y\' AND subscribe_schedule.subscribe_idx = subscribe.subscribe_idx) AS schedule_dt
                         ');
 
         $this->db->from('subscribe');
@@ -157,6 +160,7 @@ class Subscribe_model extends CI_Model
 
         $this->db->order_by('subscribe.subscribe_idx', 'DESC');
         $result = $this->db->get()->result_array();
+        echo $this->db->last_query();
         return $result;
     }
 
