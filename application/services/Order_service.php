@@ -63,8 +63,7 @@ class Order_service extends MY_Service
             $payment_idx = $this->insertPayment();
 
             //결제되는 구독정보에 결제idx 업데이트
-          //  $this->updateSubscribeSchedule($payment_idx);
-
+            //$this->updateSubscribeSchedule($payment_idx);
             $this->subscribe->db->trans_complete();
 
             $requestResult = $this->IMP_payment_service->requestPayment($this->orderData + [
@@ -80,6 +79,7 @@ class Order_service extends MY_Service
                 return false;
             }
 
+            $this->registerNextSchedule();
             return true;
 
         } catch (Exception $e) {
@@ -95,12 +95,12 @@ class Order_service extends MY_Service
         if (empty($address_idx)) {
             throw new Exception('insert Address fail');
         }
+
         return true;
     }
 
     private function updateSubscribeScheduleAddress()
     {
-
         if (!$this->subscribe->updateSubscribeSchedule([
             'address_idx' => $this->data['address_idx'],
             'subscribe_idx' => $this->data['subscribe_idx']
@@ -170,7 +170,7 @@ class Order_service extends MY_Service
         $insert['goods_name'] = $this->subscribeData['title'];
         $insert['buyer_name'] = $data['buyer_name'];
         $insert['buyer_phone'] = $data['buyer_phone'];
-        $insert['payment_method'] = 'nice';
+        //$insert['payment_method'] = 'nice';
         $insert['subscribe_idx'] = $data['subscribe_idx'];
         $insert['subscribe_schedule_idx'] = $data['subscribe_schedule_idx'];
         $insert['memo'] = $data['memo'];
@@ -270,5 +270,105 @@ class Order_service extends MY_Service
         $this->data['total_amount'] = (int)$this->subscribeData['price'] * (int)$this->subscribeData['buy_count'];
         $this->data['last_amount'] = (int)$this->subscribeData['sell_price'] * (int)$this->subscribeData['buy_count'];
         $this->data['sale_amount'] = $this->data['total_amount'] - $this->data['last_amount'];
+    }
+
+    /**
+     * 다음 결제 예약 시 주문,결제 데이터 make
+     * @param $subscribe_idx
+     * @param $nextData
+     * @return string
+     * @throws Exception
+     */
+    private function registerNextScheduleData($subscribe_idx, $nextData)
+    {
+        $lastSubscribeData = $this->subscribe->getLastPaymentSubscribeSchedule($subscribe_idx);
+        if (empty($lastSubscribeData['order_idx'])) {
+            throw new Exception('registerNextSchedule - lastSubscribeData order_idx empty');
+        }
+
+        $defaultData = [
+            'member_idx' => $this->member_idx,
+            'use_fl' => 'y',
+            'reg_dt' => date('Y-m-d H:i:s'),
+            'reg_idx' => $this->member_idx
+        ];
+
+        $orderData = $this->order->getOnlyOrderData($lastSubscribeData['order_idx']);
+        $order_idx = 0;
+        if (!empty($orderData)) {
+            $order_idx = $this->order->insertOrder($orderData + $defaultData + [
+                    'status' => 'pay_pending',
+                    'subscribe_schedule_idx' => $nextData['subscribe_schedule_idx']
+                ]);
+        }
+
+
+        $orderDetailData = $this->order->getOnlyOrderDetailData($lastSubscribeData['order_idx']);
+        $orderDetailData['order_idx'] = $order_idx;
+        if (!empty($orderDetailData) && !empty($order_idx)) {
+            foreach ($orderDetailData as $key => $value) {
+                $this->order->insertOrderDetail($value + $defaultData);
+            }
+        } else {
+            throw new Exception('registerNextSchedule - insertOrder fail');
+        }
+
+        $payment_idx = $this->payment_service->setPaymentData([
+            'order_idx' => $order_idx,
+            'last_amount' => $orderData['last_amount']
+        ])->add();
+
+        if (empty($payment_idx)) {
+            throw new Exception('registerNextSchedule - make paymentIdx fail');
+        }
+
+        $scheduleData = [
+            'merchant_uid' => "pay_monthly_" . $payment_idx,
+            'schedule_at' => strtotime($nextData['schedule_dt'] . ' 12:00:00'),
+            'amount' => $orderData['last_amount'],
+            'name' => $orderData['goods_name'],
+            'buyer_name' => $orderData['buyer_name'],
+            'buyer_tel' => $orderData['buyer_phone'],
+            'buyer_email' => $orderData['buyer_email'],
+        ];
+
+        return $this->IMP_payment_service->registerNextSchedule($scheduleData);
+    }
+
+    /**
+     * 다음결제 예약하기
+     * @param $subscribe_idx
+     * @return bool
+     * @throws Exception
+     */
+    public function registerNextSchedule($subscribe_idx)
+    {
+        try {
+            $this->subscribe->db->trans_begin();
+            $nextData = $this->subscribe->getNextSubscribeScheduleList($subscribe_idx);
+            if (empty($nextData)) {
+
+                //구독완료처리
+                if ($this->subscribe->updateStatusSubscribe($subscribe_idx, 'complete')) {
+                    $this->subscribe->db->trans_complete();
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } else {
+                $lastData = $this->registerNextScheduleData($subscribe_idx, $nextData);
+
+                $registerNextScheduleData = [];
+            }
+
+            $this->subscribe->db->trans_complete();
+
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            $this->subscribe->db->trans_rollback();
+            return false;
+        }
+        return true;
     }
 }

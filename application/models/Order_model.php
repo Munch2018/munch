@@ -39,22 +39,6 @@ class Order_model extends CI_Model
         return $return;
     }
 
-    public function existOrderOfSubscribeIdx($params)
-    {
-        $this->db->select('group_concat(order_idx) as order_idx');
-
-        $this->db->where('use_fl', 'y');
-        $this->db->where('member_idx', $this->session->userdata('member_idx'));
-        $this->db->where('subscribe_idx', $params['subscribe_idx']);
-
-        if (!empty($params['subscribe_schedule_idx'])) {
-            $this->db->where('subscribe_schedule_idx', $params['subscribe_schedule_idx']);
-        }
-
-        $result = $this->db->get('order')->row_array();
-        return $result;
-    }
-
     public function deleteOrder($params)
     {
 
@@ -101,7 +85,7 @@ class Order_model extends CI_Model
 
         if (!empty($params['pet_idx'])) {
             $bind['pet_idx'] = $params['pet_idx'];
-            $where[] = ' pet.pet_idx=? ';
+            $where[] = ' pet.pet_idx = ? ';
         }
         if (!empty($where)) {
             $whereStr = ' and ' . implode(' and ', $where);
@@ -262,5 +246,44 @@ class Order_model extends CI_Model
         $result = $this->db->query($sql, $bind)->result_array();
         //echo $this->db->last_query();
         return $result;
+    }
+
+    public function existOrderOfSubscribeIdx($params)
+    {
+        $this->db->select('group_concat(order_idx) as order_idx');
+
+        $this->db->where('use_fl', 'y');
+        $this->db->where('member_idx', $this->session->userdata('member_idx'));
+        $this->db->where('subscribe_idx', $params['subscribe_idx']);
+
+        if (!empty($params['subscribe_schedule_idx'])) {
+            $this->db->where('subscribe_schedule_idx', $params['subscribe_schedule_idx']);
+        }
+
+        $result = $this->db->get('order')->row_array();
+        return $result;
+    }
+
+    public function getOnlyOrderData($order_idx)
+    {
+        $this->db->select('member_idx, total_amount, last_amount, sale_amount, goods_name,
+                buyer_name, buyer_phone, buyer_email, memo');
+
+        $this->db->where('use_fl', 'y');
+        $this->db->where('member_idx', $this->session->userdata('member_idx'));
+        $this->db->where('order_idx', $order_idx);
+
+        return $result = $this->db->get('order')->row_array();
+    }
+
+    public function getOnlyOrderDetailData($order_idx)
+    {
+        $this->db->select('goods_idx, goods_name');
+
+        $this->db->where('use_fl', 'y');
+        $this->db->where('member_idx', $this->session->userdata('member_idx'));
+        $this->db->where('order_idx', $order_idx);
+
+        return $result = $this->db->get('order_detail')->result_array();
     }
 }

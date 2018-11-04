@@ -160,6 +160,9 @@ class IMP_payment_service extends MY_Service
                     'tid' => $responseArr->response->pg_tid,
                     'pg_provider' => $responseArr->response->pg_provider,
                 ]);
+
+            $this->registerNextSchedule($params);
+
         } else {
             $result['updateResult']  = $this->updatePaymentResult([
                 'status' => 'pay_fail',
@@ -190,6 +193,41 @@ class IMP_payment_service extends MY_Service
 
     public function payGateLog($params)
     {
+
+    }
+
+    public function registerNextSchedule($params)
+    {
+        $access_token = $this->getToken();
+        if (empty($access_token)) {
+            return false;
+        }
+
+        $post_data = [
+            'customer_uid' => $params['customer_uid'],
+            'schedules' => $params['schedules'], // 새로 생성한 결제(재결제)용 주문 번호
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.iamport.kr/subscribe/payments/schedule`');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: ' . $access_token
+        ));
+
+        $response = curl_exec($ch);
+        $responseArr = json_decode($response);
+
+
+        echo var_export($responseArr,1);
+        exit;
+        $status_code = curl_getinfo($ch);
+        curl_close($ch);
+
+        //성공
 
     }
 }

@@ -314,7 +314,7 @@ class Subscribe_model extends CI_Model
     {
         $sql = '
            SELECT 
-                ss.schedule_dt, ss.subscribe_schedule_idx, ss.sequence
+                ss.schedule_dt, ss.subscribe_schedule_idx, ss.sequence, o.order_idx
             FROM
                 subscribe_schedule ss
                     JOIN
@@ -323,7 +323,7 @@ class Subscribe_model extends CI_Model
                     JOIN
                 payment p ON o.order_idx = p.order_idx
                     AND p.use_fl = \'y\'
-                    AND p.status NOT IN (\'\' , \'return\', \'cancel\', \'pay_pending\')
+                    AND p.status NOT IN (\'\' , \'pay_fail\')
             WHERE
                 ss.subscribe_idx = ?
                     AND o.order_idx > 0
