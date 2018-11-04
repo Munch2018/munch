@@ -80,8 +80,9 @@ class Subscribe_model extends CI_Model
                     AND p.use_fl = \'y\'
             WHERE
                 ss.subscribe_idx = ?
-                    AND o.order_idx IS NULL
-                    AND p.payment_idx IS NULL
+                  AND ((o.order_idx IS NULL
+                    AND p.payment_idx IS NULL) OR p.status =\'pay_fail\')
+                    AND ss.schedule_dt >= CURRENT_DATE 
             ORDER BY ss.schedule_dt ASC, ss.sequence ASC
             LIMIT '.$limit;
 

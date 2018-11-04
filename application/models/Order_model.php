@@ -33,7 +33,58 @@ class Order_model extends CI_Model
         $data['reg_idx'] = $data['member_idx'];
 
         $query = $this->db->insert_string('order_detail', $data);
-        return $this->db->query($query);
+
+        $return = $this->db->query($query);
+        //echo '<br><br>'.$this->db->last_query();
+        return $return;
+    }
+
+    public function existOrderOfSubscribeIdx($params)
+    {
+        $this->db->select('group_concat(order_idx) as order_idx');
+
+        $this->db->where('use_fl', 'y');
+        $this->db->where('member_idx', $this->session->userdata('member_idx'));
+        $this->db->where('subscribe_idx', $params['subscribe_idx']);
+
+        if (!empty($params['subscribe_schedule_idx'])) {
+            $this->db->where('subscribe_schedule_idx', $params['subscribe_schedule_idx']);
+        }
+
+        $result = $this->db->get('order')->row_array();
+        return $result;
+    }
+
+    public function deleteOrder($params)
+    {
+
+        $this->db->where('use_fl', 'y');
+        $this->db->where('member_idx', $this->session->userdata('member_idx'));
+        $this->db->where('subscribe_idx', $params['subscribe_idx']);
+        $this->db->where_in('order_idx', $params['order_idx']);
+
+        if (!empty($params['subscribe_schedule_idx'])) {
+            $this->db->where('subscribe_schedule_idx', $params['subscribe_schedule_idx']);
+        }
+
+        $this->db->set('use_fl', 'n');
+        $this->db->set('del_dt', date('Y-m-d H:i:s'));
+        $this->db->set('del_idx', $this->session->userdata('member_idx'));
+
+        return $this->db->update('order');
+    }
+
+    public function deleteOrderDetail($params)
+    {
+        $this->db->where('use_fl', 'y');
+        $this->db->where('member_idx', $this->session->userdata('member_idx'));
+        $this->db->where_in('order_idx', $params['order_idx']);
+
+        $this->db->set('use_fl', 'n');
+        $this->db->set('del_dt', date('Y-m-d H:i:s'));
+        $this->db->set('del_idx', $this->session->userdata('member_idx'));
+
+        return $this->db->update('order_detail');
     }
 
     /**
@@ -101,7 +152,7 @@ class Order_model extends CI_Model
         }
 
         if (!empty($where)) {
-            $whereStr = ' AND '.implode(' and ', $where);
+            $whereStr = ' AND ' . implode(' and ', $where);
         }
 
         $sql = " SELECT  o.order_idx, o.reg_dt, o.total_amount, o.last_amount, 
@@ -139,19 +190,20 @@ class Order_model extends CI_Model
                 subscribe s
                     JOIN subscribe_schedule ss ON s.subscribe_idx = ss.subscribe_idx
                     JOIN `order` o ON ss.subscribe_schedule_idx = o.subscribe_schedule_idx
-                    JOIN order_detail od ON o.order_idx = od.order_idx
+                   -- JOIN order_detail od ON o.order_idx = od.order_idx
                     JOIN payment p ON o.order_idx = p.order_idx
-                    JOIN goods g ON g.goods_idx = od.goods_idx
+                  --  JOIN goods g ON g.goods_idx = od.goods_idx
             WHERE 
                 s.use_fl = 'y' AND ss.use_fl = 'y'
                     AND o.use_fl = 'y' AND p.use_fl = 'y'
-                    AND od.use_fl = 'y'
-                    AND g.use_fl = 'y'
+                   -- AND od.use_fl = 'y'
+                   -- AND g.use_fl = 'y'
                     AND s.member_idx = ?
                     AND s.subscribe_idx = ?
+                    AND p.status <> 'pay_fail'
         ";
 
-        $bind['member_idx'] =  $this->session->userdata('member_idx');
+        $bind['member_idx'] = $this->session->userdata('member_idx');
         $bind['subscribe_idx'] = $subscribe_idx;
 
         $result = $this->db->query($sql, $bind)->result();
@@ -183,7 +235,7 @@ class Order_model extends CI_Model
         }
 
         if (!empty($where)) {
-            $whereStr = ' AND '.implode(' and ', $where);
+            $whereStr = ' AND ' . implode(' and ', $where);
         }
 
         $sql = " SELECT  o.order_idx, o.reg_dt, o.total_amount, o.last_amount, 
@@ -207,8 +259,8 @@ class Order_model extends CI_Model
             . ' ORDER BY o.order_idx DESC '
             . " limit " . $limit . " offset " . $start;
 
-       $result = $this->db->query($sql, $bind)->result_array();
-       echo $this->db->last_query();
-       return $result;
+        $result = $this->db->query($sql, $bind)->result_array();
+        //echo $this->db->last_query();
+        return $result;
     }
 }

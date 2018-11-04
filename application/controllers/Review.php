@@ -212,11 +212,14 @@ class Review extends CI_Controller
                 'member_idx' => $member_idx,
                 'goods_idx' => $goods_idx,
                 'pet_idx' => $pet_idx,
-                'like' => 'y',
                 'use_fl' => 'y',
             );
-
-            echo json_encode($this->review_model->doRegister($data) === false ? 'fail' : 'success');
+            if (in_array($code, ['like', 'dislike', 'score_level'])) {
+                if (in_array($code, ['like', 'dislike'])) {
+                    $value = !empty($reviewData[$code]) && $reviewData[$code] === 'y' ? 'n' : 'y';
+                }
+            }
+            echo json_encode($this->review_model->doRegister($data+[$code => $value]) === false ? 'fail' : 'success');
             exit;
         }
 

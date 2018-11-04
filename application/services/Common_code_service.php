@@ -17,7 +17,8 @@ class Common_code_service extends MY_Service
         'shipping' => '배송중',
         'shipped' => '배송완료',
         'return' => '반품',
-        'cancel' => '취소'
+        'cancel' => '취소',
+        'pay_fail' => '실패'
     ];
 
     public static $dog_kind = [];

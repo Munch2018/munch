@@ -24,4 +24,27 @@ class Payment_model extends CI_Model
         return $this->db->insert_id();
     }
 
+    public function updatePaymentResult($params)
+    {
+        if ( empty($params['payment_idx'])) {
+            return false;
+        }
+
+        $this->db->where('payment_idx', $params['payment_idx']);
+        if (!empty($params['tid'])) {
+            $data['tid'] = $params['tid'];
+        }
+        if (!empty($params['pg_provider'])) {
+            $data['pg_provider'] = $params['pg_provider'];
+        }
+        if (!empty($params['memo'])) {
+            $data['memo'] = $params['memo'];
+        }
+        $data['status'] = $params['status'];
+        $data['edit_dt'] = date("Y-m-d H:i:s");
+        $data['edit_idx'] = $this->session->userdata('member_idx');
+
+        return $this->db->update('payment', $data);
+    }
+
 }

@@ -30,7 +30,7 @@
             <div class="">
                 <span>합계 : </span><strong>&#8361; <?php echo number_format($order_info['last_amount'])?>원</strong><br>
                 <span>배송 : </span><strong>무료배송</strong><br>
-                <span>결제방법 : </span><strong>KCP 정기결제</strong><br>
+                <span>결제방법 : </span><strong>나이스페이 정기결제</strong><br>
                 <span>총계 : </span><strong class="point">&#8361; <?php echo number_format($order_info['last_amount'])?>원</strong><br>
             </div>
         </div>
@@ -55,7 +55,7 @@
                               <td><?php echo $subscribe_status[$data['status']]?></td>
                               <td>-</td>
                               <td>&#8361; <?php echo number_format($order_info['last_amount'])?></td>
-                              <td><a href="/Order/subscribe_complete?subscribe_idx=<?php echo $data['subscribe_idx']?>">
+                              <td><a href="/Order/subscriptionComplete?subscribe_idx=<?php echo $data['subscribe_idx']?>">
                                   <button type="button" class="btn">보기</button></a></td>
                           </tr>
                       <?php }?>

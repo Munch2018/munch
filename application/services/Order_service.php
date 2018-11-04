@@ -24,6 +24,7 @@ class Order_service extends MY_Service
 
         $this->load->service('member_service', '', true);
         $this->load->service('payment_service', '', true);
+        $this->load->service('IMP_payment_service', '', true);
         $this->load->model('Subscribe_model', 'subscribe');
         $this->load->model('order_model', 'order');
         $this->load->model('goods', 'goods');
@@ -45,41 +46,96 @@ class Order_service extends MY_Service
         $this->orderData = [];
         $this->orderDetailData = [];
         $this->getSubscribeData($data['subscribe_idx']);
+        $this->getNextSubscribeSchedule();
         $this->calculatePrice();
 
         try {
             $this->subscribe->db->trans_begin();
 
             //주소등록
-            $address_idx = !empty($data['address_idx']) ? $data['address_idx'] : $this->addAddress($data);
+            $this->setAddress();
+            //구독테이블에 주소 업데이트
+            $this->updateSubscribeScheduleAddress();
 
-            $this->subscribe->updateSubscribeSchedule([
-                'address_idx' => $address_idx,
-                'subscribe_idx' => $data['subscribe_idx']
-            ]);
+            $this->insertOrder();
+            $this->insertOrderDetail();
+            //결제 정보 등록
+            $payment_idx = $this->insertPayment();
 
-            if (!$this->insertOrder() || $this->insertOrderDetail()) {
-                $this->subscribe->db->trans_rollback();
+            //결제되는 구독정보에 결제idx 업데이트
+          //  $this->updateSubscribeSchedule($payment_idx);
+
+            $this->subscribe->db->trans_complete();
+
+            $requestResult = $this->IMP_payment_service->requestPayment($this->orderData + [
+                    'customer_uid' => $data['customer_uid'],
+                    'merchant_uid' => "pay_monthly_" . $payment_idx,
+                    'payment_idx' => $payment_idx
+                ]);
+
+            if (empty($requestResult['status']) || $requestResult['status'] !== 'paid') {
+                if (!empty($requestResult['fail_reason'])) {
+                    alert('결제에 실패하였습니다. 재시도해주세요. (' . $requestResult['fail_reason'] . ')');
+                }
                 return false;
             }
 
-            $payment_idx = $this->payment_service->setPaymentData($this->orderData)->add();
-
-            $this->subscribe->updatePaymentIdxSubscribeSchedule([
-                'sequence' => 0,
-                'payment_idx' => $payment_idx,
-                'schedule_dt' => date('Y-m-d'),
-                'subscribe_idx' => $data['subscribe_idx']
-            ]);
-
-            $this->subscribe->db->trans_commit();
             return true;
+
         } catch (Exception $e) {
+            log_message('debug', $e->getMessage());
             $this->subscribe->db->trans_rollback();
             return false;
         }
+    }
 
-        exit;
+    private function setAddress()
+    {
+        $address_idx = !empty($this->data['address_idx']) ? $this->data['address_idx'] : $this->addAddress($this->data);
+        if (empty($address_idx)) {
+            throw new Exception('insert Address fail');
+        }
+        return true;
+    }
+
+    private function updateSubscribeScheduleAddress()
+    {
+
+        if (!$this->subscribe->updateSubscribeSchedule([
+            'address_idx' => $this->data['address_idx'],
+            'subscribe_idx' => $this->data['subscribe_idx']
+        ])) {
+            throw new Exception('updateSubscribeSchedule fail');
+        } else {
+            return true;
+        }
+    }
+
+    private function insertPayment()
+    {
+        $payment_idx = $this->payment_service->setPaymentData($this->orderData)->add();
+
+        if (empty($payment_idx)) {
+            throw new Exception('insertPayment fail');
+        }
+        return $payment_idx;
+    }
+
+    private function updateSubscribeSchedule($payment_idx)
+    {
+        //결제되는 구독정보에 결제idx 업데이트
+        $updateSubscribeSchedule = $this->subscribe->updatePaymentIdxSubscribeSchedule([
+            'sequence' => 0,
+            'payment_idx' => $payment_idx,
+            'schedule_dt' => date('Y-m-d'),
+            'subscribe_idx' => $this->data['subscribe_idx']
+        ]);
+
+        if (empty($updateSubscribeSchedule)) {
+            throw new Exception('updateSubscribeSchedule fail');
+        }
+
+        return $updateSubscribeSchedule;
     }
 
     private function getChildGoods($goods_idx)
@@ -105,6 +161,8 @@ class Order_service extends MY_Service
     {
         $data = $this->data;
 
+        $this->deleteOrderDataExists();
+
         $insert['member_idx'] = $this->member_idx;
         $insert['total_amount'] = $data['total_amount'];
         $insert['last_amount'] = $data['last_amount'];
@@ -112,22 +170,44 @@ class Order_service extends MY_Service
         $insert['goods_name'] = $this->subscribeData['title'];
         $insert['buyer_name'] = $data['buyer_name'];
         $insert['buyer_phone'] = $data['buyer_phone'];
-        $insert['payment_method'] = 'nicepay';
+        $insert['payment_method'] = 'nice';
         $insert['subscribe_idx'] = $data['subscribe_idx'];
-        $insert['subscribe_schedule_idx'] = $this->getNextSubscribeSchedule();
+        $insert['subscribe_schedule_idx'] = $data['subscribe_schedule_idx'];
         $insert['memo'] = $data['memo'];
         $insert['buyer_email'] = $data['buyer_email'];
 
         $this->orderData = $insert;
         $this->orderData['order_idx'] = $this->order->insertOrder($insert);
 
+        if (empty($this->orderData['order_idx'])) {
+            throw new Exception('insert order fail');
+        }
         return $this->orderData['order_idx'];
     }
 
-    /**
-     * @todo
-     * 임시!
-     */
+    private function deleteOrderDataExists()
+    {
+        try {
+            $findOrderKey = [
+                'subscribe_idx' => $this->data['subscribe_idx'],
+                'subscribe_schedule_idx' => $this->data['subscribe_schedule_idx']
+            ];
+
+            $orders = $this->order->existOrderOfSubscribeIdx($findOrderKey);
+            if (empty($orders['order_idx'])) {
+                return false;
+            }
+
+            $findOrderKey['order_idx'] = explode(',', $orders['order_idx']);
+            $this->order->deleteOrder($findOrderKey);
+            $this->order->deleteOrderDetail($findOrderKey);
+        } catch (Exception $e) {
+            throw new Exception('deleteOrderDataExists fail');
+        }
+        return true;
+    }
+
+
     private function insertOrderDetail()
     {
 //        if (!empty($this->subscribeDetailData)) {
@@ -139,7 +219,7 @@ class Order_service extends MY_Service
 //                $this->order->insertOrderDetail($insert);
 //            }
 //        }
-        log_message('debug', var_export($this->subscribeData,1));
+        //log_message('debug', var_export($this->subscribeData,1));
 
         $is_success = true;
         if (!empty($this->subscribeData)) {
@@ -150,7 +230,7 @@ class Order_service extends MY_Service
                     $insert['goods_idx'] = $goods['goods_idx'];
                     $insert['goods_name'] = $goods['title'];
                     $insert['order_idx'] = $this->orderData['order_idx'];
-                    if(!$this->order->insertOrderDetail($insert)){
+                    if (!$this->order->insertOrderDetail($insert)) {
                         $is_success = false;
                     }
                 }
@@ -161,6 +241,10 @@ class Order_service extends MY_Service
                 $insert['order_idx'] = $this->orderData['order_idx'];
                 $is_success = $this->order->insertOrderDetail($insert);
             }
+        }
+
+        if (empty($is_success)) {
+            throw new Exception('insert order_detail fail');
         }
         return $is_success;
     }

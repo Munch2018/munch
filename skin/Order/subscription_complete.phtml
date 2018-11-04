@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/subscribe_complete.css">
+<link rel="stylesheet" href="/css/subscription_complete.css">
 <div class="container">
     <div class="title">구독 주문서</div>
     <hr class="title-line">
@@ -44,7 +44,7 @@
             <div class="">
                 <span>합계 : </span><strong>&#8361; <?php echo number_format($order_info['last_amount']) ?>원</strong><br>
                 <span>배송 : </span><strong>무료배송</strong><br>
-                <span>결제방법 : </span><strong>KCP 정기결제</strong><br>
+                <span>결제방법 : </span><strong>나이스페이 정기결제</strong><br>
                 <span>총계 : </span><strong class="point">&#8361; <?php echo number_format($order_info['last_amount']) ?>
                     원</strong><br>
             </div>
@@ -72,7 +72,7 @@
                             </tr>
                         <?php } ?>
                     </table>
-                    <button type="button" class="btn-purple-square">다시 주문하기</button>
+                    <a href="/subscribe/"><button type="button" class="btn-purple-square">다시 주문하기</button></a>
                 </div>
             <?php } ?>
         </div>

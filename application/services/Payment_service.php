@@ -41,14 +41,9 @@ class Payment_service extends MY_Service
             'member_idx' => $this->member_idx,
             'order_idx' => $this->paymentData['order_idx'],
             'amount' => $this->paymentData['last_amount'],
-            'pay_method' => !empty($this->paymentData['pay_method']) ? $this->paymentData['pay_method'] : 'nicepay',
+            'pay_method' => !empty($this->paymentData['pay_method']) ? $this->paymentData['pay_method'] : 'card',
             'status' => 'pay_pending',
             'bill_fl' => 'n'
         ]);
-    }
-
-    public function requestPayment()
-    {
-
     }
 }

@@ -27,9 +27,16 @@ class Order extends CI_Controller
         }
     }
 
+    private function loginCheck(){
+        if (empty($this->session->userdata('member_idx'))) {
+            alert('로그인이 필요한 서비스입니다.', '/member/login_form/');
+        }
+    }
 
     public function index($subscribe_idx = 0)
     {
+        $this->loginCheck();
+
         if (empty($subscribe_idx)) {
             alert('구독 정보가 전달되지 않았습니다.');
             return false;
@@ -41,8 +48,8 @@ class Order extends CI_Controller
 
         $this->load->model('Subscribe_model', 'subscribe');
         $this->load->model('Member_model', 'member');
-
         $member_idx = $this->session->userdata('member_idx');
+
         $data = [];
 
         $subscribe_info = $this->subscribe->getSubscribe([
@@ -80,10 +87,10 @@ class Order extends CI_Controller
             $this->order_service->add($params);
         } catch (Exception $e) {
             alert('주문에 실패하였습니다. 재시도해주세요.');
-            trigger_error($e->getMessage());
+            log_message('debug',$e->getMessage());
             return false;
         }
-
+exit;
         redirect('/order/complete?subscribe_idx=' . $subscribe_idx);
     }
 
@@ -104,8 +111,6 @@ class Order extends CI_Controller
         ]);
 
         if (empty($order_info)) {
-            echo print_r($order_info,1);
-            exit;
             alert('결제 시도에 실패하였습니다. 결제를 재시도해주세요.');
             redirect('Order/index/' . $subscribe_idx);
         }
@@ -126,7 +131,7 @@ class Order extends CI_Controller
         $this->load->view('common/footer.html');
     }
 
-    public function subscribe_complete()
+    public function subscriptionComplete()
     {
         $subscribe_idx = $_GET['subscribe_idx'];
 
@@ -151,7 +156,7 @@ class Order extends CI_Controller
         $data['last_pay_subscribe'] = $this->subscribe->getLastPaymentSubscribeSchedule(['subscribe_idx' => $subscribe_idx]);
 
         $this->load->view('common/header.html');
-        $this->load->view('Order/subscribe_complete.phtml', $data);
+        $this->load->view('Order/subscription_complete.phtml', $data);
         $this->load->view('common/footer.html');
     }
     public function popupAddress()
@@ -170,110 +175,22 @@ class Order extends CI_Controller
         $this->load->view('Order/popup-address.phtml', $data);
     }
 
-    public function requestPayment()
-    {
-
-    }
-
-
-
-
-
-
-
-    public function getToken()
-    {
-        /**
-         * access token구하기
-         */
-        $post_data = [
-            'imp_key' => self::IMP_REST_KEY,
-            'imp_secret' => self::IMP_REST_SECRET
-        ];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.iamport.kr/users/getToken');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Accept: application/json',
-            'Content-Type: application/json'
-        ));
-
-        $response = curl_exec($ch);
-        $responseArr = json_decode($response);
-        curl_close($ch);
-
-        return ($responseArr->code === 0 && !empty($responseArr->response->access_token)) ? $responseArr->response->access_token : null;
-    }
-
     public function issueBilling()
     {
+        $this->load->service('imp_payment_service', '', true);
         $params = $_POST;
-        $params['access_token'] = $this->getToken();
-        if (empty($params['access_token'])) {
-            echo json_encode(['code' => -1]);
-            exit;
-        }
-        /**
-         * 빌링키 구하기
-         */
-        $post_data = [
+
+        $responseArr = $this->imp_payment_service->getIssueBilling([
+            'customer_uid' => $params['customer_uid'],
             'card_number' => $params['card_number'],
             'expiry' => $params['expiry'],
             'birth' => $params['birth'],
             'pwd_2digit' => $params['pwd_2digit'],
-        ];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.iamport.kr/subscribe/customers/' . $params['customer_uid']);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Accept: application/json',
-            'Content-Type: application/json',
-            'Authorization: ' . $params['access_token']
-        ));
-
-        $response = curl_exec($ch);
-        $responseArr = json_decode($response);
-        $status_code = curl_getinfo($ch);
-
-        curl_close($ch);
-
-        if ($responseArr->code === 0
-            && !empty($responseArr->response->customer_uid)
-            && $responseArr->response->customer_uid === $params['customer_uid']) {
-
-            $params['card_code'] = $responseArr->response->card_code;
-            $params['card_name'] = $responseArr->response->card_name;
-            $responseArr->response->card_last_num = $params['card_last_num'];
-            $this->registerCardKey($params);
-        }
+            'card_last_num' =>$params['card_last_num']
+        ]);
 
         echo json_encode($responseArr);
         exit;
-    }
-
-    public function registerCardKey($params)
-    {
-
-        try {
-            return $this->card_model->insert([
-                'card_last_num' => $params['card_last_num'],
-                'card_name' => $params['card_name'],
-                'card_code' => $params['card_code'],
-                'customer_uid' => $params['customer_uid'],
-                'member_idx' => $this->session->userdata('member_idx')
-            ]);
-        } catch (Exception $e) {
-            echo($e->getMessage());
-        }
-        return false;
     }
 
     public function changeCard()
@@ -296,7 +213,4 @@ class Order extends CI_Controller
     {
         echo json_encode(['code' => $this->load->view('Order/card-form.html')]);
     }
-
-
-
 }
