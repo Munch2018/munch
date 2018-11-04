@@ -90,7 +90,7 @@ class Order extends CI_Controller
             log_message('debug',$e->getMessage());
             return false;
         }
-exit;
+
         redirect('/order/complete?subscribe_idx=' . $subscribe_idx);
     }
 
