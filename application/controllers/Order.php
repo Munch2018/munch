@@ -177,10 +177,10 @@ exit;
 
     public function issueBilling()
     {
-        $this->load->service('imp_payment_service', '', true);
+        $this->load->service('IMP_payment_service', '', true);
         $params = $_POST;
 
-        $responseArr = $this->imp_payment_service->getIssueBilling([
+        $responseArr = $this->IMP_payment_service->getIssueBilling([
             'customer_uid' => $params['customer_uid'],
             'card_number' => $params['card_number'],
             'expiry' => $params['expiry'],
