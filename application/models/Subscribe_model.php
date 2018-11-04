@@ -160,7 +160,7 @@ class Subscribe_model extends CI_Model
 
         $this->db->order_by('subscribe.subscribe_idx', 'DESC');
         $result = $this->db->get()->result_array();
-        echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $result;
     }
 
