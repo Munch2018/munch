@@ -226,6 +226,6 @@ class IMP_payment_service extends MY_Service
        // $status_code = curl_getinfo($ch);
         curl_close($ch);
 
-        return ($responseArr->code === 0 && $responseArr->schedule_status == 'scheduled');
+        return ($responseArr->code === 0 && !empty($responseArr->response->schedule_status) && $responseArr->response->schedule_status == 'scheduled');
     }
 }

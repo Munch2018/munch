@@ -297,6 +297,7 @@ class Order_service extends MY_Service
         $order_idx = 0;
         if (!empty($orderData)) {
             $order_idx = $this->order->insertOrder($orderData + $defaultData + [
+                    'subscribe_idx' => $subscribe_idx,
                     'subscribe_schedule_idx' => $nextData['subscribe_schedule_idx']
                 ]);
         }
