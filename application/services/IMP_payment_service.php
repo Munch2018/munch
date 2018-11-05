@@ -8,7 +8,7 @@
 
 class IMP_payment_service extends MY_Service
 {
-  
+
     public function __construct()
     {
         $this->load->model('payment_model', 'payment_model');
@@ -161,8 +161,6 @@ class IMP_payment_service extends MY_Service
                     'pg_provider' => $responseArr->response->pg_provider,
                 ]);
 
-            $this->registerNextSchedule($params);
-
         } else {
             $result['updateResult']  = $this->updatePaymentResult([
                 'status' => 'pay_fail',
@@ -209,25 +207,23 @@ class IMP_payment_service extends MY_Service
         ];
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.iamport.kr/subscribe/payments/schedule`');
+        curl_setopt($ch, CURLOPT_URL, 'https://api.iamport.kr/subscribe/payments/schedule');
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json',
+            'Content-Type: application/json',
             'Authorization: ' . $access_token
         ));
 
         $response = curl_exec($ch);
         $responseArr = json_decode($response);
 
-
-        echo var_export($responseArr,1);
-        exit;
-        $status_code = curl_getinfo($ch);
+       // $status_code = curl_getinfo($ch);
         curl_close($ch);
 
-        //성공
-
+        return ($responseArr->code === 0 && $responseArr->schedule_status == 'scheduled');
     }
 }

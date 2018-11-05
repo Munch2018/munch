@@ -320,12 +320,13 @@ table td button.cancel-btn {
     border-radius: 3px;
     border: 1px solid #D8D8D8;
     width: 100%;
-    height: 90px;
     margin-top: 30px;
-    display: flex;
+    margin-bottom: 30px;
     justify-content: center;
     align-items: center;
     font-size: 16px;
+    padding: 45px 0;
+    display: block;
 }
 
 .container .pagination {
@@ -348,4 +349,8 @@ table td button.cancel-btn {
 .container .pagination .current {
     background-color: #746AB0;
     color: #ffffff;
+}
+
+#register-card{
+    background-color: #746AB0;
 }

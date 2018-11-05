@@ -216,6 +216,10 @@ class Order extends CI_Controller
 
     public function changeCardHtml()
     {
-        echo json_encode(['code' => $this->load->view('Order/card-form.html')]);
+        if (!empty($_GET['page']) && $_GET['page'] == 'account') {
+            echo json_encode(['code' => $this->load->view('Accounts/card-form.html')]);
+        } else {
+            echo json_encode(['code' => $this->load->view('Order/card-form.html')]);
+        }
     }
 }

@@ -79,7 +79,7 @@ class Order_service extends MY_Service
                 return false;
             }
 
-            $this->registerNextSchedule();
+            $this->registerNextSchedule($data['subscribe_idx']);
             return true;
 
         } catch (Exception $e) {
@@ -297,16 +297,17 @@ class Order_service extends MY_Service
         $order_idx = 0;
         if (!empty($orderData)) {
             $order_idx = $this->order->insertOrder($orderData + $defaultData + [
-                    'status' => 'pay_pending',
                     'subscribe_schedule_idx' => $nextData['subscribe_schedule_idx']
                 ]);
         }
-
 
         $orderDetailData = $this->order->getOnlyOrderDetailData($lastSubscribeData['order_idx']);
         $orderDetailData['order_idx'] = $order_idx;
         if (!empty($orderDetailData) && !empty($order_idx)) {
             foreach ($orderDetailData as $key => $value) {
+                if (!is_array($value)) {
+                    continue;
+                }
                 $this->order->insertOrderDetail($value + $defaultData);
             }
         } else {
@@ -318,18 +319,22 @@ class Order_service extends MY_Service
             'last_amount' => $orderData['last_amount']
         ])->add();
 
-        if (empty($payment_idx)) {
-            throw new Exception('registerNextSchedule - make paymentIdx fail');
+        $card_info = $this->card_model->getData($this->member_idx);
+        if (empty($payment_idx) || empty($card_info['customer_uid'])) {
+            throw new Exception('registerNextSchedule - make paymentIdx or customer_uid fail');
         }
 
         $scheduleData = [
-            'merchant_uid' => "pay_monthly_" . $payment_idx,
-            'schedule_at' => strtotime($nextData['schedule_dt'] . ' 12:00:00'),
-            'amount' => $orderData['last_amount'],
-            'name' => $orderData['goods_name'],
-            'buyer_name' => $orderData['buyer_name'],
-            'buyer_tel' => $orderData['buyer_phone'],
-            'buyer_email' => $orderData['buyer_email'],
+            'customer_uid' => $card_info['customer_uid'],
+            'schedules' => [[
+                'merchant_uid' => "pay_monthly_" . $payment_idx,
+                'schedule_at' => strtotime($nextData['schedule_dt'] . ' 12:00:00'),
+                'amount' => (int)$orderData['last_amount'],
+                'name' => $orderData['goods_name'],
+                'buyer_name' => $orderData['buyer_name'],
+                'buyer_tel' => $orderData['buyer_phone'],
+                'buyer_email' => $orderData['buyer_email']
+            ]]
         ];
 
         return $this->IMP_payment_service->registerNextSchedule($scheduleData);
@@ -345,9 +350,9 @@ class Order_service extends MY_Service
     {
         try {
             $this->subscribe->db->trans_begin();
-            $nextData = $this->subscribe->getNextSubscribeScheduleList($subscribe_idx);
-            if (empty($nextData)) {
+            $nextData = $this->subscribe->getNextSubscribeScheduleList($subscribe_idx)[0];
 
+            if (empty($nextData) || empty($nextData['subscribe_schedule_idx'])) {
                 //구독완료처리
                 if ($this->subscribe->updateStatusSubscribe($subscribe_idx, 'complete')) {
                     $this->subscribe->db->trans_complete();
@@ -355,14 +360,10 @@ class Order_service extends MY_Service
                 } else {
                     return false;
                 }
-
             } else {
-                $lastData = $this->registerNextScheduleData($subscribe_idx, $nextData);
-
-                $registerNextScheduleData = [];
+                $this->registerNextScheduleData($subscribe_idx, $nextData);
+                $this->subscribe->db->trans_complete();
             }
-
-            $this->subscribe->db->trans_complete();
 
         } catch (Exception $e) {
             log_message('error', $e->getMessage());

@@ -9,6 +9,7 @@
             <input type="hidden" name="customer_uid" id="customer_uid" value="<?php echo (!empty($card_info['customer_uid'])) ? $card_info['customer_uid'] : '' ?>">
             <input type="hidden" name="address_idx" value="<?php echo !empty($address[0]['address_idx']) ? $address[0]['address_idx'] : ''; ?>">
             <input type="hidden" name="subscribe_idx" value="<?php echo $subscribe_info['subscribe_idx']; ?>">
+            <input type="hidden" id="page" name="page" value="order">
             <div class="ord-left brd">
                 <div class="tbl-title">
                     <span style="float: left;"><b>· 주문자 정보</b></span>

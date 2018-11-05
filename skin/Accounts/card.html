@@ -4,7 +4,9 @@
     <hr class="title-line">
     <div class="contents-wrap">
         <?php $this->load->view('common/left-menu.html'); ?>
-
+        <input type="hidden" id="member_idx" name="member_idx" value="<?php echo $this->session->userdata('member_idx')?>">
+        <input type="hidden" id="customer_uid" name="customer_uid" value="<?php echo !empty($card_info['customer_uid']) ? $card_info['customer_uid'] : ''?>">
+        <input type="hidden" id="page" name="page" value="account">
         <div class="account-contents">
             <div class="card-tbl">
                 <div class="account-tbl-title">
@@ -19,64 +21,19 @@
                         </li>
                     </ul>
                 </div>
-                <?php if(empty($card_info)){ ?>
-                <div class="input-set">
-                    <label>카드종류</label><br>
-                    <input type="radio" value="person" id="ownership_type_person" name="ownership_type" checked><label
-                        class="check-text" for="ownership_type_person">개인카드</label>
-                    <input type="radio" value="company" id="ownership_type_company" name="ownership_type"><label class="check-text" for="ownership_type_company">기업카드</label>
+                <div id="card_info_form">
+                    <?php if(!empty($card_info)) { ?>
+                    <?php $this->load->view('Order/card-info.html');?>
+                    <?php } ?>
                 </div>
-                <div class="input-set-half">
-                    <div style="width: 60%;">
-                        <label>카드번호</label><br>
-                        <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
-                        <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
-                        <input type="text" class="input-text short" name="card_num[]" maxlength="4"> -
-                        <input type="text" class="input-text short" name="card_num[]" maxlength="4">
-                    </div>
-                    <div style="width: 40%;">
-                        <label>유효기간</label><br>
-                        <select class="select" name="validity_month">
-                            <?php for($month=1;$month<=12;$month++){echo '<option>'.sprintf("%02d", $month) .'</option>';} ?>
-                        </select>
-                        /
-                        <select class="select" name="validity_year">
-                            <?php $year = date('Y');
-                         for($y = $year;$y<=$year+5;$y++){echo '<option>'.$y.'</option>';}?>
-                        </select>
-                    </div>
+                <div id="register_card_form">
+                    <?php if(empty($card_info)) { ?>
+                    <?php $this->load->view('Accounts/card-form.html');?>
+                    <?php } ?>
                 </div>
+            </div>
 
-                <div class="input-set-half">
-                    <div style="width:30%;">
-                        <label>카드소유자명</label><br>
-                        <input type="text" value="" maxlength="50" class="input-text mid-short" name="owner_name">
-                    </div>
-                    <div style="width:70%;">
-                        <label>법정 생년월일 (주민번호 앞 6자리)</label><br>
-                        <input type="text" value="" maxlength="6" class="input-text mid-short" name="birthday">
-                    </div>
-                </div>
-                <?php } else {?>
-                <?php $this->load->view('Order/card-info.html');?>
-                <?php } ?>
-            </div>
-            <div class="save-card">
-                <?php if(empty($card_info)){ ?>
-                <button type="submit" id="submit_btn" class="btn">등록하기</button>
-                <?php } else { ?>
-                <button type="submit" id="chg_btn" class="btn">카드변경</button>
-                <button type="submit" id="del_btn" class="btn">카드삭제</button>
-                <?php }?>
-            </div>
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-
-
-
-    });
-</script>
+<script src="/js/registerCard.js"></script>

@@ -2,6 +2,7 @@ $(function () {
     /**
      * 빌링키 발급
      */
+
     var issueBilling = function (params) {
         var resultCode = false;
         $.ajax({
@@ -19,7 +20,6 @@ $(function () {
             dataType: 'json',
             complete: function (result) {
                 var data = result.responseJSON;
-                console.log(data);
                 if (data.code == 0) {
                     resultCode = true;
 
@@ -36,7 +36,7 @@ $(function () {
                     $('#changeCard').on('click', function () {
                         changeCard();
                     })
-
+                    $('#register-card').hide();
                     $('#doPay').show();
                 } else if (data.message) {
                     alert(data.message);
@@ -136,10 +136,15 @@ $(function () {
         $.ajax({
             type: 'get',
             url: '/Order/changeCardHtml',
+            data:{
+                'page' : $('#page').val()
+            },
             dataType: 'json',
             complete: function (contents) {
                 if (!!contents.responseText) {
                     $('#doPay').hide();
+                    $('#changeCard').show();
+                    $('#register-card').hide();
                     $('#customer_uid').val('');
                     $('#register_card_form').html(contents.responseText);
                     $('#card_info_form').html('');
