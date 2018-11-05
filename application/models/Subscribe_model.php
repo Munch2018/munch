@@ -90,6 +90,37 @@ class Subscribe_model extends CI_Model
         return $result;
     }
 
+    /**
+     * 예약된 결제 포함 다음결제정보
+     * @param $subscribe_idx
+     * @return mixed
+     */
+    public function pendingNextSubscribeData($subscribe_idx)
+    {
+        $sql = '
+        SELECT 
+             subscribe_schedule.schedule_dt, subscribe_schedule.subscribe_schedule_idx, subscribe_schedule.sequence
+        FROM
+            subscribe_schedule
+                LEFT JOIN
+            `order` o ON subscribe_schedule.subscribe_schedule_idx = o.subscribe_schedule_idx
+                AND o.use_fl = \'y\'
+                LEFT JOIN
+            payment ON o.order_idx = payment.order_idx
+                AND payment.use_fl = \'y\'
+        WHERE
+            ((payment.payment_idx IS NULL
+                AND o.order_idx IS NULL)
+                OR payment.status IN (\'pay_fail\' , \'pay_pending\'))
+                AND subscribe_schedule.use_fl = \'y\'
+                AND subscribe_schedule.subscribe_idx = ?
+                         ';
+
+
+        $result = $this->db->query($sql, [$subscribe_idx])->result_array();
+        return $result;
+    }
+
     public function subscribe_count($params)
     {
         $this->db->select(' subscribe.subscribe_idx,
@@ -140,7 +171,7 @@ class Subscribe_model extends CI_Model
                         ( SELECT  MIN(subscribe_schedule.schedule_dt)
                         FROM subscribe_schedule
                                 LEFT JOIN `order` o ON subscribe_schedule.subscribe_schedule_idx = o.subscribe_schedule_idx AND o.use_fl = \'y\'
-                                LEFT JOIN payment ON subscribe_schedule.payment_idx = payment.payment_idx AND payment.use_fl = \'y\'
+                                LEFT JOIN payment ON o.order_idx = payment.order_idx AND payment.use_fl = \'y\'
                         WHERE
                             ((payment.payment_idx IS NULL AND o.order_idx IS NULL) OR payment.status IN (\'pay_fail\' , \'pay_pending\'))
                                 AND subscribe_schedule.use_fl = \'y\' AND subscribe_schedule.subscribe_idx = subscribe.subscribe_idx) AS schedule_dt
@@ -306,15 +337,21 @@ class Subscribe_model extends CI_Model
 
 
     /**
-     * 마지막으로 결제된  구독 스케쥴
+     *  마지막으로 결제된  구독 스케쥴
      * @param $subscribe_idx
+     * @param string $type
      * @return mixed
      */
-    public function getLastPaymentSubscribeSchedule($subscribe_idx)
+    public function getLastPaymentSubscribeSchedule($subscribe_idx, $type = '')
     {
+        $pay_status_where = '';
+        if ($type != 'all') {
+            $pay_status_where = " AND p.status NOT IN ('' , 'pay_fail', 'pay_pending')";
+        }
+
         $sql = '
            SELECT 
-                ss.schedule_dt, ss.subscribe_schedule_idx, ss.sequence, o.order_idx
+                ss.schedule_dt, ss.subscribe_schedule_idx, ss.sequence, o.order_idx, o.member_idx
             FROM
                 subscribe_schedule ss
                     JOIN
@@ -322,14 +359,14 @@ class Subscribe_model extends CI_Model
                     AND o.use_fl = \'y\'
                     JOIN
                 payment p ON o.order_idx = p.order_idx
-                    AND p.use_fl = \'y\'
-                    AND p.status NOT IN (\'\' , \'pay_fail\')
-            WHERE
+                AND p.use_fl = \'y\' ' . $pay_status_where;
+           $sql .= ' WHERE
                 ss.subscribe_idx = ?
                     AND o.order_idx > 0
                     AND p.payment_idx > 0
             ORDER BY ss.schedule_dt DESC , ss.sequence DESC
             LIMIT 1';
+
 
         $result = $this->db->query($sql, [$subscribe_idx])->row_array();
         return  $result ;

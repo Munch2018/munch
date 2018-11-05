@@ -281,16 +281,16 @@ class Order_service extends MY_Service
      */
     private function registerNextScheduleData($subscribe_idx, $nextData)
     {
-        $lastSubscribeData = $this->subscribe->getLastPaymentSubscribeSchedule($subscribe_idx);
+        $lastSubscribeData = $this->subscribe->getLastPaymentSubscribeSchedule($subscribe_idx, 'all');
         if (empty($lastSubscribeData['order_idx'])) {
             throw new Exception('registerNextSchedule - lastSubscribeData order_idx empty');
         }
-
+        $member_idx = $lastSubscribeData['member_idx'];
         $defaultData = [
-            'member_idx' => $this->member_idx,
+            'member_idx' => $member_idx,
             'use_fl' => 'y',
             'reg_dt' => date('Y-m-d H:i:s'),
-            'reg_idx' => $this->member_idx
+            'reg_idx' => $member_idx
         ];
 
         $orderData = $this->order->getOnlyOrderData($lastSubscribeData['order_idx']);
@@ -319,7 +319,7 @@ class Order_service extends MY_Service
             'last_amount' => $orderData['last_amount']
         ])->add();
 
-        $card_info = $this->card_model->getData($this->member_idx);
+        $card_info = $this->card_model->getData($member_idx);
         if (empty($payment_idx) || empty($card_info['customer_uid'])) {
             throw new Exception('registerNextSchedule - make paymentIdx or customer_uid fail');
         }
@@ -348,11 +348,15 @@ class Order_service extends MY_Service
      */
     public function registerNextSchedule($subscribe_idx)
     {
+        if (empty($subscribe_idx)) {
+            return false;
+        }
+
         try {
             $this->subscribe->db->trans_begin();
-            $nextData = $this->subscribe->getNextSubscribeScheduleList($subscribe_idx)[0];
+            $nextData = $this->subscribe->getNextSubscribeScheduleList($subscribe_idx);
 
-            if (empty($nextData) || empty($nextData['subscribe_schedule_idx'])) {
+            if (empty($nextData) || empty($nextData[0]['subscribe_schedule_idx'])) {
                 //구독완료처리
                 if ($this->subscribe->updateStatusSubscribe($subscribe_idx, 'complete')) {
                     $this->subscribe->db->trans_complete();
@@ -361,7 +365,7 @@ class Order_service extends MY_Service
                     return false;
                 }
             } else {
-                $this->registerNextScheduleData($subscribe_idx, $nextData);
+                $this->registerNextScheduleData($subscribe_idx, $nextData[0]);
                 $this->subscribe->db->trans_complete();
             }
 

@@ -85,14 +85,13 @@ class Order extends CI_Controller
         try {
             $this->load->service('order_service', '', true);
             if ($this->order_service->add($params)) {
-                alert('결제가 완료되었습니다.');
+                alert('결제가 완료되었습니다.', '/order/complete?subscribe_idx=' . $subscribe_idx);
             }
         } catch (Exception $e) {
             alert('주문에 실패하였습니다. 재시도해주세요.');
             log_message('debug',$e->getMessage());
             return false;
         }
-
         redirect('/order/complete?subscribe_idx=' . $subscribe_idx);
     }
 
@@ -114,7 +113,7 @@ class Order extends CI_Controller
 
         if (empty($order_info)) {
             alert('결제 시도에 실패하였습니다. 결제를 재시도해주세요.');
-            redirect('Order/index/' . $subscribe_idx);
+            redirect('/subscribe/index/' . $subscribe_idx);
         }
 
         $data['order_info'] = !empty($order_info) ? $order_info[0] : [];
@@ -129,7 +128,7 @@ class Order extends CI_Controller
             'address_idx' => $data['order_info']['address_idx']
         ])[0];
 
-       $data['next_subscribe_data'] = $this->subscribe->getNextSubscribeScheduleList($subscribe_idx)[0];
+       $data['next_subscribe_data'] = $this->subscribe->pendingNextSubscribeData($subscribe_idx)[0];
 
         $this->load->view('common/header.html');
         $this->load->view('Order/complete.html', $data);
@@ -164,11 +163,12 @@ class Order extends CI_Controller
         $this->load->view('Order/subscription_complete.phtml', $data);
         $this->load->view('common/footer.html');
     }
+
     public function popupAddress()
     {
-        $this->load->model('member_model','member');
+        $this->load->model('member_model', 'member');
         $member_idx = $this->session->userdata('member_idx');
-        $data['address_list'] = $this->member->getAddress(['member_idx'=>$member_idx]);
+        $data['address_list'] = $this->member->getAddress(['member_idx' => $member_idx]);
 
         $data['address_list_json'] = [];
         if (!empty($data['address_list'])) {

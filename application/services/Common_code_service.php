@@ -275,13 +275,13 @@ class Common_code_service extends MY_Service
             foreach ($codes as $idx => $code) {
                 switch ($parentCode){
                     case 1:
-                        self::$dog_kind[$code['code']] = $code['name'];
+                        self::$dog_kind[trim($code['code'])] = $code['name'];
                         break;
                     case 2:
-                        self::$cat_kind[$code['code']] = $code['name'];
+                        self::$cat_kind[trim($code['code'])] = $code['name'];
                         break;
                     case 3:
-                        self::$character[$code['code']] = $code['name'];
+                        self::$character[trim($code['code'])] = $code['name'];
                         break;
 
                 }

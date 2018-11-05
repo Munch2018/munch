@@ -183,14 +183,16 @@ table td button.cancel-btn {
 }
 
 .account-tbl-dt .card-info {
+    display: block;
     background-color: #ffffff;
     border-radius: 4px;
     margin: auto;
     border: 1px solid #D6D6D6;
     width: 363px;
-    height: 91px;
+    max-height: 91px;
     font-size: 15px;
     font-weight: bold;
+    padding: 24px 0;
 }
 
 .account-tbl-dt .card-info .card-num {

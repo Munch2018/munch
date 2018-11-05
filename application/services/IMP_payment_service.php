@@ -8,6 +8,8 @@
 
 class IMP_payment_service extends MY_Service
 {
+    const IMP_REST_KEY = '0276838691975826';
+    const IMP_REST_SECRET = 'Ibz4DxBHPkiHJanEjlrObIs2f9t9sQKa2keGRQnGbGoVRLAa71ZiJskYBO83FSeIcto4jMLvs9rkV1u3';
 
     public function __construct()
     {

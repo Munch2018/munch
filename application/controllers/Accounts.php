@@ -36,6 +36,7 @@ class Accounts extends CI_Controller
     {
         $this->load->model('order_model', 'order');
         $this->load->model('Subscribe_model', 'subscribe');
+        $this->load->model('Card_model', 'card_model');
 
         $limit = 3;
         $page = 0;
@@ -45,7 +46,7 @@ class Accounts extends CI_Controller
 
         $data['subscribe_status'] = $this->common_code_service->getCode('subscribe_status');
         $data['subscribes'] = $this->subscribe->fetch_subscribe(['member_idx'=>$member_idx], $limit, $page);
-
+        $data['card_info'] = $this->card_model->getData($member_idx);
         $data['action'] = 'dashboard';
 
         $this->load->view('common/header.html');
