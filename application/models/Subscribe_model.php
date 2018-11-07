@@ -117,11 +117,12 @@ class Subscribe_model extends CI_Model
                 AND o.order_idx IS NULL)
                 OR payment.status IN (\'pay_fail\' , \'pay_pending\'))
                 AND subscribe_schedule.use_fl = \'y\'
+                AND subscribe_schedule.schedule_dt <= ?
                 AND subscribe_schedule.subscribe_idx = ?
-                         ';
+         ';
 
-
-        $result = $this->db->query($sql, [$subscribe_idx])->result_array();
+        $date = date('Y-m-d');
+        $result = $this->db->query($sql, [$date, $subscribe_idx])->result_array();
         return $result;
     }
 
@@ -182,20 +183,28 @@ class Subscribe_model extends CI_Model
                         ');
 
         $this->db->from('subscribe');
+        $this->db->join('subscribe_schedule','subscribe.subscribe_idx = subscribe_schedule.subscribe_idx');
+        $this->db->join('order','subscribe.subscribe_idx = order.subscribe_idx');
+        $this->db->join('payment','payment.order_idx = order.order_idx');
         $this->db->join('pet','subscribe.pet_idx = pet.pet_idx');
         $this->db->join('goods','subscribe.goods_idx = goods.goods_idx ');
         $this->db->join('subscribe_price','subscribe.subscribe_month = subscribe_price.month_count AND subscribe_price.use_fl = \'y\'');
 
         $this->db->limit($limit, $start);
         $this->db->where('subscribe.member_idx', $params['member_idx']);
+        $this->db->where('subscribe.use_fl', 'y');
+        $this->db->where('subscribe_schedule.use_fl', 'y');
+        $this->db->where('order.use_fl', 'y');
+        $this->db->where('payment.use_fl', 'y');
 
         if (!empty($params['subscribe_idx'])) {
             $this->db->where('subscribe.subscribe_idx', $params['subscribe_idx']);
         }
 
+        $this->db->group_by('subscribe.subscribe_idx');
         $this->db->order_by('subscribe.subscribe_idx', 'DESC');
         $result = $this->db->get()->result_array();
-        //echo $this->db->last_query();
+        echo $this->db->last_query();
         return $result;
     }
 

@@ -33,7 +33,7 @@
                                 <td><?php echo $data['title']?></td>
                                 <td><?php echo $data['name']?></td>
                                 <td><?php echo $subscribe_status[$data['status']]?></td>
-                                <td><?php echo $data['schedule_dt']?></td>
+                                <td><?php echo !empty($data['schedule_dt']) ? $data['schedule_dt'] : '-'?></td>
                                 <td>&#8361; <?php echo number_format($data['total_amount'])?></td>
                                 <td>
                                     <div style="width:80%;margin: auto;">
