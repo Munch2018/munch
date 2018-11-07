@@ -17,6 +17,10 @@ class Payment extends CI_Controller
     }
 
 
+    public function registerSchedulePayment()
+    {
+echo 'dd';
+    }
 
 
 }
