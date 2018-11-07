@@ -32,6 +32,7 @@ a:link, a:visited, a:hover, a:active {
 .gnb li a:hover {
     text-decoration: underline;
 }
+
 .gnb .gnb-inner {
     margin: 0 auto;
     max-width: 1210px;
@@ -60,10 +61,12 @@ a:link, a:visited, a:hover, a:active {
 .gnb .gnb-menu ul {
     display: inline-flex;
 }
-.gnb .gnb-login{
+
+.gnb .gnb-login {
     font-weight: normal;
     font-size: 13px;
 }
+
 .gnb .gnb-login .middle-bar {
     padding-left: 11px;
     padding-right: 11px;
@@ -112,35 +115,31 @@ a:link, a:visited, a:hover, a:active {
     overflow: hidden;
     width: 283px;
     height: 100%;
-    margin: 3px;
+    margin: 0 3px;
+    display: inline-block;
     border-radius: 11px;
-    display: inline-table;
-    border-radius: 11px;
-    overflow: hidden;
-}
-
-.box {
-    height: 100%;
-    width: 283px;
-    border: 2px solid black;
     cursor: pointer;
-    overflow: hidden;
-}
-
-.box-img, .box img,.box-selected img {
-    height: 203px;
-    width: 284px;
 }
 
 .box-selected {
     border: 2px solid #EA4241;
 }
 
+.box {
+    border: 2px solid black;
+}
+
+.box-img, .box img, .box-selected img {
+    height: 203px;
+    width: 284px;
+}
+
 .box .box-name {
     color: #ffffff;
     height: 52px;
     align-items: center;
-    display: grid;
+    display: block;
+    padding-top: 15px;
     background-color: #333333;
     width: 100%;
 }
@@ -149,7 +148,8 @@ a:link, a:visited, a:hover, a:active {
     color: #ffffff;
     height: 53px;
     align-items: center;
-    display: grid;
+    display: block;
+    padding-top: 15px;
     background-color: #EA4241;
 }
 
@@ -311,7 +311,7 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
     max-width: 1200px;
     width: 1200px;
     background-color: rgba(0, 0, 0, 0.77);
-    color:#ffffff;
+    color: #ffffff;
     margin: auto;
     height: 100%;
     display: flex;
