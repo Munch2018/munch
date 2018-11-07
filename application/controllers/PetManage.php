@@ -71,6 +71,7 @@ class PetManage extends CI_Controller
         if (!empty($data['pet_info']['pet_kind'])) {
             $data['pet_info']['pet_kind_array'] = explode('|', $data['pet_info']['pet_kind']);
         }
+        $data['form_type'] = 'edit';
         $this->load->view('common/header.html');
         $this->load->view('PetManage/edit.html', $data);
         $this->load->view('common/footer.html');
@@ -83,6 +84,28 @@ class PetManage extends CI_Controller
         $pets = $this->petmanage->getPets($member_idx);
 
         return (count($pets) < self::REGISTER_MAX_CNT);
+    }
+
+    public function deletePet()
+    {
+        $params = $this->input->post();
+
+        if (empty($params['pet_idx'])) {
+            alert('펫에 대한 정보가 정확하지 않습니다.');
+            return false;
+        }
+
+        $this->load->model('Pet_manage', 'petManage');
+        if ($this->petManage->update([
+            'use_fl' => 'n',
+            'pet_idx' => $params['pet_idx'],
+            'member_idx' => $this->session->userdata('member_idx')
+        ])) {
+            alert('삭제되었습니다.', '/review');
+        } else {
+            alert('삭제에 실패하였습니다.');
+            return false;
+        }
     }
 
     public function register()
