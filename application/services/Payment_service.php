@@ -15,11 +15,6 @@ class Payment_service extends MY_Service
     public function __construct()
     {
         $this->member_idx = $this->session->userdata('member_idx');
-        if (empty($this->member_idx)) {
-            alert('로그인이 필요합니다. ', '/member/login_form/');
-            return false;
-        }
-
         $this->load->model('payment_model', 'payment');
     }
 
@@ -37,6 +32,11 @@ class Payment_service extends MY_Service
 
     public function add()
     {
+        if (empty($this->member_idx)) {
+            alert('로그인이 필요합니다. ', '/member/login_form/');
+            return false;
+        }
+
         return $this->payment->insertPayment([
             'member_idx' => $this->member_idx,
             'order_idx' => $this->paymentData['order_idx'],
