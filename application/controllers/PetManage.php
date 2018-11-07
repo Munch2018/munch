@@ -95,7 +95,7 @@ class PetManage extends CI_Controller
                 $params['img_src'] = str_replace('/var/www/html/branches/munch', '',
                     $upload_result['upload_data']['full_path']);
             }
-
+exit;
             if (!empty($upload_result['error'])) {
                 alert('파일 업로드에 실패하였습니다. 재시도해주세요.');
                 return false;
@@ -131,8 +131,7 @@ class PetManage extends CI_Controller
 
         if (!is_dir($uploadDir)) {
             $mkdirName = '/var/www/html/branches/munch/img/pet-img/' . $folderName;
-            mkdir($mkdirName);
-            chmod($mkdirName, 775);
+            mkdir($mkdirName, 0775, true);
         }
 
         $config['upload_path'] = $uploadDir;
