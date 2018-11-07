@@ -127,11 +127,10 @@ exit;
     public function upload()
     {
         $folderName = date('Ym');
-        $uploadDir = './img/pet-img/' . $folderName;
+        $uploadDir = '/var/www/html/branches/munch/img/pet-img/' . $folderName;
 
         if (!is_dir($uploadDir)) {
-            $mkdirName = '/var/www/html/branches/munch/img/pet-img/' . $folderName;
-            mkdir($mkdirName, 0775, true);
+            mkdir($uploadDir, 0775, true);
         }
 
         $config['upload_path'] = $uploadDir;
