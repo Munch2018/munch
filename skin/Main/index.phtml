@@ -66,7 +66,7 @@
                     <div class="desc-icon"><img src="/img/main/munch_icon3.png"></div>
                     <div class="desc-txt"><p>총 5만원 상당의 간식</p>
                         먼치박스는 반려동물에 맞는 간식 10종으로<br>
-                        구성됩니다. 총 5만원 상당의 구성을 15,000<br>
+                        구성됩니다. 총 5만원 상당의 구성을 <?php echo number_format($goodsPrice[0]['sell_price'])?><br>
                         (12개월 구독시)원에 받아보세요.
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="desc-price">
                     <span class="normal">이 모든 것이</span>
-                    <span class="point">월 15,000원</span>
+                    <span class="point">월 <?php echo number_format($goodsPrice[0]['sell_price'])?>원</span>
                 </div>
                 <div class="desc-price">
                     12개월 구독 시

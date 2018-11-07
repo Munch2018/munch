@@ -1,5 +1,7 @@
 <?php
 /**
+ * 예약결제 등록페이지
+ *
  * Created by PhpStorm.
  * User: jungmin
  * Date: 2018-09-24
@@ -13,4 +15,8 @@ class Payment extends CI_Controller
     {
         parent::__construct();
     }
+
+
+
+
 }

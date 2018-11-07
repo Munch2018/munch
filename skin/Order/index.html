@@ -44,7 +44,7 @@
                 </div>
                 <div class="wrap-inp">
                     <div class="input-set">
-                        <label>이 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 름</label>
+                        <label>이 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 름</label>
                         <div class="input-box">
                             <input type="text" name="buyer_name" class="input-text" value="<?php echo $this->session->userdata('name')?>" required>
                         </div>
@@ -55,15 +55,9 @@
                             <input type="telphone" name="buyer_phone" class="input-text" value="<?php echo $this->session->userdata('telphone')?>" required>
                         </div>
                     </div>
-                    <div class="input-set">
-                        <label>국 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 가</label>
-                        <div class="input-box">
-                            <input type="text" name="nation" class="input-text" value="<?php echo !empty($address[0]['nation']) ? $address[0]['nation'] : '' ?>" required>
-                        </div>
-                    </div>
                     <div id="buyer-addr">
                         <div class="input-set">
-                            <label>주 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 소</label>
+                            <label>주 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 소</label>
                             <div class="input-box">
                                 <input type="text" name="zipcode" class="input-text post-addr" value="<?php echo !empty($address[0]['zipcode']) ? $address[0]['zipcode'] : '' ?>" required readonly>
                                 <button type="button" class="addr-search">주소검색</button>
@@ -82,7 +76,7 @@
                         </div>
 
                     </div>
-                    <div>
+                    <div class="memo_area">
                         주문메모
                         <textarea name="memo" rows=5 placeholder="반려견 이름 표기를 영문으로 하고 싶은 경우, 또는 알러지 등으로 섭취가 불가능한 식재료가 있을 경우에는 반드시 적어주시길 바랍니다."></textarea>
                     </div>

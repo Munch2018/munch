@@ -79,7 +79,7 @@ class Order_service extends MY_Service
                 return false;
             }
 
-            $this->registerNextSchedule($data['subscribe_idx']);
+            //$this->registerNextSchedule($data['subscribe_idx']);
             return true;
 
         } catch (Exception $e) {
@@ -121,7 +121,7 @@ class Order_service extends MY_Service
         return $payment_idx;
     }
 
-    private function updateSubscribeSchedule($payment_idx)
+    public function updateSubscribeSchedule($payment_idx)
     {
         //결제되는 구독정보에 결제idx 업데이트
         $updateSubscribeSchedule = $this->subscribe->updatePaymentIdxSubscribeSchedule([

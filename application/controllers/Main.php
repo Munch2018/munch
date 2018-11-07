@@ -10,12 +10,15 @@ class Main extends CI_Controller
 
     public function index()
     {
+        $this->load->model('Subscribe_model', 'subscribe');
         $this->load->model('Goods', 'goods');
-        $parentGoods = $this->goods->getParentGoods();
-        $childGoods = $this->goods->getChildGoods(['goods_use_fl' => 'y', 'package_fl'=>'n', 'use_fl'=>'y']);
+        $this->load->model('Goods', 'goods');
 
+        $data['parentGoods'] = $this->goods->getParentGoods();
+        $data['childGoods'] = $this->goods->getChildGoods(['goods_use_fl' => 'y', 'package_fl'=>'n', 'use_fl'=>'y']);
+        $data['goodsPrice'] = $this->subscribe->getSubscribeGoodsPrice(['month_count' => 12]);
         $this->load->view('common/header.html');
-        $this->load->view('Main/index.phtml', ['parentGoods' => $parentGoods, 'childGoods' => $childGoods]);
+        $this->load->view('Main/index.phtml', $data);
         $this->load->view('common/footer.html');
     }
 

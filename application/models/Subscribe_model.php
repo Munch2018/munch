@@ -13,8 +13,12 @@ class Subscribe_model extends CI_Model
         parent::__construct();
     }
 
-    public function getSubscribeGoodsPrice()
+    public function getSubscribeGoodsPrice($params = [])
     {
+        if (!empty($params['month_count'])) {
+            $this->db->where('month_count', $params['month_count']);
+        }
+
         $this->db->where('use_fl', 'y');
         return $this->db->get('subscribe_price')->result_array();
     }
