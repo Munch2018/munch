@@ -28,6 +28,7 @@ class Order_service extends MY_Service
         $this->load->model('Subscribe_model', 'subscribe');
         $this->load->model('order_model', 'order');
         $this->load->model('goods', 'goods');
+        $this->load->model('Card_model', 'card_model');
     }
 
     public function checkDuplication($subscribe_idx)
@@ -347,7 +348,7 @@ class Order_service extends MY_Service
      * @return bool
      * @throws Exception
      */
-    public function registerNextSchedule($subscribe_idx)
+    public function registerNextSchedule($subscribe_idx, $schedule_dt)
     {
         if (empty($subscribe_idx)) {
             return false;
@@ -366,6 +367,10 @@ class Order_service extends MY_Service
                     return false;
                 }
             } else {
+                if ($nextData[0]['schedule_dt'] != $schedule_dt) {
+                    return false;
+                }
+
                 $this->registerNextScheduleData($subscribe_idx, $nextData[0]);
                 $this->subscribe->db->trans_complete();
             }
