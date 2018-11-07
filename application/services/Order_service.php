@@ -17,10 +17,6 @@ class Order_service extends MY_Service
     public function __construct()
     {
         $this->member_idx = $this->session->userdata('member_idx');
-        if (empty($this->member_idx)) {
-            alert('로그인이 필요합니다. ', '/member/login_form/');
-            return false;
-        }
 
         $this->load->service('member_service', '', true);
         $this->load->service('payment_service', '', true);
@@ -38,6 +34,11 @@ class Order_service extends MY_Service
 
     public function add($data)
     {
+        if (empty($this->member_idx)) {
+            alert('로그인이 필요합니다. ', '/member/login_form/');
+            return false;
+        }
+
         if ($this->checkDuplication($data['subscribe_idx'])) {
             alert('이미 주문건이 존재합니다.', '/order/index/' . $data['subscribe_idx']);
             return false;
