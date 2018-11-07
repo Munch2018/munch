@@ -130,7 +130,7 @@ exit;
         $uploadDir = '/var/www/html/branches/munch/img/pet-img/' . $folderName;
 
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0775, true);
+            mkdir($uploadDir, 0777);
         }
 
         $config['upload_path'] = $uploadDir;
