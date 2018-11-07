@@ -126,10 +126,13 @@ class PetManage extends CI_Controller
 
     public function upload()
     {
-        $uploadDir = './img/pet-img/' . date('Ym');
+        $folderName = date('Ym');
+        $uploadDir = './img/pet-img/' . $folderName;
 
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir);
+            $mkdirName = '/var/www/html/branches/munch/img/pet-img/' . $folderName;
+            mkdir($mkdirName);
+            chmod($mkdirName, 775);
         }
 
         $config['upload_path'] = $uploadDir;
