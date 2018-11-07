@@ -17,7 +17,7 @@ class Order_model extends CI_Model
     {
         $data['reg_dt'] = date('Y-m-d H:i:s');
         $data['use_fl'] = 'y';
-        $data['member_idx'] = $this->session->userdata('member_idx');
+        $data['member_idx'] = !empty($data['member_idx']) ? $data['member_idx'] : $this->session->userdata('member_idx');
         $data['reg_idx'] = $data['member_idx'];
 
         $query = $this->db->insert_string('order', $data);
@@ -29,7 +29,7 @@ class Order_model extends CI_Model
     {
         $data['reg_dt'] = date('Y-m-d H:i:s');
         $data['use_fl'] = 'y';
-        $data['member_idx'] = $this->session->userdata('member_idx');
+        $data['member_idx'] = !empty($data['member_idx']) ? $data['member_idx'] : $this->session->userdata('member_idx');
         $data['reg_idx'] = $data['member_idx'];
 
         $query = $this->db->insert_string('order_detail', $data);

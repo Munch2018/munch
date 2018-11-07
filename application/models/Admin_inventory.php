@@ -56,4 +56,25 @@ class Admin_inventory extends CI_Model
         echo $query . '<br>';
         return $this->db->query($query);
     }
+
+    public function getGoodsCount($start_date, $end_date)
+    {
+        $sql = '
+        select 
+             od.goods_idx, count(*)
+             from subscribe_schedule ss
+            join `order` o on ss.subscribe_schedule_idx=o.subscribe_schedule_idx
+            join order_detail od on o.order_idx=od.order_idx
+            join payment p on o.order_idx=p.payment_idx
+            where ss.use_fl=\'y\'
+            and o.use_fl=\'y\'
+            and od.use_fl=\'y\'
+            and p.use_fl=\'y\'
+            -- and p.status not in (\'pay_fail\', \'pay_pending\')
+            and ss.schedule_dt >= ? and ss.schedule_dt <= ?
+            group by od.goods_idx
+        ';
+
+        return $this->db->query($sql, [$start_date, $end_date])->result_array();
+    }
 }

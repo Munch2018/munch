@@ -305,7 +305,7 @@ class Order_service extends MY_Service
         }
 
         $orderDetailData = $this->order->getOnlyOrderDetailData($lastSubscribeData['order_idx']);
-        $orderDetailData['order_idx'] = $order_idx;
+        $defaultData['order_idx'] = $order_idx;
         if (!empty($orderDetailData) && !empty($order_idx)) {
             foreach ($orderDetailData as $key => $value) {
                 if (!is_array($value)) {
