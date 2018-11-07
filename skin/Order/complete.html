@@ -53,14 +53,14 @@
                           <tr>
                               <td class="point">#<?php echo $data['subscribe_idx']?></td>
                               <td><?php echo $subscribe_status[$data['status']]?></td>
-                              <td><?php echo $next_subscribe_data['schedule_dt']?></td>
+                              <td><?php echo !empty($next_subscribe_data['schedule_dt']) ? $next_subscribe_data['schedule_dt'] : '-'?></td>
                               <td>&#8361; <?php echo number_format($order_info['last_amount'])?></td>
                               <td><a href="/Order/subscriptionComplete?subscribe_idx=<?php echo $data['subscribe_idx']?>">
                                   <button type="button" class="btn">보기</button></a></td>
                           </tr>
                       <?php }?>
                   </table>
-                    <button type="button"  class="btn-purple-square">다시 주문하기</button>
+                    <a href="/subscribe"><button type="button"  class="btn-purple-square">다시 주문하기</button></a>
                 </div>
             <?php }?>
         </div>

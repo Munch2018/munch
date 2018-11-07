@@ -128,7 +128,8 @@ class Order extends CI_Controller
             'address_idx' => $data['order_info']['address_idx']
         ])[0];
 
-       $data['next_subscribe_data'] = $this->subscribe->pendingNextSubscribeData($subscribe_idx)[0];
+        $next_subscribe_data = $this->subscribe->pendingNextSubscribeData($subscribe_idx);
+        $data['next_subscribe_data'] = !empty($next_subscribe_data) ? $next_subscribe_data[0] : [];
 
         $this->load->view('common/header.html');
         $this->load->view('Order/complete.html', $data);
