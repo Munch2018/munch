@@ -130,8 +130,8 @@ class PetManage extends CI_Controller
         $uploadDir = '/var/www/html/branches/munch/img/pet-img/' . $folderName;
 
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777);
-            chmod($uploadDir, 777);
+            mkdir($uploadDir, 0777, true);
+            chmod($uploadDir, 0777);
         }
 
         $config['upload_path'] = $uploadDir;
