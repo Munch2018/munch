@@ -30,7 +30,7 @@
 }
 
 .contents .top-ord-detail .tbl-title, .contents .ord-relation .tbl-title, .contents .user-detail .tbl-title {
-    display: flow-root;
+    display: table;
     color: #43277B;
     margin-bottom: 10px;
     font-size: 20px;

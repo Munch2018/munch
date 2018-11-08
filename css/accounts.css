@@ -104,7 +104,7 @@
 }
 
 .account-tbl .account-tbl-title, .card-tbl .account-tbl-title {
-    display: flow-root;
+    display: table;
     color: #43277B;
     width: 100%;
 }
@@ -249,7 +249,7 @@ table td button.cancel-btn {
 
 .input-set-half {
     text-align: left;
-    display: flow-root;
+    display: inline-block;
 }
 
 .input-set-half div {
@@ -257,7 +257,7 @@ table td button.cancel-btn {
 }
 
 .input-set-half div:first-child {
-    width: 49%;
+    width: 50%;
     float: left;
 }
 
