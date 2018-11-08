@@ -72,9 +72,9 @@
                         <br>
                         <div class="card-info">
                             사용중인 카드 정보
-                            <?php if(!empty($card_info)){?>
-                            <br><span><?=$card_info['card_name']?> (****-****-****-<?=$card_info['card_last_num']?>)</span>
-                            <?php }?>
+                            <?php if(!empty($card_info)) { ?>
+                            <br><span><?=$card_info['card_name']?> (****-****-****-<?=sprintf("%04d", $card_info['card_last_num'])?>)</span>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
