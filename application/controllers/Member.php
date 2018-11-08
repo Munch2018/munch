@@ -418,9 +418,7 @@ class Member extends CI_Controller
         ]);
 
         if (!empty($changed)) {
-            alert('비밀번호가 정상적으로 저장되었습니다. 로그인을 해주세요.');
-            redirect('/member/login_form/');
-
+            alert('비밀번호가 정상적으로 저장되었습니다. 로그인을 해주세요.','/member/login_form/');
         } else {
             alert('비밀번호 변경에 실패하였습니다. 잠시 후 재시도해주세요.');
         }

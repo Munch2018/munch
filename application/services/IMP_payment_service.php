@@ -104,12 +104,14 @@ class IMP_payment_service extends MY_Service
         $this->load->model('Card_model', 'card_model');
 
         try {
+            $member_idx = $this->session->userdata('member_idx');
+            $this->card_model->delete($member_idx);
             return $this->card_model->insert([
                 'card_last_num' => $params['card_last_num'],
                 'card_name' => $params['card_name'],
                 'card_code' => $params['card_code'],
                 'customer_uid' => $params['customer_uid'],
-                'member_idx' => $this->session->userdata('member_idx')
+                'member_idx' => $member_idx
             ]);
         } catch (Exception $e) {
             echo($e->getMessage());

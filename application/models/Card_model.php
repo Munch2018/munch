@@ -36,14 +36,20 @@ class Card_model extends CI_Model
         return $this->db->insert('card');
     }
 
-    public function delete($customer_uid)
+    public function delete($member_idx, $customer_uid = '')
     {
-        $member_idx = $this->session->userdata('member_idx');
+        if (empty($member_idx)) {
+            return false;
+        }
         $this->db->set('use_fl', 'n');
         $this->db->set('del_dt', date('Y-m-d H:i:s'));
         $this->db->set('del_idx', $member_idx, false);
         $this->db->where('member_idx', $member_idx);
-        $this->db->where('customer_uid', $customer_uid);
+        $this->db->where('use_fl', 'y');
+        if (!empty($customer_uid)) {
+            $this->db->where('customer_uid', $customer_uid);
+        }
+
         return $this->db->update('card');
     }
 }

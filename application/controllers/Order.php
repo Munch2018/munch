@@ -207,7 +207,7 @@ class Order extends CI_Controller
             exit;
         }
 
-        if ($this->card_model->delete($params['customer_uid'])) {
+        if ($this->card_model->delete($this->session->userdata('member_idx'), $params['customer_uid'])) {
             echo json_encode(['code' => 'success']);
             exit;
         }

@@ -34,7 +34,7 @@ $(function () {
                     $('#card_info_form').html(card_info_html);
 
                     $('#changeCard').on('click', function () {
-                        changeCard();
+                        changeHtml();
                     })
                     $('#register-card').hide();
                     $('#doPay').show();
@@ -129,7 +129,7 @@ $(function () {
     });
 
     $('#changeCard').on('click', function () {
-        changeCard();
+        changeHtml();
     })
 
     var changeHtml = function () {
