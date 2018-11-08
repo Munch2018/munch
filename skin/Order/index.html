@@ -89,12 +89,12 @@
                     </div>
                     <?php
                     $month = $subscribe_info['subscribe_month'];
-                    $total_amount  = $month * $subscribe_info['sell_price'];
+                    $total_amount  = $subscribe_info['buy_count'] * $subscribe_info['sell_price'];
                     ?>
                     <div class="wrap-inp">
                         <label>상품
                             : </label><span><?php echo $subscribe_info['title'].' * '.$subscribe_info['buy_count'];?></span><br>
-                        <label>반려견 크기 : </label><span><?php echo $subscribe_info['pet_size'];?></span><br>
+                        <label>반려견 품종 : </label><span><?php echo !empty($pet_kind[$subscribe_info['pet_type']][$subscribe_info['pet_kind']]) ? $pet_kind[$subscribe_info['pet_type']][$subscribe_info['pet_kind']] : '';?></span><br>
                         <label>구독 기간 : </label><span><?php echo $month;?>개월</span><br>
                         <label>총계 : </label><span><?php echo $month;?>
                         달의 &#8361;<?php echo number_format($total_amount);?> / 달</span><br>

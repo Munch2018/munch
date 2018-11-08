@@ -50,7 +50,7 @@ class Subscribe_model extends CI_Model
             s.subscribe_idx, s.subscribe_month, s.goods_idx, s.buy_count,
             g.title, s.start_date,
             sp.sell_price, sp.price,
-            p.pet_kind, p.pet_size
+            p.pet_kind, p.pet_type, p.pet_size
         FROM
             subscribe s 
             JOIN pet p ON s.pet_idx = p.pet_idx
@@ -117,7 +117,7 @@ class Subscribe_model extends CI_Model
                 AND o.order_idx IS NULL)
                 OR payment.status IN (\'pay_fail\' , \'pay_pending\'))
                 AND subscribe_schedule.use_fl = \'y\'
-                AND subscribe_schedule.schedule_dt <= ?
+                AND subscribe_schedule.schedule_dt >= ?
                 AND subscribe_schedule.subscribe_idx = ?
          ';
 

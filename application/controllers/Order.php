@@ -46,6 +46,7 @@ class Order extends CI_Controller
             return false;
         }
 
+        $this->load->service('Common_code_service', 'code_service');
         $this->load->model('Subscribe_model', 'subscribe');
         $this->load->model('Member_model', 'member');
         $member_idx = $this->session->userdata('member_idx');
@@ -66,6 +67,9 @@ class Order extends CI_Controller
         $data['subscribe_info'] = array_shift($subscribe_info);
         $data['address'] = $this->member->getAddress(['member_idx' => $member_idx]);
         $data['card_info'] = $this->card_model->getData($member_idx);
+
+        $data['pet_kind']['dog'] = $this->code_service->getCode('dog_kind');
+        $data['pet_kind']['cat'] =  $this->code_service->getCode('cat_kind');
 
         $this->load->view('common/header.html');
         $this->load->view('Order/index.html', $data);
