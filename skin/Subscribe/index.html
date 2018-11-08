@@ -2,6 +2,15 @@
 <div class="container">
     <div class="title">먼치세트 구독</div>
     <hr>
+    <div style="display: flex;">
+        <div class="btn-prev">
+            <input type="button" value="이전 단계로">
+        </div>
+        <div class="btn-next">
+            <input type="button" value="다음 단계로">
+        </div>
+    </div>
+
     <div class="tab-menu">
         <ul>
             <li data-contents="select-pet">아이 선택</li>
@@ -25,6 +34,11 @@
             <div class="box-name"><?php echo $pet['name']?></div>
         </div>
         <?php }?>
+        <?php } else { ?>
+        <div style="display: block;padding: 30px;">
+            먼저 내 아이를 등록해주세요. <br>
+        </div>
+            <a href="/PetManage/"><img src="/img/review/add_btn.png" alt="내 아이 등록하기"></a>
         <?php }?>
     </div>
     <div class="tab-contents set-period">
@@ -45,14 +59,7 @@
             <li>굳이 매달 구독을 해야하나요?</li>
         </ul>
     </div>
-    <div style="display: flex;">
-        <div class="btn-prev">
-            <input type="button" value="이전 단계로">
-        </div>
-        <div class="btn-next">
-            <input type="button" value="다음 단계로">
-        </div>
-    </div>
+
 </div>
 
 <script src="/js/subscribe.js"></script>

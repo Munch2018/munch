@@ -129,6 +129,11 @@ class Member extends CI_Controller
 
     public function setSession($member_info)
     {
+        $userData = $this->session->get_userdata();
+        if (!empty($userData)) {
+            $this->session->unset_userdata($userData);
+        }
+
         $session_data = array(
             'member_idx' => $member_info['member_idx'],
             'email' => $member_info ['email'],
@@ -141,7 +146,7 @@ class Member extends CI_Controller
             $session_data['is_admin'] = true;
             $this->load->vars(array('IS_ADMIN', true));
         }
-
+echo var_export($member_info,1);
         $this->session->set_userdata($session_data);
         redirect('/');
     }
@@ -221,7 +226,8 @@ class Member extends CI_Controller
             $changed = $this->member->doUpdate([
                 'where' => [
                     'email' => $email,
-                    'name' => $name
+                    'name' => $name,
+                    'use_fl' => 'y'
                 ]
             ], $modifyData);
 
@@ -413,6 +419,7 @@ class Member extends CI_Controller
 
         if (!empty($changed)) {
             alert('비밀번호가 정상적으로 저장되었습니다.');
+
             $this->setSession($member_info);
 
             redirect('/');

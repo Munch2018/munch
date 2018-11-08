@@ -179,7 +179,7 @@ class Order_model extends CI_Model
                   --  JOIN goods g ON g.goods_idx = od.goods_idx
             WHERE 
                 s.use_fl = 'y' AND ss.use_fl = 'y'
-                    AND o.use_fl = 'y' AND p.use_fl = 'y'
+                    AND o.use_fl = 'y'
                    -- AND od.use_fl = 'y'
                    -- AND g.use_fl = 'y'
                     AND s.member_idx = ?
@@ -233,7 +233,7 @@ class Order_model extends CI_Model
                     JOIN `order` o ON s.subscribe_idx = o.subscribe_idx AND o.subscribe_schedule_idx = ss.subscribe_schedule_idx
                     JOIN order_detail od ON o.order_idx = od.order_idx 
                     JOIN payment p ON o.order_idx = p.order_idx
-                    JOIN pet pet ON s.pet_idx = pet.pet_idx AND pet.use_fl='y'
+                    JOIN pet pet ON s.pet_idx = pet.pet_idx
             WHERE 
                     s.use_fl = ?
                     AND o.use_fl = 'y' AND od.use_fl = 'y' AND p.use_fl = 'y'
