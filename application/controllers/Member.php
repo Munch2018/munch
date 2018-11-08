@@ -146,7 +146,7 @@ class Member extends CI_Controller
             $session_data['is_admin'] = true;
             $this->load->vars(array('IS_ADMIN', true));
         }
-echo var_export($member_info,1);
+echo var_export($member_info,1);exit;
         $this->session->set_userdata($session_data);
         redirect('/');
     }
