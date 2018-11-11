@@ -63,6 +63,10 @@ class Goods extends CI_Model
             $where[] = ' g.use_fl = ? ';
             $bind['goods_use_fl'] = $params['goods_use_fl'];
         }
+        if (!empty($params['img_use_fl'])) {
+            $where[] = ' gi.use_fl = ? ';
+            $bind['img_use_fl'] = $params['img_use_fl'];
+        }
         if (!empty($params['package_fl'])) {
             $where[] = ' g.package_fl = ? ';
             $bind['package_fl'] = $params['package_fl'];
