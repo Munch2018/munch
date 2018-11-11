@@ -30,7 +30,7 @@ class Main extends CI_Controller
             return false;
         }
 
-        $goods = $this->goods->getChildGoods(['goods_idx' => $goods_idx]);
+        $goods = $this->goods->getChildGoods(['goods_idx' => $goods_idx, 'goods_use_fl' => 'y', 'use_fl' => 'y']);
 
         $this->load->view('Main/goods-detail.html', [
             'goods' => $goods[0]
