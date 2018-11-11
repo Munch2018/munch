@@ -19,7 +19,7 @@
     <h2 class="title">도움센터</h2>
 
     <form action="<?=base_url('/board/write/')?>" method="post">
-        <input type="hidden" name="board_idx" value="<?=$board_info['board_idx']?>">
+        <input type="hidden" name="board_idx" value="<?= !empty($board_info) ? $board_info['board_idx'] : ''?>">
         <input type="hidden" name="board_type" value="<?=isset($code_info['name']) ? $code_info['name'] : ''?>">
         <div class="writing_area">
             <dl>
@@ -27,7 +27,7 @@
                     <label for="notice_tit">제목</label>
                 </dt>
                 <dd>
-                    <input id="notice_tit" name="title" value="<?=$board_info['title']?>" placeholder="제목을 입력해 주세요." type="text">
+                    <input id="notice_tit" name="title" value="<?=!empty($board_info['title']) ? $board_info['title'] : ''?>" placeholder="제목을 입력해 주세요." type="text">
                 </dd>
             </dl>
             <dl>
@@ -38,11 +38,11 @@
                     <select name="board_type">
                         <?php
                             $type = array(
-                                'product' => '제품문의',
-                                'order/shipping'	=> '주문 및 배송문의',
-                                'payment'			=> '결제 문의',
-                                'member'			=> '회원정보 문의',
-                                'refund/change'		=> '환불 및 교환 문의',
+                                '76' => '제품문의',
+                                '77'	=> '주문 및 배송문의',
+                                '78'			=> '결제 문의',
+                                '79'			=> '회원정보 문의',
+                                '80'		=> '환불 및 교환 문의',
                             );
                         ?>
                         <option value="">선택해주세요.</option>
@@ -55,7 +55,7 @@
             <dl>
                 <dt><label for="editor1">내용</label></dt>
                 <dd class="bd_no">
-                    <textarea id="editor1" name="contents"><?=$board_info['contents']?></textarea>
+                    <textarea id="editor1" name="contents"><?=!empty($board_info['contents']) ? $board_info['contents'] : ''?></textarea>
                 </dd>
             </dl>
             <div class="btn_group">

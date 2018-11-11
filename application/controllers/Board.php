@@ -155,7 +155,13 @@ class Board extends CI_Controller
      * write_form 글 작성 폼
      */
     public function write_form(){
+        $this->load->model('Common_code');
         $data = array();
+        //board_type 에서 카테고리는 무조건 하나라고 생각하자
+        $code_info = $this->Common_code->getCode(array('where' => array('use_fl' => 'y', 'code_common_group_idx' => 4)));
+        if (!empty($code_info)) {
+            $data['code_info'] = $code_info;
+        }
         $this->load->view('common/header.html');
         $this->load->view('board/write_form.html', $data);
         $this->load->view('common/footer.html');
@@ -164,7 +170,8 @@ class Board extends CI_Controller
     /**
      * modify_form 글 수정하는폼
      */
-    public function modify_form($board_idx = 0){
+    public function modify_form($board_idx = 0)
+    {
         $this->load->model('Common_code');
         $data = array();
         $board_idx = $this->input->post('board_idx') ? $this->input->post('board_idx') : $board_idx;
@@ -175,7 +182,13 @@ class Board extends CI_Controller
             foreach (explode(' | ', $data['board_info']['board_type']) as $value) {
 
                 //board_type 에서 카테고리는 무조건 하나라고 생각하자
-                $code_info = $this->common_code_service->getCode(array('where' => array('code_common_idx' => $value, 'use_fl' => 'y', 'code_common_group_idx' => 4)));
+                $code_info = $this->Common_code->getCode(array(
+                    'where' => array(
+                        'code_common_idx' => $value,
+                        'use_fl' => 'y',
+                        'code_common_group_idx' => 4
+                    )
+                ));
                 if (!empty($code_info)) {
                     $data['code_info'] = $code_info;
                     break;
