@@ -43,8 +43,7 @@ class Common_code extends CI_Model
 
     /**
      * @param array $where
-     * code_common 테이블에서 상세하게 하나씩만 데이터 가지고올때
-     * row_array 하는것은 값 한개만 가지고올때 쓰는 active record
+     * @return mixed
      */
     public function getCode($where = array())
     {
@@ -55,5 +54,12 @@ class Common_code extends CI_Model
         return $this->db->get('code_common')->row_array();
     }
 
+    function insert($params)
+    {
+        $data = $params;
+        $data['reg_dt'] = date('Y-m-d H:i:s');
 
+        $query = $this->db->insert_string('code_common', $data);
+        return $this->db->query($query);
+    }
 }

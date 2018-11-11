@@ -9,7 +9,7 @@
         width: 400px;
         height: 500px;
         position: absolute;
-        z-index: 999;
+        z-index: 1000;
         background-color: #ffffff;
         top: 100px;
         left: 100px;
@@ -97,6 +97,11 @@
         background-color: #efefef;
     }
 
+    #find_pet_type_layer .layer_body .breeds_contents .list .extra {
+        margin-left: 8px;
+        color: #787878;
+    }
+
     #dimmed {
         display: block;
         z-index: -99;
@@ -148,7 +153,7 @@
 
             if (apply_btn.length > 0) {
                 apply_input.val(apply_btn.data('value'));
-                apply_area.html('<button type="button" value="' + apply_btn.data('value') + '" class="selected">' + apply_btn.html() + '</button>');
+                apply_area.html('<button type="button" value="' + apply_btn.data('value') + '" class="selected">' + apply_btn.find('.name').html() +'(' +apply_btn.find('.extra').html()+ ')</button>');
             } else {
                 apply_input.val('');
                 apply_area.html('');

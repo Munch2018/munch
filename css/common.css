@@ -135,6 +135,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .box .box-name {
+    position: relative;
     color: #ffffff;
     height: 52px;
     align-items: center;

@@ -230,12 +230,12 @@ class PetManage extends CI_Controller
         if (empty($option)) {
             foreach ($all_codes as $option_div => $codes) {
                 foreach ($codes as $val) {
-                    $html .= '<span class="list" data-value="' . $val['code'] . '">' . $val['name'] . '<strong>' . $val['name_extra'] . '</strong></span>';
+                    $html .= '<span class="list" data-value="' . $val['code'] . '"><span class="name">' . $val['name'] . '</span><span class="extra">' . $val['name_extra'] . '</span></span>';
                 }
             }
         } else {
             foreach ($all_codes as $code => $val) {
-                $html .= '<span class="list" data-value="' . $val['code'] . '">' . $val['name'] . '<strong>' . $val['name_extra'] . '</strong></span>';
+                $html .= '<span class="list" data-value="' . $val['code'] . '"><span class="name">' . $val['name'] . '</span><span class="extra">' . $val['name_extra'] . '</span></span>';
             }
         }
 

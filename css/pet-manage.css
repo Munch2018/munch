@@ -204,6 +204,10 @@ hr {
     font-weight: bold;
 }
 
+.detail_info.type button{
+    width: 200px;
+}
+
 .detail_info .special {
     width: 100%;
     height: 43px;
