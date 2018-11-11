@@ -1,9 +1,9 @@
 <form action="/review/register/" method="post" id="review_layer" name="review_form">
     <input type="hidden" name="goods_idx"
-           value="<?=!empty($review_data['goods_idx']) ? $review_data['goods_idx'] : ''?>">
+           value="<?=!empty($goods_idx) ? $goods_idx : ''?>">
     <input type="hidden" name="review_idx"
            value="<?=!empty($review_data['review_idx']) ? $review_data['review_idx'] : ''?>">
-    <input type="hidden" name="pet_idx" value="<?=!empty($review_data['pet_idx']) ? $review_data['pet_idx'] : ''?>">
+    <input type="hidden" name="pet_idx" value="<?=!empty($pet_idx) ? $pet_idx : ''?>">
     <input type="hidden" name="score_level"
            value="<?=!empty($review_data['score_level']) ? $review_data['score_level'] : ''?>">
     <div class="dislike_area">
@@ -27,7 +27,7 @@
                     <div class="like  <?php echo (!empty($review_data) && !empty($review_data['like']) && $review_data['like']==='y') ? 'on' : ''?>">
                         <label for="chk_like" class="comment_like" alert="또 받고싶어요">
                             <input type="checkbox" name="chk_like" value="y" id="chk_like"
-                                   checked="<?php echo (!empty($review_data) && !empty($review_data['like']) && $review_data['like']==='y') ? 'checked' : ''?>"
+                                   <?php echo (!empty($review_data) && !empty($review_data['like']) && $review_data['like']==='y') ? 'checked' : ''?>
                                    style="z-index: -99; position: absolute;">
                             <span class="comment_like_heart"></span>
                             <span>또 받고싶어요</span>
@@ -36,7 +36,7 @@
                     <div class="dislike  <?php echo (!empty($review_data) && !empty($review_data['dislike']) && $review_data['dislike']==='y') ? 'on' : ''?>">
                         <label for="chk_dislike" class="comment_dislike" alert="다신 받기 싫어요">
                             <input type="checkbox" name="chk_dislike" value="y" id="chk_dislike"
-                                   checked="<?php echo (!empty($review_data) && !empty($review_data['dislike']) && $review_data['dislike']==='y') ? 'checked' : ''?>"
+                                   <?php echo (!empty($review_data) && !empty($review_data['dislike']) && $review_data['dislike']==='y') ? 'checked' : ''?>
                                    style="z-index: -99; position: absolute;">
                             <span class="comment_dislike_heart"></span>
                             <span>다신 받기 싫어요</span>

@@ -131,7 +131,7 @@ class Review extends CI_Controller
         $params = $this->input->post();
 
         if (empty($member_idx)) {
-            alert("로그아웃 되었습니다. 로그인을 해주세요.");
+            alert("로그아웃 되었습니다. 로그인을 해주세요.", '/member/login_form');
             return false;
         }
 
@@ -252,6 +252,7 @@ class Review extends CI_Controller
         $data['pet'] = $this->petmanage->getPets($member_idx, $params['pet_idx']);
         $data['pet'] = array_shift($data['pet']);
 
+        $data = $params;
         $data['review_data'] = $this->review_model->getReview([
             'where' => [
                 'member_idx' => $member_idx,
