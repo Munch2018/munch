@@ -316,15 +316,15 @@
 
 .main-product-introduction .sub-product-introduction .goods-desc {
     height: 100%;
-    width: 950px;
+    width: 100%;
     overflow: hidden;
 }
 
 .main-product-introduction .sub-product-introduction .goods-desc #point {
     color: #E12A22;
-    font-size: 13px;
+    font-size: 14px;
     float: left;
-    padding-left: 79px;
+    padding-left: 120px;
     font-weight: bold;
 }
 
@@ -332,17 +332,22 @@
     height: 100%;
     overflow: hidden;
     padding-top: 20px;
-    width: 925px;
+    width: 100%;
     margin-bottom: 0px;
 }
 
 .main-product-introduction .sub-product-introduction .goods-desc ul li {
-    font-size: 13px;
+    font-size: 16px;
     float: left;
     display: inline-block;
-    padding: 11px 0px 10px 40px;
-    width: 422px;
+    padding: 11px 0px 10px 70px;
+    width: 41%;
     text-align: left;
+    cursor: pointer;
+}
+
+.main-product-introduction .sub-product-introduction .goods-desc ul li:hover {
+    text-decoration-line: underline;
 }
 
 .main-product-introduction .sub-product-introduction .goods-desc ul span {
@@ -351,7 +356,7 @@
     color: #ffffff;
     padding: 5px;
     font-size: 17px;
-    margin-right: 2px;
+    margin-right: 10px;
 }
 
 .main-product-introduction .sub-production-interrogation {
