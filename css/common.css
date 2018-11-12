@@ -19,7 +19,7 @@ a:link, a:visited, a:hover, a:active {
     background-color: rgba(0, 0, 0, 0.77);
     color: #ffffff;
     width: 100%;
-    position: fixed;
+    position: relative;
 }
 
 .gnb li {
@@ -294,9 +294,9 @@ div.contents div.btn_groups input[type=button].on {background:#452b78; color:whi
     height: 80px;
     width: 100%;
     display: block;
-    bottom: 0px;
+    top: 0px;
     z-index: 99;
-
+    display: none;
 }
 
 #main_floating a {

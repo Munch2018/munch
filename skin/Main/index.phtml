@@ -145,12 +145,17 @@
     var goods_li = $('.goods-desc').find('li');
     var btns = $('.btn-select-pet');
 
-    $(window).scroll(function () {
-        var target = $("#main_floating");
-        target.css('bottom', '0px');
-    });
-
     $(document).ready(function () {
+        var main_floating = $("#main_floating");
+        $(window).scroll(function () {
+            var scrollTop = $(document).scrollTop();
+            if (scrollTop > 100) {
+                main_floating.show();
+            } else {
+                main_floating.hide();
+            }
+        });
+
         goodsViewAction();
 
         $('.btn-select-pet.dog').on('click', function () {
