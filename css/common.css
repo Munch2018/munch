@@ -19,7 +19,7 @@ a:link, a:visited, a:hover, a:active {
     background-color: rgba(0, 0, 0, 0.77);
     color: #ffffff;
     width: 100%;
-    position: relative;
+    position: fixed;
 }
 
 .gnb li {
@@ -271,7 +271,7 @@ a:link, a:visited, a:hover, a:active {
 div.contents h2.title {text-align:center; position:relative; margin-top:70px;}
 div.contents div.fix {width:40px; display:inline-block; border:1px solid #222222;}
 div.contents div.btn_groups input[type=button].on {background:#452b78; color:white;}
-.footer{background:#151515; color:#cccccc; display:inline-block; width:100%; position:relative; text-align:center;  padding-top:30px; padding-bottom: 100px;}
+.footer{background:#151515; color:#cccccc; display:inline-block; width:100%; position:relative; text-align:center;  padding-top:30px; /*padding-bottom: 100px;*/}
 .footer div.munch_info {background:#212121; display:block; width:394px; height:136px;float:left; margin-right:5px; padding-bottom:15px; text-align:center;}
 .footer div.munch_info div{padding-top: 29px;}
 .footer div.munch_info p.email {color:#ffc000; font-size:22px;}

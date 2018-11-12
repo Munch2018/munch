@@ -324,14 +324,15 @@
     color: #E12A22;
     font-size: 14px;
     float: left;
-    padding-left: 120px;
+    padding-left: 100px;
     font-weight: bold;
 }
 
 .main-product-introduction .sub-product-introduction .goods-desc ul {
     height: 100%;
+    box-sizing: border-box;
     overflow: hidden;
-    padding-top: 20px;
+    padding: 20px 0 0 80px;
     width: 100%;
     margin-bottom: 0px;
 }
@@ -340,8 +341,8 @@
     font-size: 16px;
     float: left;
     display: inline-block;
-    padding: 11px 0px 10px 70px;
-    width: 41%;
+    padding: 11px 0px 10px 20px;
+    width: 45%;
     text-align: left;
     cursor: pointer;
 }
