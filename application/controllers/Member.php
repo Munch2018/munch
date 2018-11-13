@@ -194,7 +194,9 @@ class Member extends CI_Controller
 
     public function findPasswordForm()
     {
+        $this->load->view('common/header.html');
         $this->load->view('member/find-password-form.phtml');
+        $this->load->view('common/footer.html');
     }
 
     public function findPassword()
@@ -234,9 +236,8 @@ class Member extends CI_Controller
                     'use_fl' => 'y'
                 ]
             ], $modifyData);
-                // && !empty($this->sendEmail($email, $updatePwdAuth))
 
-            if (!empty($changed)) {
+            if (!empty($changed) && !empty($this->sendEmail($email, $updatePwdAuth))) {
                 alert('인증번호가 이메일로 전송되었습니다.','/member/pwdFindAuthForm?' . http_build_query([
                         'email' => urlencode($email),
                         'name' => urlencode($name)
@@ -299,7 +300,7 @@ class Member extends CI_Controller
             'where' =>
                 [
                     'email' => $this->session->userdata('email'),
-                    //'use_fl' => 'Y',
+                    'use_fl' => 'y',
                     'member_idx' => $this->session->userdata('member_idx')
                 ]
         ]);
@@ -383,7 +384,7 @@ class Member extends CI_Controller
     public function confirmAuthNumber()
     {
         $params = $_POST;
-echo json_encode('success') ;exit;
+
         $params['name'] = urldecode($params['name']);
         $params['auth'] = urldecode($params['auth']);
         $params['email'] = urldecode($params['email']);

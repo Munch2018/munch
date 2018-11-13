@@ -27,7 +27,7 @@
                 </div>
             </form>
             <div>
-                <span id="find_passwd">비밀번호찾기</span>
+                <a href="/member/findPasswordForm"><span id="find_passwd">비밀번호찾기</span></a>
                 <span><a href="/member/join_form">회원가입</a></span>
             </div>
         </div>
@@ -49,10 +49,6 @@
            }
 
            $("form").submit();
-       });
-
-       $('#find_passwd').on('click',function () {
-          window.open('/member/findPasswordForm', 'findPasswordForm', 'width=440,height=230,menubar=no,location=no,resizable=no,scrollbars=no,status=no');
        });
 
         $('.sns_login').on('click', function () {
