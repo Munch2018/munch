@@ -73,25 +73,40 @@ class Goods extends CI_Controller
                 }
             }
 
+            $isError = false;
             if (!empty($_FILES['pet_img']['name'])) {
-                $upload_result = $this->upload();
+                $filesCount = count($_FILES['pet_img']['name']);
+                for ($i = 0; $i < $filesCount; $i++) {
+                    unset($_FILES['file']);
+                    if (empty($_FILES['pet_img']['name'][$i])) {
+                        return false;
+                    }
+                    $_FILES['file']['name'] = $_FILES['pet_img']['name'][$i];
+                    $_FILES['file']['type'] = $_FILES['pet_img']['type'][$i];
+                    $_FILES['file']['tmp_name'] = $_FILES['pet_img']['tmp_name'][$i];
+                    $_FILES['file']['error'] = $_FILES['pet_img']['error'][$i];
+                    $_FILES['file']['size'] = $_FILES['pet_img']['size'][$i];
 
-                if (!empty($upload_result['error'])) {
-                    $this->model->db->trans_rollback();
-                    alert('이미지 업로드에 실패하였습니다. 재시도해주세요.\n' . $upload_result['error'],
-                        '/admin/goods/editForm/' . $goods_idx);
-                    return false;
-                } else {
-                    $this->model->addImg([
-                        'goods_idx' => $goods_idx,
-                        'img_src' => str_replace('/var/www/html/branches/munch', '',
-                            $upload_result['upload_data']['full_path']),
-                        'use_fl' => 'y'
-                    ]);
+                    $upload_result = $this->upload();
+                    if (!empty($upload_result['upload_data']['full_path']) && empty($upload_result['error'])) {
+                        $this->model->addImg([
+                            'goods_idx' => $goods_idx,
+                            'img_src' => str_replace('/var/www/html/branches/munch', '',
+                                $upload_result['upload_data']['full_path']),
+                            'use_fl' => 'y'
+                        ]);
+                    } else {
+                        $isError = true;
+                    }
                 }
             }
-
             $this->model->db->trans_complete();
+
+            if (!empty($isError)) {
+                alert('이미지 업로드에 실패하였습니다. 재시도해주세요.', '/admin/goods/editForm/' . $goods_idx);
+                return false;
+            }
+
         } catch (Exception $exception) {
             $this->model->db->rollback();
             alert('상품 수정이 실패하였습니다. 잠시후 재시도해주세요.');
@@ -139,27 +154,43 @@ class Goods extends CI_Controller
                 }
             }
 
+            $isError = false;
             if (!empty($_FILES['pet_img']['name'])) {
-                $upload_result = $this->upload();
+                $filesCount = count($_FILES['pet_img']['name']);
 
-                if (!empty($upload_result['error'])) {
-                    $this->model->db->trans_rollback();
-                    alert('이미지 업로드에 실패하였습니다. 재시도해주세요.\n' . $upload_result['error'],
-                        '/admin/goods/editForm/' . $goods_idx);
-                    return false;
-                } else {
-                    $this->model->deleteImg($goods_idx);
-                    $this->model->addImg([
-                        'goods_idx' => $goods_idx,
-                        'img_src' => str_replace('/var/www/html/branches/munch', '',
-                            $upload_result['upload_data']['full_path']),
-                        'use_fl' => 'y'
-                    ]);
+                $this->model->deleteImg($goods_idx);
+
+                for ($i = 0; $i < $filesCount; $i++) {
+                    unset($_FILES['file']);
+                    if (empty($_FILES['pet_img']['name'][$i])) {
+                        return false;
+                    }
+                    $_FILES['file']['name'] = $_FILES['pet_img']['name'][$i];
+                    $_FILES['file']['type'] = $_FILES['pet_img']['type'][$i];
+                    $_FILES['file']['tmp_name'] = $_FILES['pet_img']['tmp_name'][$i];
+                    $_FILES['file']['error'] = $_FILES['pet_img']['error'][$i];
+                    $_FILES['file']['size'] = $_FILES['pet_img']['size'][$i];
+
+                    $upload_result = $this->upload();
+                    if (!empty($upload_result['upload_data']['full_path']) && empty($upload_result['error'])) {
+                        $this->model->addImg([
+                            'goods_idx' => $goods_idx,
+                            'img_src' => str_replace('/var/www/html/branches/munch', '',
+                                $upload_result['upload_data']['full_path']),
+                            'use_fl' => 'y'
+                        ]);
+                    } else {
+                        $isError = true;
+                    }
                 }
             }
 
-
             $this->model->db->trans_complete();
+
+            if (!empty($isError)) {
+                alert('이미지 업로드에 실패하였습니다. 재시도해주세요.', '/admin/goods/editForm/' . $goods_idx);
+                return false;
+            }
         } catch (Exception $exception) {
             alert('상품 수정이 실패하였습니다. 잠시후 재시도해주세요.');
         }
@@ -179,7 +210,7 @@ class Goods extends CI_Controller
 
         $this->load->library('upload', $config);
 
-        if (!$this->upload->do_upload('pet_img')) {
+        if (!$this->upload->do_upload('file')) {
             $error = array('error' => $this->upload->display_errors());
             return $error;
         } else {
