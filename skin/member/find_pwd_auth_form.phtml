@@ -85,9 +85,13 @@
         <div>
             <div class="inner">
                 <form name="changePassword" action="/member/changePassword/" method="post">
-                    <input type="hidden" name="find_pwd_auth_number" value="<?= $find_pwd_auth_number ?>">
-                    <input type="hidden" name="email" value="<?= $email ?>">
-                    <div>
+                    <input type="hidden" name="name" id="name" value="<?= $name ?>">
+                    <input type="hidden" name="email" id="email" value="<?= $email ?>">
+                    <div id="auth_form">
+                        <input type="text" class="form-control" name="find_pwd_auth_number" id="find_pwd_auth_number" placeholder="인증번호를 입력해주세요." value="">
+                        <input type="button" class="btn btn-primary button" id="auth_btn" value="인증">
+                    </div>
+                    <div id="pswd_form" style="display: none;">
                         <input type="password" class="form-control" name="password" placeholder="새 비밀번호를 입력해주세요" value="">
                         <input type="password" class="form-control" name="confirm_password"
                                placeholder="새 비밀번호(확인)를 입력해주세요"
@@ -101,6 +105,29 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#auth_btn').on('click',function () {
+            $.ajax({
+                url: '/Member/confirmAuthNumber',
+                type: "POST",
+                data: {
+                    auth: encodeURI($('#find_pwd_auth_number').val()),
+                    name : encodeURI($('#name').val()),
+                    email : encodeURI($('#email').val())
+                },
+                async: true,
+                dataType: 'json',
+                complete: function (result) {
+                    var data = result.responseJSON;
+                    if (data === 'success') {
+                        $('#auth_form').hide();
+                        $('#pswd_form').show();
+                    } else {
+                        alert('인증에 실패하였습니다.');
+                    }
+                }
+            })
+        });
+
         $(".btn.submit").click(function () {
             var password = $("input[name=password]");
             var confirm_password = $("input[name=confirm_password]");

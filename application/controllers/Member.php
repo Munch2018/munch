@@ -203,9 +203,13 @@ class Member extends CI_Controller
 
         $member_info = $this->member->getMember([
             'where' =>
-                ['name' => $params['name'], 'email' => $params['email']]
-            //, 'use_fl' => 'Y'
+                ['name' => $params['name'], 'email' => $params['email'], 'use_fl' => 'y']
         ]);
+
+        if (!empty($member_info) && $member_info['use_fl'] != 'y') {
+            alert('유효하지 않는 정보입니다. 먼치에 문의해주세요.');
+            return false;
+        }
 
         if (empty($member_info)) {
             alert('존재하지 않는 정보입니다.');
@@ -230,13 +234,16 @@ class Member extends CI_Controller
                     'use_fl' => 'y'
                 ]
             ], $modifyData);
+                // && !empty($this->sendEmail($email, $updatePwdAuth))
 
-            if (!empty($changed) && !empty($this->sendEmail($email, $updatePwdAuth))) {
-                alert('인증번호가 이메일로 전송되었습니다.');
+            if (!empty($changed)) {
+                alert('인증번호가 이메일로 전송되었습니다.','/member/pwdFindAuthForm?' . http_build_query([
+                        'email' => urlencode($email),
+                        'name' => urlencode($name)
+                    ]));
             } else {
                 alert('이메일 전송에 실패했습니다. 페이지를 새로고침 후 재시도해주세요.');
             }
-
         } else {
             alert('이메일 전송에 실패했습니다. 페이지를 새로고침 후 재시도해주세요.');
         }
@@ -246,13 +253,8 @@ class Member extends CI_Controller
     public function sendEmail($email, $pwd)
     {
         $from = 'munch.hello@gmail.com';
-        $msg = "<h3>이메일 인증을 위해 아래 버튼링크를 클릭해주세요.</h3>";
-
-        $msg .= "<form action='http://munchmunch.kr/member/pwdFindAuthForm/' method='post'>";
-        $msg .= "<input type='hidden' name='email' value='" . $email . "'>";
-        $msg .= "<input type='hidden' name='auth' value='" . $pwd . "'>";
-        $msg .= "<button type='submit' value='이메일 인증 하기'>이메일 인증 하기</button>";
-        $msg .= "</form>";
+        $msg = "<h3>비밀번호 변경을 위한 인증번호입니다. </h3>";
+        $msg .= "<h3>" . $pwd . "</h3>";
 
         // use wordwrap() if lines are longer than 70 characters
         $msg = wordwrap($msg, 70, "\r\n");
@@ -348,19 +350,19 @@ class Member extends CI_Controller
 
     public function pwdFindAuthForm()
     {
-        $params = $_POST;
-
-        if (empty($params['email']) || empty($params['auth'])) {
+        if (empty($_GET['email']) || empty($_GET['name'])) {
             alert('인증요청이 정상적이지 않습니다. 인증을 새로 요청해주세요.');
             redirect('/member/login_form/');
             return false;
         }
+        $params['email'] = urldecode($_GET['email']);
+        $params['name'] = urldecode($_GET['name']);
 
         $member_info = $this->member->getMember([
             'where' => [
-                'find_pwd_auth_number' => md5(trim($params['auth'])),
                 'email' => $params['email'],
-                'use_fl' => 'Y'
+                'name' => $params['name'],
+                'use_fl' => 'y'
             ]
         ]);
 
@@ -370,18 +372,43 @@ class Member extends CI_Controller
             return false;
         }
 
-        if (!empty($member_info['find_pwd_auth_expire_dt']) && $member_info['find_pwd_auth_expire_dt'] < date('Y-m-d H:i:s')) {
-            alert('이메일 인증번호가 만기되었습니다. 인증을 새로 요청해주세요.');
-            redirect('/member/login_form/');
-            return false;
-        }
-
-        $data['find_pwd_auth_number'] = $params['auth'];
+        $data['name'] = $params['name'];
         $data['email'] = $params['email'];
 
         $this->load->view('common/header.html');
         $this->load->view('member/find_pwd_auth_form.phtml', $data);
         $this->load->view('common/footer.html');
+    }
+
+    public function confirmAuthNumber()
+    {
+        $params = $_POST;
+echo json_encode('success') ;exit;
+        $params['name'] = urldecode($params['name']);
+        $params['auth'] = urldecode($params['auth']);
+        $params['email'] = urldecode($params['email']);
+
+        if (empty($params['name']) || empty($params['auth']) || empty($params['email'])) {
+            echo json_encode('fail');
+            exit;
+        }
+
+        $member_info = $this->member->getMember([
+            'where' => [
+                'find_pwd_auth_number' => md5(trim($params['auth'])),
+                'email' => $params['email'],
+                'name' => $params['name'],
+                'use_fl' => 'y'
+            ]
+        ]);
+
+        if (!empty($member_info['find_pwd_auth_expire_dt']) && $member_info['find_pwd_auth_expire_dt'] < date('Y-m-d H:i:s')) {
+            echo json_encode('expire');
+            exit;
+        }
+
+        echo !empty($member_info) ? json_encode('success') : json_encode('fail');
+        exit;
     }
 
     public function changePassword()
@@ -410,7 +437,8 @@ class Member extends CI_Controller
         $changed = $this->member->doUpdate([
             'where' => [
                 'member_idx' => $member_info['member_idx'],
-                'email' => $member_info['email']
+                'email' => $member_info['email'],
+                'use_fl' => 'y'
             ]
         ], [
             'password' => md5(trim($pwd)),
