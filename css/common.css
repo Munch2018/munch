@@ -19,7 +19,7 @@ a:link, a:visited, a:hover, a:active {
     background-color: rgba(0, 0, 0, 0.77);
     color: #ffffff;
     width: 100%;
-    position: relative;
+    position: fixed;
 }
 
 .gnb li {
@@ -44,12 +44,17 @@ a:link, a:visited, a:hover, a:active {
     height: 99px;
 }
 
-.gnb .gnb-logo img {
+.gnb .gnb-logo #munch_logo {
     width: 108px;
     height: 61px;
     padding-top: 15px;
 }
 
+.gnb .gnb-logo #beta_logo {
+
+    width: 50px;
+    padding-left: 5px;
+}
 .gnb .gnb-menu {
     display: flex;
     max-width: 794px;
@@ -76,7 +81,8 @@ a:link, a:visited, a:hover, a:active {
     z-index: 99;
     border-radius: 50px;
     background-color: #746AB0;
-    padding: 15px 20px;
+    padding: 22px 30px;
+    font-size: 18px;
 }
 
 #dimmed {
