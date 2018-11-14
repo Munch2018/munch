@@ -50,11 +50,11 @@ a:link, a:visited, a:hover, a:active {
     padding-top: 15px;
 }
 
-.gnb .gnb-logo #beta_logo {
+/*.gnb .gnb-logo #beta_logo {*/
+    /*width: 50px;*/
+    /*padding-left: 5px;*/
+/*}*/
 
-    width: 50px;
-    padding-left: 5px;
-}
 .gnb .gnb-menu {
     display: flex;
     max-width: 794px;
