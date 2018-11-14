@@ -24,6 +24,9 @@ class Auth_model extends CI_Model
         if (!empty($params['refresh_token'])) {
             $this->db->set('refresh_token', $params['refresh_token']);
         }
+        if (!empty($params['refresh_token_expires_dt'])) {
+            $this->db->set('refresh_token_expires_dt', $params['refresh_token_expires_dt']);
+        }
         $this->db->where('member_sns_idx', $params['member_sns_idx']);
         return $this->db->update('member_sns');
     }
