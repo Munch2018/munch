@@ -20,6 +20,7 @@ a:link, a:visited, a:hover, a:active {
     color: #ffffff;
     width: 100%;
     position: fixed;
+    z-index: 101;
 }
 
 .gnb li {

@@ -95,7 +95,8 @@ class Kakao_service extends MY_Service
                     if ($this->auth_model->updateToken([
                         'token' => $responseArr['access_token'],
                         'refresh_token' => $responseArr['refresh_token'],
-                        'member_sns_idx' => $alreadyData['member_sns_idx']
+                        'member_sns_idx' => $alreadyData['member_sns_idx'],
+                        'refresh_token_expires_dt' => $this->getExpireDate($responseArr['refresh_token_expires_in'])
                     ])) {
                         $this->login_service->login($alreadyData);
                     } else {

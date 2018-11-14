@@ -60,7 +60,6 @@ class Naver_service extends MY_Service
 
         $responseArr = json_decode($response, true);
         echo '<pre>' . var_export($responseArr, 1) . '</pre>';
-        exit;
 
         $_SESSION['naver_access_token'] = $responseArr['access_token'];
         $_SESSION['naver_refresh_token'] = $responseArr['refresh_token'];
@@ -84,55 +83,58 @@ class Naver_service extends MY_Service
 
         $me_responseArr = json_decode($me_response, true);
 
-        if (!empty($me_responseArr['response']['email'])) {
-            $email = $me_responseArr['response']['email'];
+        if (empty($me_responseArr['response']['email'])) {
+            alert('로그인에 실패하였습니다.', '', 1);
+            return false;
+        }
+        
+        $email = $me_responseArr['response']['email'];
 
-            $alreadyData = $this->auth_model->getMemberSns(['email' => $email]);
+        //회원정보 가져오기
+        $alreadyData = $this->auth_model->getMemberSns(['email' => $email]);
 
-            //회원정보가 있다면
-            if (!empty($alreadyData['member_sns_idx']) && $alreadyData['sns_type'] == 'naver') {
-                if ($alreadyData['refresh_token'] == $responseArr['refresh_token'] || $this->isTest($me_responseArr['response']['email'])) {
-                    if ($this->auth_model->updateToken([
-                        'token' => $responseArr['access_token'],
-                        'refresh_token' => $responseArr['refresh_token'],
-                        'member_sns_idx' => $alreadyData['member_sns_idx']
-                    ])) {
-                        $this->login_service->login($alreadyData);
-                    } else {
-                        alert('로그인에 실패하였습니다.', '', 1);
-                        return false;
-                    }
-                } else {
-                    /**
-                     * @todo 토큰 갱신 업데이트
-                     */
-                }
-            } elseif (!empty($alreadyData)) {
-                alert('해당 이메일은 이미 사용되고 있습니다.', '', 1);
-                return false;
-            } else {
-                $email = $me_responseArr['response']['email']; // 이메일
-                $name = $me_responseArr['response']['name']; // 닉네임
-
-                $refresh_token_expires_date = $this->getExpireDate();
-
-                // 멤버 DB에 토큰과 회원정보를 넣고 로그인
-                if (!$this->login_service->join([
-                    'type' => 'naver',
-                    'email' => $email,
-                    'name' => !empty($name) ? $name : 'naver',
+        //회원정보가 있다면
+        if (!empty($alreadyData['member_sns_idx']) && $alreadyData['sns_type'] == 'naver') {
+            if ($alreadyData['refresh_token'] == $responseArr['refresh_token'] || $this->isTest($me_responseArr['response']['email'])) {
+                if ($this->auth_model->updateToken([
                     'token' => $responseArr['access_token'],
                     'refresh_token' => $responseArr['refresh_token'],
-                    'refresh_token_expires_date' => $refresh_token_expires_date
+                    'member_sns_idx' => $alreadyData['member_sns_idx'],
+                    'refresh_token_expires_dt' => $this->getExpireDate($responseArr['expires_in'])
                 ])) {
+                    $this->login_service->login($alreadyData);
+                } else {
                     alert('로그인에 실패하였습니다.', '', 1);
                     return false;
                 }
+            } else {
+                alert('로그인에 실패하였습니다.', '', 1);
+                return false;
+            }
+        } elseif (!empty($alreadyData)) {
+            alert('해당 이메일은 이미 사용되고 있습니다.', '', 1);
+            return false;
+
+        } else {
+
+            //3. 기존정보 없다면 회원가입
+            $joinData = [
+                'type' => 'naver',
+                'email' =>  $email,
+                'name' => !empty($me_responseArr['response']['name']) ? $me_responseArr['response']['name'] : 'naver',
+                'token' => $responseArr['access_token'],
+                'refresh_token' => $responseArr['refresh_token'],
+                'refresh_token_expires_date' => $this->getExpireDate()
+            ];
+
+            if (!$this->login_service->join($joinData)) {
+                alert('로그인에 실패하였습니다.', '', 1);
+                return false;
             }
         }
     }
 
-    public function getExpireDate($hour)
+    public function getExpireDate($hour = 0)
     {
         if (empty($hour)) {
             return '0000-00-00';
