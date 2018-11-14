@@ -61,7 +61,7 @@ class Facebook_service extends MY_Service
         $refresh_token_expires_date = '';
         $refresh_token_expires_day = min(($hour / 60 / 60 / 24));
         if (!empty($refresh_token_expires_day) && $refresh_token_expires_day > 0) {
-            $refresh_token_expires_date = date('Y-m-d', strtotime('Y-m-d' . " +" . $refresh_token_expires_day . " day"));
+            $refresh_token_expires_date = date('Y-m-d', strtotime(" +" . $refresh_token_expires_day . " day"));
         }
 
         return $refresh_token_expires_date;

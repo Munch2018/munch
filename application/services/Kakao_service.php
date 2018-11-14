@@ -147,7 +147,7 @@ class Kakao_service extends MY_Service
         $refresh_token_expires_day = floor(($hour / 60 / 60 / 24));
         if (!empty($refresh_token_expires_day) && $refresh_token_expires_day > 0) {
             $refresh_token_expires_date = date('Y-m-d',
-                strtotime('Y-m-d' . " +" . $refresh_token_expires_day . " day"));
+                strtotime(" +" . $refresh_token_expires_day . " day"));
         }
 
         return $refresh_token_expires_date;
