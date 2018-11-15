@@ -88,4 +88,26 @@ class Auth_model extends CI_Model
         $data['reg_dt'] = date("Y-m-d H:i:s");
         return $this->db->insert('member_sns', $data);
     }
+
+    public function getRefreshTokenTarget($date)
+    {
+
+        $sql = '
+        SELECT 
+            m.member_idx, ms.member_sns_idx, ms.token, ms.refresh_token
+        FROM
+            member m
+                JOIN
+            member_sns ms ON m.member_idx = ms.member_idx
+        WHERE
+            m.use_fl = \'y\' AND ms.use_fl = \'y\'
+                AND ms.refresh_token_expires_dt <= ?
+        ORDER BY 1 DESC
+        ';
+
+        $result = $this->db->query($sql, ['date' => $date])->result_array();
+//        echo $this->db->last_query().'<br><br>';
+//        echo print_r($result,1).'<br><br>';
+        return $result;
+    }
 }

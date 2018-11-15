@@ -73,15 +73,20 @@
             <?php
             if(!empty($goods['img_src'])){
                 $img_src = explode('|',$goods['img_src']);
-                foreach($img_src as $key => $img){
-            echo "<img src='".$img."'>";
-            }
+                $img_idx = explode('|',$goods['img_idx']);
+                foreach($img_src as $key => $img) {
+                    echo "<div>";
+                    echo "<input type='hidden' name='img_idx[]' value=".$img_idx[$key].">";
+                    echo "<img src='".$img."' data-img_idx=".$img_idx[$key].">";
+                    echo '<button type="button" class="btn sub_img">-</button>';
+                    echo '</div>';
+                }
             }
             ?>
             <br>
             <div class="img_file_area">
                 <div><input type="file" name="pet_img[]" size="20" placeholder="이미지를 업로드해주세요">
-                    <button type="button" class="btn" id="sub_img">-</button>
+                    <button type="button" class="btn sub_img">-</button>
                 </div>
             </div>
             <button type="button" class="btn" id="add_img">+</button>
@@ -145,7 +150,7 @@
         $('#add_img').on('click',function () {
             $('.img_file_area').prepend('<div><input type="file" name="pet_img[]" size="20" placeholder="이미지를 업로드해주세요"> <button type="button" class="btn" id="sub_img">-</button></div>');
         });
-        $('#sub_img').on('click',function () {
+        $('.sub_img').on('click',function () {
             $(this).closest('div').remove();
         });
     })

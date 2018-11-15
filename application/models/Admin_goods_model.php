@@ -33,7 +33,8 @@ class Admin_goods_model extends CI_Model
         }
 
         $sql = 'SELECT g.goods_idx, g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, g.use_fl, g.inventory_count, g.main_display, g.package_fl, ' . PHP_EOL
-            . '     group_concat(distinct(gi.img_src) SEPARATOR \'|\') as img_src  ' . PHP_EOL
+            . '     group_concat(distinct(gi.img_src) SEPARATOR \'|\') as img_src,  ' . PHP_EOL
+            . '     group_concat(distinct(gi.goods_img_idx) SEPARATOR \'|\') as img_idx  ' . PHP_EOL
             . ' FROM goods g ' . PHP_EOL
             . '     LEFT JOIN goods_img gi ON g.goods_idx = gi.goods_idx and gi.use_fl="y"' . PHP_EOL
             . $whereStr
@@ -189,12 +190,16 @@ class Admin_goods_model extends CI_Model
         return $this->db->insert_id();
     }
 
-    public function deleteImg($goods_idx)
+    public function deleteImg($goods_idx, $not_in_idxs)
     {
         $this->db->set('use_fl', 'n');
         $this->db->set('del_dt', date('Y-m-d H:i:s'));
         $this->db->set('del_idx', $this->session->userdata('member_idx'));
+        if (!empty($not_in_idxs)) {
+            $this->db->where_not_in('goods_img_idx', $not_in_idxs);
+        }
         $this->db->where('goods_idx', $goods_idx);
+
         $this->db->update('goods_img');
     }
 

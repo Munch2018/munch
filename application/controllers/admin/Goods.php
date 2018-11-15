@@ -158,29 +158,28 @@ class Goods extends CI_Controller
             if (!empty($_FILES['pet_img']['name'])) {
                 $filesCount = count($_FILES['pet_img']['name']);
 
-                $this->model->deleteImg($goods_idx);
+                $this->model->deleteImg($goods_idx, !empty($params['img_idx']) ? $params['img_idx'] : []);
 
                 for ($i = 0; $i < $filesCount; $i++) {
                     unset($_FILES['file']);
-                    if (empty($_FILES['pet_img']['name'][$i])) {
-                        return false;
-                    }
-                    $_FILES['file']['name'] = $_FILES['pet_img']['name'][$i];
-                    $_FILES['file']['type'] = $_FILES['pet_img']['type'][$i];
-                    $_FILES['file']['tmp_name'] = $_FILES['pet_img']['tmp_name'][$i];
-                    $_FILES['file']['error'] = $_FILES['pet_img']['error'][$i];
-                    $_FILES['file']['size'] = $_FILES['pet_img']['size'][$i];
+                    if (!empty($_FILES['pet_img']['name'][$i])) {
+                        $_FILES['file']['name'] = $_FILES['pet_img']['name'][$i];
+                        $_FILES['file']['type'] = $_FILES['pet_img']['type'][$i];
+                        $_FILES['file']['tmp_name'] = $_FILES['pet_img']['tmp_name'][$i];
+                        $_FILES['file']['error'] = $_FILES['pet_img']['error'][$i];
+                        $_FILES['file']['size'] = $_FILES['pet_img']['size'][$i];
 
-                    $upload_result = $this->upload();
-                    if (!empty($upload_result['upload_data']['full_path']) && empty($upload_result['error'])) {
-                        $this->model->addImg([
-                            'goods_idx' => $goods_idx,
-                            'img_src' => str_replace('/var/www/html/branches/munch', '',
-                                $upload_result['upload_data']['full_path']),
-                            'use_fl' => 'y'
-                        ]);
-                    } else {
-                        $isError = true;
+                        $upload_result = $this->upload();
+                        if (!empty($upload_result['upload_data']['full_path']) && empty($upload_result['error'])) {
+                            $this->model->addImg([
+                                'goods_idx' => $goods_idx,
+                                'img_src' => str_replace('/var/www/html/branches/munch', '',
+                                    $upload_result['upload_data']['full_path']),
+                                'use_fl' => 'y'
+                            ]);
+                        } else {
+                            $isError = true;
+                        }
                     }
                 }
             }
