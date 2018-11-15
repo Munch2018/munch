@@ -2,7 +2,7 @@
     <form method="post" action="/admin/goods/edit" enctype="multipart/form-data">
         <input type="hidden" name="goods_idx" value="<?php echo $goods['goods_idx']?>">
         <?php $this->load->view('admin/goods/form.html'); ?>
-        <button type="submit">EDIT</button>
-        <button type="reset">RESET</button>
+        <button type="submit" class="btn">EDIT</button>
+        <button type="reset" class="btn">RESET</button>
     </form>
 </div>

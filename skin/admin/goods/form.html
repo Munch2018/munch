@@ -39,7 +39,7 @@
     </tr>
     <tr>
         <th>설명</th>
-        <td><textarea name="detail"
+        <td><textarea name="detail" id="detail" style="width:100%"
                       maxlength="200"><?php echo !empty($goods['detail']) ? $goods['detail'] :''?></textarea></td>
     </tr>
     <tr>
@@ -134,9 +134,11 @@
     </tr>
     </tbody>
 </table>
-
+<script src="//cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        CKEDITOR.replace( 'detail' );
+
         $('#selected').on('click', function () {
             var pet_type = $('input[name=\'pet_type\']:checked').val();
             if (!pet_type) {
