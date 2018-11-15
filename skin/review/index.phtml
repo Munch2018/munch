@@ -38,13 +38,14 @@
     var review_comment = $('.goods_list ul li .comment');
 
     //리뷰레이어 내용 ajax
-    var reviewContents = function (pet_idx, goods_idx) {
+    var reviewContents = function (pet_idx, goods_idx, img_src) {
         $.ajax({
             method: 'GET',
             url: '/review/reviewLayer',
             data: {
                 pet_idx: pet_idx,
                 goods_idx: goods_idx,
+                img_src : img_src
             },
             dataType: 'json',
             complete: function (data) {

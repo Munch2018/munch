@@ -246,12 +246,6 @@ class Review extends CI_Controller
         $params = $_GET;
 
         $member_idx = $this->session->userdata('member_idx');
-        $this->load->model('Pet_manage', 'petmanage');
-
-        $data = [];
-        $data['pet'] = $this->petmanage->getPets($member_idx, $params['pet_idx']);
-        $data['pet'] = array_shift($data['pet']);
-
         $data = $params;
         $data['review_data'] = $this->review_model->getReview([
             'where' => [

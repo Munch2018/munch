@@ -19,9 +19,9 @@
         ?>
         <li data-pet_idx="<?=$value['pet_idx']?>" data-goods_idx="<?=$value['goods_idx']?>" data-review_idx="">
             <img class="goods_img" src="<?=base_url().$goods_img_arr[0]?>">
-            <span class="goods_name"><?=$value['goods_name']?></span>
+            <div class="goods_name"><?=$value['goods_name']?></div>
             <div style="height:74px !important; display: contents;">
-                <div class="star" style="margin-bottom: 2px;">
+                <div class="star" style="margin: 10px 0px;;">
                     <?php for($i=1;$i<=5;$i++) {?>
                     <span class="rating-star <?php echo (!empty($review_data['score_level']) && $i<=$review_data['score_level']) ? 'on' : ''?>"
                           value="<?=$i?>"></span>
@@ -50,9 +50,11 @@
     var review_layer = $('#review_layer');
     var review_comment = $('.goods_list ul li .comment');
 
-    review_comment.on('click', function () {
+    review_comment.on('click', function (e) {
+        e.preventDefault();
+
         var data = $(this).closest('li');
-        reviewContents(data.data("pet_idx"), data.data("goods_idx"));
+        reviewContents(data.data("pet_idx"), data.data("goods_idx"), data.find('img.goods_img').attr('src'));
     });
 
     review_layer.find('.close').on('click', function () {

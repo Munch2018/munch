@@ -71,16 +71,19 @@ hr {
 .goods_list ul {
     padding: 20px 0 0 0;
     margin: 0px;
-    display: flex;
+    display: block;
+    text-align: left;
+    width: 1200px;
     list-style: none;
 }
 
 .goods_list ul li {
-    display: grid;
+    display: inline-block;
     margin-right: 7px;
     border-radius: 4px;
     width: 226px;
     height: 294px;
+    text-align: center;
     border: 1px solid #CDCDCD;
     overflow: hidden;
 }
@@ -94,7 +97,7 @@ hr {
     height: 45px;
     font-size: 14px;
     font-weight: bold;
-    border-top: 1px solid #CDCDCD;
+    /*border-top: 1px solid #CDCDCD;*/
     border-bottom: 1px solid #CDCDCD;
 }
 
