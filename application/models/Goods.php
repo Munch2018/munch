@@ -13,7 +13,7 @@ class Goods extends CI_Model
         parent::__construct();
     }
 
-    public function getParentGoods()
+    public function getParentGoods($params)
     {
         $bind = [];
         $where = [];
@@ -23,7 +23,18 @@ class Goods extends CI_Model
             $where[] = ' gr.child_idx = ? ';
             $bind['child_idx'] = $params['child_idx'];
         }
-
+        if (!empty($params['use_fl'])) {
+            $where[] = ' gr.use_fl = ? ';
+            $bind['use_fl'] = $params['use_fl'];
+        }
+        if (!empty($params['goods_use_fl'])) {
+            $where[] = ' g.use_fl = ? ';
+            $bind['goods_use_fl'] = $params['goods_use_fl'];
+        }
+        if (!empty($params['package_fl'])) {
+            $where[] = ' g.package_fl = ? ';
+            $bind['package_fl'] = $params['package_fl'];
+        }
         if (!empty($where)) {
             $whereStr = ' WHERE ' . implode(' and ', $where);
         }

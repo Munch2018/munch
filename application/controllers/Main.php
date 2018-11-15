@@ -12,9 +12,8 @@ class Main extends CI_Controller
     {
         $this->load->model('Subscribe_model', 'subscribe');
         $this->load->model('Goods', 'goods');
-        $this->load->model('Goods', 'goods');
 
-        $data['parentGoods'] = $this->goods->getParentGoods();
+        $data['parentGoods'] = $this->goods->getParentGoods(['goods_use_fl' => 'y', 'package_fl'=>'y', 'use_fl'=>'y']);
         $data['childGoods'] = $this->goods->getChildGoods(['goods_use_fl' => 'y', 'package_fl'=>'n', 'use_fl'=>'y']);
         $data['goodsPrice'] = $this->subscribe->getSubscribeGoodsPrice(['month_count' => 12]);
         $this->load->view('common/header.html');
