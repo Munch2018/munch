@@ -90,7 +90,7 @@ class Goods extends CI_Model
 
         $sql = 'SELECT gr.parent_idx, ' . PHP_EOL
             . '     g.goods_idx, g.title, g.detail, g.subtitle, g.price, g.sell_price, g.pet_type, g.material, g.ingredients, ' . PHP_EOL
-            . '     group_concat(gi.img_src SEPARATOR \'|\') as img_src ' . PHP_EOL
+            . '     group_concat(distinct(gi.img_src) SEPARATOR \'|\') as img_src ' . PHP_EOL
             . ' FROM goods_relation gr ' . PHP_EOL
             . '     JOIN goods g ON gr.child_idx = g.goods_idx ' . PHP_EOL
             . '     LEFT JOIN goods_img gi ON g.goods_idx = gi.goods_idx ' . PHP_EOL
@@ -98,7 +98,9 @@ class Goods extends CI_Model
             . ' GROUP BY g.goods_idx ' . PHP_EOL
             . ' ORDER BY g.goods_idx ';
 
-        return $this->db->query($sql, $bind)->result_array();
+        $return = $this->db->query($sql, $bind)->result_array();
+        //echo $this->db->last_query();
+        return $return;
     }
 
 }
