@@ -95,25 +95,25 @@
     <tr>
         <th>사용유무</th>
         <td>
-            <input type="radio" name="use_fl" value="y" id="use_fl_y" checked="<?php echo (!empty($goods['use_fl']) && $goods['use_fl']=='y') ? 'checked' : ''?>">
+            <input type="radio" name="use_fl" value="y" id="use_fl_y" <?php echo(!empty($goods['use_fl']) && $goods['use_fl']=='y') ? 'checked' : ''?>>
             <label for="use_fl_y">사용</label>
-            <input type="radio" name="use_fl" value="n" id="use_fl_n" checked="<?php echo (!empty($goods['use_fl']) && $goods['use_fl']!='y') ? 'checked' : ''?>">
+            <input type="radio" name="use_fl" value="n" id="use_fl_n" <?php echo(!empty($goods['use_fl']) && $goods['use_fl']!='y') ? 'checked' : ''?>>
             <label for="use_fl_n">미사용</label>
         </td>
     </tr>
     <tr>
         <th>메인노출유무</th>
-        <td><input type="radio" name="main_display" value="y" id="main_display_y" checked="<?php echo (!empty($goods['main_display']) && $goods['main_display']=='y') ? 'checked' : ''?>">
+        <td><input type="radio" name="main_display" value="y" id="main_display_y" <?php echo (!empty($goods['main_display']) && $goods['main_display']=='y') ? 'checked' : ''?>>
             <label for="main_display_y">노출</label>
-            <input type="radio" name="main_display" value="n" id="main_display_n"  checked="<?php echo (!empty($goods['main_display']) && $goods['main_display']!='y') ? 'checked' : ''?>">
+            <input type="radio" name="main_display" value="n" id="main_display_n" <?php echo ($goods['main_display']!='y') ? 'checked' : ''?>>
             <label for="main_display_n">미노출</label></td>
     </tr>
     <tr>
         <th>패키지 유무</th>
         <td>
-            <input type="radio" name="package_fl" value="y" id="package_fl_y" checked="<?php echo (!empty($goods['package_fl']) && $goods['package_fl']=='y') ? 'checked' : ''?>">
+            <input type="radio" name="package_fl" value="y" id="package_fl_y" <?php echo(!empty($goods['package_fl']) && $goods['package_fl']=='y') ? 'checked' : ''?>>
             <label for="package_fl_y">유</label>
-            <input type="radio" name="package_fl" value="n" id="package_fl_n" checked="<?php echo (!empty($goods['package_fl']) && $goods['package_fl']!='y') ? 'checked' : ''?>">
+            <input type="radio" name="package_fl" value="n" id="package_fl_n" <?php echo(!empty($goods['package_fl']) && $goods['package_fl']!='y') ? 'checked' : ''?>>
             <label for="package_fl_n">무</label></td>
         </td>
     </tr>
