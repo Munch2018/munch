@@ -22,6 +22,7 @@ class Board extends CI_Controller
     public function lists($type = "")
     {
         $data = array();
+        $board_idx = !empty($_GET['board_idx']) ? $_GET['board_idx'] : 0;
         $type = $type != "" ? $type : $this->input->get('board_type');
 
         if ($type == "refund" || $type == "order") {
@@ -48,6 +49,7 @@ class Board extends CI_Controller
 
         $where['where_list'] = array('board_type' => $data['type'], 'code_common_group_idx' => 4);
 
+        $data['board_idx'] = $board_idx;
         $data['list'] = $this->board->getLists($where);
         $data['total_count'] = $this->board->getCount($where);
 

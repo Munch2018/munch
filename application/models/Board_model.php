@@ -60,7 +60,7 @@ class Board_model extends CI_Model{
         }
 
         $this->db->select('board_idx, board.title, board.contents, board_type, reg_idx');
-
+        $this->db->order_by('board_idx', 'ASC');
         return $this->db->get('board')->result_array();
     }
 

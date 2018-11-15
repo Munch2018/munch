@@ -60,7 +60,7 @@
                             </td>
                         </tr>
                         <!--<tr class="answer">-->
-                        <tr style="display:none;">
+                        <tr <?=!empty($board_idx) && $value['board_idx'] == $board_idx ? 'class="question"' : 'style="display:none"';?>>
                             <td>
                                 <span><?=trim($value['contents'])?></span>
                                 <?php if (($this->session->userdata('member_idx') && $this->session->userdata('member_idx')) === $value['reg_idx']) : ?>

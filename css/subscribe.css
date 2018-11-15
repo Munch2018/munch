@@ -62,6 +62,10 @@ hr {
     font-size: 13px;
 }
 
+.what-munch a {
+    color: #666666;
+}
+
 .btn-prev {
     width: 50%;
     text-align: left;
