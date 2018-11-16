@@ -25,9 +25,8 @@ class Member extends CI_Controller
 
     public function lists()
     {
-
         $data = array();
-        $where = array();
+        $where = array('where'=>['use_fl'=>'y']);
 
         // 회원 리스트 가져오는 model
         $data['list'] = $this->member->getMembers($where);

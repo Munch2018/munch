@@ -75,7 +75,7 @@ class Member_model extends CI_Model
         }
 
         $this->db->select('email, name, telphone, reg_dt, edit_dt, use_fl, (select count(*) as cnt from pet where member_idx = member.member_idx) as pet_is_regist');
-
+        $this->db->order_by('member_idx','DESC');
         return $this->db->get('member')->result_array();
     }
 
@@ -88,11 +88,8 @@ class Member_model extends CI_Model
             $this->setWhere($where);
         }
 
-//        return $this->db->get('member')->count_all_results();
-        $return = $this->db->count_all('member');
-//        echo '<pre>';
-//        print_r($this->db->last_query());
-//        echo '</pre>';
+        $return = $this->db->count_all_results('member');
+
         return $return;
     }
 
