@@ -18,9 +18,14 @@
             <div class="ord-detail">
                 <div class="prd">
                     <span class="point">먼치세트 정기 배송 - <?php echo date('Y년 m월')?> 시작</span>X1<br>
-                    반려견 품종 : <?php echo ($order_info['pet_type']==='dog') ? $dog_kind[trim($order_info['pet_kind'])] : $cat_kind[$order_info['pet_kind']] ?><br>
+                    반려견 품종 :
+                    <?php
+                    if(!empty($order_info['pet_type']) && !empty($order_info['pet_kind'])){
+                     echo ($order_info['pet_type']==='dog') ? $dog_kind[trim($order_info['pet_kind'])] : $cat_kind[$order_info['pet_kind']];
+                    }?>
+                   <br>
                     구독 기간 : <?php echo $order_info['subscribe_month']?>개월<br>
-                    CJ대한통운 (<span class="point">1111111</span>, 결제완료)
+                    <!--CJ대한통운 (<span class="point">1111111</span>, 결제완료)-->
                 </div>
                 <div class="tot">&#8361; <?php echo number_format($order_info['last_amount'])?>원</div>
             </div>
