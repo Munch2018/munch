@@ -4,8 +4,10 @@
         <tr>
             <th>No.</th>
             <th>주문자</th>
-            <th>반려동물이름</th>
-            <th>반려동물 특징</th>
+            <th>반려동물</th>
+            <th>품종</th>
+            <th>특징</th>
+            <th>특이사항</th>
             <th>반려동물 평가</th>
         </tr>
         </thead>
@@ -15,7 +17,27 @@
                 <tr>
                     <th scope="row"><?php echo $key+1?></th>
                     <td><?php echo $pet['member_name']?></td>
-                    <td><?php echo $pet['name']?></td>
+                    <td><?php echo $pet['name'];
+                        if(!empty($pet['birth'])){
+                            echo ' ('.(date('Y') - date('Y', strtotime($pet['birth'])) +1) .'살)';
+                        }?>
+                    </td>
+                    <td><?php echo !empty($pet['pet_type']) && $pet['pet_type']=='cat'  ? '고양이' : '강아지';
+                        if(!empty($pet['pet_type']) && !empty($pet['pet_kind'])) {
+                        echo '<br>';
+                        echo ($pet['pet_type'] === 'dog') ? $dog_kind[$pet['pet_kind']] : $cat_kind[$pet['pet_kind']] ;
+                        }
+                        ?></td>
+                    <td>
+                        <?php
+                            if(!empty($pet['character_type'])){
+                            $character_type = explode('|',$pet['character_type']);
+                                for($i=0;$i<count($character_type);$i++){
+                                    echo '<li>'.$character[$character_type[$i]].'</li>';
+                                }
+                            }
+                        ?>
+                    </td>
                     <td>
                         <?php echo ($pet['detail1']) ? '<li>'.$pet['detail1'].'</li>' : ''?>
                         <?php echo ($pet['detail2']) ? '<li>'.$pet['detail2'].'</li>' : ''?>

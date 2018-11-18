@@ -18,7 +18,7 @@ class Admin_pet_model extends CI_Model
         $bind = [];
         $sql = " SELECT 
                 m.member_idx, m.name as member_name, m.email, m.telphone,
-                p.name, p.pet_kind, p.pet_size, p.pet_type,
+                p.name, p.pet_kind, p.pet_size, p.pet_type, p.birth, p.character_type,
                 p.detail1, p.detail2, p.detail3
             FROM
                 member m

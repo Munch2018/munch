@@ -21,6 +21,10 @@ class Pets extends CI_Controller
 
     public function index()
     {
+        $data['dog_kind'] = $this->common_code_service->getCode('dog_kind');
+        $data['cat_kind'] = $this->common_code_service->getCode('cat_kind');
+        $data['character'] = $this->common_code_service->getCode('character');
+
         $data['pets'] = $this->model->getList();
         $this->load->view('admin/common/header.html');
         $this->load->view('admin/pets/list.html', $data);

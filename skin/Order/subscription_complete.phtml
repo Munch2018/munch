@@ -30,7 +30,7 @@
                 <div class="ord-detail">
                     <div class="prd">
                         <span class="point">먼치세트 정기 배송 - <?php echo date('Y년 m월') ?> 시작</span>X1<br>
-                        반려견 품종
+                        반려동물 품종
                         : <?php
                         if(!empty($order_info['pet_type']) && !empty($order_info['pet_kind'])) {
                             echo ($order_info['pet_type'] === 'dog') ? $dog_kind[$order_info['pet_kind']] : $cat_kind[$order_info['pet_kind']] ;
