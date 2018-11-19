@@ -93,7 +93,7 @@ class Order_service extends MY_Service
 
     private function setAddress()
     {
-        $address_idx = !empty($this->data['address_idx']) ? $this->data['address_idx'] : $this->addAddress($this->data);
+        $this->data['address_idx'] = !empty($this->data['address_idx']) ? $this->data['address_idx'] : $this->addAddress($this->data);
         if (empty($address_idx)) {
             throw new Exception('insert Address fail');
         }

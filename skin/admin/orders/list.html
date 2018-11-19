@@ -56,6 +56,7 @@
                 <th>수량(개월)</th>
                 <th>금액</th>
                 <th>배송상태</th>
+                <th>배송지</th>
                 <th>주문상품 수정</th>
             </tr>
             </thead>
@@ -73,6 +74,7 @@
                 <td><?php echo $order['subscribe_month']?></td>
                 <td><?php echo number_format($order['total_amount'])?></td>
                 <td><?php echo $order_status[$order['status']]?></td>
+                <td><?php echo $order['zipcode'] . '<br>' . $order['addr1st'] . $order['addr2nd'] ?></td>
                 <td>
                     <?php if(empty($order['shipping_idx'])){?>
                     <button type="button" class="btn chgChildGoods" data-order_idx="<?php echo $order['order_idx']?>">

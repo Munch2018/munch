@@ -32,7 +32,8 @@ class Admin_order_model extends CI_Model
                  m.name, p.payment_idx, o.order_idx, g.title, o.shipping_idx,
                  p.reg_dt, p.status, o.total_amount, 
                  s.subscribe_month, s.goods_idx,
-                 pet.name as pet_name
+                 pet.name as pet_name,
+                a.zipcode, a.addr1st, a.addr2nd
             FROM
                 subscribe s
                     JOIN subscribe_schedule ss ON s.subscribe_idx = ss.subscribe_idx
@@ -41,6 +42,7 @@ class Admin_order_model extends CI_Model
                     JOIN goods g ON g.goods_idx = s.goods_idx
                     JOIN pet pet ON s.pet_idx = pet.pet_idx
                     JOIN member m ON m.member_idx = o.member_idx
+                    LEFT JOIN address a on a.address_idx=ss.address_idx and a.member_idx = m.member_idx
             WHERE 
                     s.use_fl = 'y' AND o.use_fl = 'y' AND p.use_fl = 'y' AND g.use_fl = 'y' "
             . $whereStr
